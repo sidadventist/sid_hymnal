@@ -137,6 +137,12 @@ describe('SID_Hymnal', () => {
                                 expect(rex).toEqual(false);
                             });
 
+                            // TODO: write test to ban characters after /\nChorus/gi
+
+                            //{character}\nchorus\n should fail. chorus must be preceded by 2 \n\n
+
+                            //fail \n\n\n (no double lines)
+
                             describe(`Song title ${fileLines[0]}`, () => {
                                 it(`Must immediately be followed by a new empty line (NO SPACE/CHARACTERS) before the verse`, () => {
                                     expect(fileLines[1]).toEqual("");
