@@ -62,18 +62,19 @@ SID Seventh-day Adventist Hymnal
 3. Hymn numbering should be `###.md` format, padded by 0s as necessary. i.e. 002.md, 024.md, 121.md
 
 4. Format of the Hymn follows this standard:
-    ### Title
-    a. the First line must be a level 2 heading (starting with a "## "). Do not make the heading multiline, only the first line will be parsed as the heading
-    b. The First line must be followed by 2 new lines (`\n\n`)
 
-    ### Verses
-    a. Verses must be preceded by exactly 2 new lines (`\n\n`)
-    b. Verses must be followed by exactly 2 new lins  (`\n\n`)
+  #### Title
+  - the First line must be a level 2 heading (starting with a "`## `"). Do not make the heading multiline, only the first line will be parsed as the heading
+  - The First line must be followed by 2 new lines (`\n\n`)
 
-    ### Chorus
-    a. Add the word "Chorus", just above the chorus.
-    b. The word "Chorus" must be preceded by 2 new lines (`\n\n`)
-    c. The word "Chorus" must be immediately followed by a new line `\n`
-    d. The last line of the Chorus must be followed by 2 new lines (`\n\n`)
+  #### Verses
+  - Verses must be preceded by exactly 2 new lines (`\n\n`)
+  - Verses must be followed by exactly 2 new lins  (`\n\n`)
+
+  #### Chorus
+  - Add the word "Chorus", just above the chorus.
+  - The word "Chorus" must be preceded by 2 new lines (`\n\n`)
+  - The word "Chorus" must be immediately followed by a new line `\n`
+  - The last line of the Chorus must be followed by 2 new lines (`\n\n`)
 
 
