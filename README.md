@@ -4,8 +4,6 @@ SID Seventh-day Adventist Hymnal
 
 ## Screenshots
 
-SID Seventh-day Adventist Hymnal
-
 ### Android
 ![Android](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/android_song.png)
 <details>
