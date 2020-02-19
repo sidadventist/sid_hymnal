@@ -1,5 +1,5 @@
-import 'dart:async';
 import 'dart:convert';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,7 +7,6 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:sid_hymnal/common/shared_methods.dart';
 import 'package:sid_hymnal/common/shared_prefs.dart';
 import 'package:sid_hymnal/models/hymn.dart';
-import 'package:sid_hymnal/models/user_settings.dart';
 import 'package:sid_hymnal/screens/android/favorites_page.dart';
 import 'package:sid_hymnal/screens/android/search_page.dart';
 import 'package:sid_hymnal/screens/core/hymn_search.dart';
@@ -30,8 +29,7 @@ class _HomePageState extends State<HomePage> {
   int _currentHymnNumber = 1;
   Hymn _currentHymnData;
   int currentIndex = 0;
-
-  StreamSubscription<bool> playerStatusListener;
+  AudioPlayer audioPlayerInstance;
   static final scaffoldKey = new GlobalKey<ScaffoldState>();
 
   static final GlobalKey<NavigatorState> firstTabNavKey = new GlobalKey<NavigatorState>();
@@ -42,7 +40,8 @@ class _HomePageState extends State<HomePage> {
 
   selfInit() async {
     //get last viewed hymn
-
+    _currentHymnNumber = globalUserSettings.getLastHymnNumber();
+    print(globalUserSettings.toString());
     bool favoriteState = await checkIfFavorite(_currentHymnNumber);
     Hymn hymnData = await Hymn.create(_currentHymnNumber, globalUserSettings.getLanguage());
     setState(() {
@@ -50,17 +49,19 @@ class _HomePageState extends State<HomePage> {
       _currentHymnData = hymnData;
       _isLoading = false;
     });
-    playerStatusListener = assetsAudioPlayer.isPlaying.listen((isPlaying) {
-      if (isPlaying) {
+
+    /*
+    audioPlayerState = audioPlayer.fixedPlayer.onPlayerStateChanged.listen((AudioPlayerState status) {
+      print("player status $status");
+      if (status == AudioPlayerState.PLAYING) {
         setState(() {
           this._isPlayingAudio = true;
         });
       } else {
-        setState(() {
-          this._isPlayingAudio = false;
-        });
+        this._isPlayingAudio = false;
       }
     });
+    */
     loadHymnList();
   }
 
@@ -72,8 +73,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    assetsAudioPlayer.stop();
-    playerStatusListener.cancel();
+    if (audioPlayerInstance != null) {
+      audioPlayerInstance.stop();
+      audioPlayer.clearCache();
+    }
     super.dispose();
   }
 
@@ -124,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                       builder: (BuildContext context) => CupertinoPageScaffold(
                           backgroundColor: globalUserSettings.isNightMode() ? Colors.black87 : Theme.of(context).scaffoldBackgroundColor,
                           navigationBar: CupertinoNavigationBar(
-                            middle: Text("SID Hymnal [${globalUserSettings.getLanguage()}]"),
+                            middle: Text("SID Hymnal"),
                             trailing: index == 0
                                 ? CupertinoButton(
                                     padding: EdgeInsets.all(0),
@@ -262,10 +265,18 @@ class _HomePageState extends State<HomePage> {
                   onPressed: this._currentHymnData != null && this._currentHymnData.hasAudio()
                       ? () {
                           if (this._isPlayingAudio) {
-                            assetsAudioPlayer.stop();
+                            audioPlayerInstance.stop();
+                            setState(() {
+                              this._isPlayingAudio = false;
+                            });
+                            audioPlayer.clearCache();
                           } else {
-                            assetsAudioPlayer.stop();
-                            assetsAudioPlayer.open(this._currentHymnData.getAudioPath());
+                            audioPlayer.play(this._currentHymnData.getAudioPath()).then((player) {
+                              setState(() {
+                                this._isPlayingAudio = true;
+                              });
+                              audioPlayerInstance = player;
+                            });
                           }
                         }
                       : null,
@@ -394,7 +405,12 @@ class _HomePageState extends State<HomePage> {
     saveLastHymn(this._currentHymnNumber);
     bool favoriteState = await checkIfFavorite(this._currentHymnNumber);
     Hymn hymnData = await Hymn.create(this._currentHymnNumber, globalUserSettings.getLanguage());
-    assetsAudioPlayer.stop();
+
+
+    if (audioPlayerInstance != null) {
+      audioPlayerInstance.stop();
+      audioPlayer.clearCache();
+    }
     setState(() {
       this._isPlayingAudio = false;
       this._isFavorite = favoriteState;

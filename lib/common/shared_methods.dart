@@ -9,7 +9,6 @@ Future<UserSettings> getUserSettings() async {
   UserSettings userSettings = new UserSettings();
 
   int currentHymnNumber = await getIntDataLocally(key: "lastViewed");
-
   if (currentHymnNumber == null) {
     currentHymnNumber = 1;
   }
@@ -29,6 +28,7 @@ Future<UserSettings> getUserSettings() async {
   userSettings.setFontSize(currentFontSize);
   userSettings.setLanguage("en");
   userSettings.setNightMode(isNightMode);
+  userSettings.setLastHymnNumber(currentHymnNumber);
 
 
   return userSettings;

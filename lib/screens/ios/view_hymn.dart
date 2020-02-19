@@ -1,4 +1,4 @@
-import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -18,25 +18,15 @@ class _ViewHymnState extends State<ViewHymn> {
   bool _isFavorite = false;
   bool _isPlayingAudio = false;
   bool _isLoading = true;
-  StreamSubscription<bool> playerStatusListener;
+  AudioPlayer audioPlayerInstance;
+
   selfInit() async {
     bool favoriteState = await checkIfFavorite(widget._hymn.getNumber());
     setState(() {
       _isFavorite = favoriteState;
       _isLoading = false;
     });
-    playerStatusListener = assetsAudioPlayer.isPlaying.listen((isPlaying) {
-      print("Player is playing: $isPlaying");
-      if (isPlaying) {
-        setState(() {
-          this._isPlayingAudio = true;
-        });
-      } else {
-        setState(() {
-          this._isPlayingAudio = false;
-        });
-      }
-    });
+
   }
 
   @override
@@ -47,8 +37,10 @@ class _ViewHymnState extends State<ViewHymn> {
 
   @override
   void dispose() {
-    assetsAudioPlayer.stop();
-    playerStatusListener.cancel();
+    if (audioPlayerInstance != null) {
+      audioPlayerInstance.stop();
+      audioPlayer.clearCache();
+    }
     super.dispose();
   }
 
@@ -66,12 +58,20 @@ class _ViewHymnState extends State<ViewHymn> {
                 child: this._isPlayingAudio == true ? Icon(CupertinoIcons.pause) : Icon(CupertinoIcons.play_arrow),
                 onPressed: widget._hymn != null && widget._hymn.hasAudio()
                     ? () {
-                        if (this._isPlayingAudio) {
-                          assetsAudioPlayer.stop();
-                        } else {
-                          assetsAudioPlayer.stop();
-                          assetsAudioPlayer.open(widget._hymn.getAudioPath());
-                        }
+                          if (this._isPlayingAudio) {
+                            audioPlayerInstance.stop();
+                            setState(() {
+                              this._isPlayingAudio = false;
+                            });
+                            audioPlayer.clearCache();
+                          } else {
+                            audioPlayer.play(widget._hymn.getAudioPath()).then((player) {
+                              setState(() {
+                                this._isPlayingAudio = true;
+                              });
+                              audioPlayerInstance = player;
+                            });
+                          }
                       }
                     : null,
               ),
