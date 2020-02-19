@@ -1,18 +1,18 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sid_hymnal/common/shared_methods.dart';
 import 'package:sid_hymnal/models/user_settings.dart';
 import 'package:sid_hymnal/screens/homepage.dart';
 import 'dart:io' show Platform;
+import 'package:audioplayers/audio_cache.dart';
 
 List hymnList = new List();
-final assetsAudioPlayer = AssetsAudioPlayer();
 String appLayoutMode = "android";
 UserSettings globalUserSettings;
+final audioPlayer = AudioCache();
 
 void main() async {
-   WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   globalUserSettings = await getUserSettings();
   //appLayoutMode = "ios";
   if (Platform.isIOS) {
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
             title: 'SID Hymnal',
             debugShowCheckedModeBanner: false,
             theme: CupertinoThemeData(
-              primaryColor: Colors.indigo,
+              primaryColor: Color(0Xff2f557f),
             ),
             home: HomePage(),
           )

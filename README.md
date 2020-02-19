@@ -2,10 +2,6 @@
 
 SID Seventh-day Adventist Hymnal
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
 ## Contributing Hymns
 
 1. Hymns are located in the `assets/hymns/{language}` folder. The language folder must use ISO 639-1 Format
@@ -22,7 +18,7 @@ This project is a starting point for a Flutter application.
         "1": "Watchman Blow The Gospel Trumpet.",
         "2": "The Coming King",
         "3": "Face To Face"
-    }
+        }
     }
 ```
 

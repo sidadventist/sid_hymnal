@@ -36,4 +36,14 @@ class UserSettings {
   setNightMode(bool setting) {
     this._nightMode = setting;
   }
+
+  @override
+  String toString() {
+    return {
+      "lastHymn":this._lastHymn,
+      "language":this._language,
+      "fontSize":this._fontSize,
+      "nightMode":this._nightMode
+    }.toString();
+  }
 }
