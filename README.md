@@ -12,6 +12,7 @@ SID Seventh-day Adventist Hymnal
   <summary>
     Click for more screenshots
   </summary>
+
 ![Android](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/android_search.png)
   
 ![Android](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/android_settings.png)
@@ -27,6 +28,7 @@ SID Seventh-day Adventist Hymnal
   <summary>
     Click for more screenshots
   </summary>
+  
 ![iOS](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/ios_search.png)
   
 ![iOS](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/ios_settings.png)
