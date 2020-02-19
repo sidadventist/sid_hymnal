@@ -36,8 +36,8 @@ class Hymn {
         _srcSections.add("${parts[i]}\n\n");
       }
     }
-    String audioPath = "assets/audio/${padHymnNumber(hymnNumber)}.midi";
-    bool hasAudio = await _assetExists(audioPath);
+    String audioPath = "audio/${padHymnNumber(hymnNumber)}.midi";
+    bool hasAudio = await _assetExists("assets/$audioPath");
 
     return Hymn._(hymnNumber, _srcTitle, _srcSections, sourceMD.substring(3), hasAudio, hasAudio ? audioPath : "");
   }
