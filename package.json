@@ -1,0 +1,22 @@
+{
+  "name": "sid_hymnal",
+  "version": "1.0.0",
+  "description": "Official SID SDA Hymnal App",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "dev-device": "flutter run --enable-software-rendering",
+    "test": "./node_modules/.bin/jasmine"
+  
+  },
+  "author": "SID Tech Team",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "eslint-plugin-jasmine": "^4.1.0",
+    "jasmine": "^3.5.0",
+    "jasmine-core": "^3.5.0"
+  }
+}
