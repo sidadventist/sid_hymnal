@@ -2,6 +2,39 @@
 
 SID Seventh-day Adventist Hymnal
 
+## Screenshots
+
+SID Seventh-day Adventist Hymnal
+
+### Android
+![Android](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/android_song.png)
+<details>
+  <summary>
+    Click for more screenshots
+  </summary>
+![Android](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/android_search.png)
+  
+![Android](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/android_settings.png)
+
+![Android](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/android_dark.png)
+
+</details>
+
+
+### iOS
+![iOS](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/ios_song.png)
+<details>
+  <summary>
+    Click for more screenshots
+  </summary>
+![iOS](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/ios_search.png)
+  
+![iOS](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/ios_settings.png)
+
+![iOS](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/ios_dark.png)
+
+</details>
+
 ## Contributing Hymns
 
 1. Hymns are located in the `assets/hymns/{language}` folder. The language folder must use ISO 639-1 Format
