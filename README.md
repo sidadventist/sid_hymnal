@@ -77,4 +77,9 @@ SID Seventh-day Adventist Hymnal
   - The word "Chorus" must be immediately followed by a new line `\n`
   - The last line of the Chorus must be followed by 2 new lines (`\n\n`)
 
+    ### General 
+    a. No 3 or more consecutive new lines (`\n\n\n`)
+    b. Neither verses nor choruses should start with white-space or indentation
+
+
 
