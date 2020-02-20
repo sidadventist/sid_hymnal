@@ -77,9 +77,8 @@ describe('SID_Hymnal', () => {
 
 
         folderContents.forEach(file => {
-            describe(`Language folder (${file})`, () => {
+            describe(`(${file})`, () => {
                 const subFolderContents = fs.readdirSync(`${assetsDirPath}/hymns/${file}`);
-
                 //folder must contain a "meta.json" file
                 it(`Must contain a "meta.json"  (CASE-SENSITIVE) file`, () => {
                     expect(subFolderContents).toContain("meta.json");
@@ -100,27 +99,23 @@ describe('SID_Hymnal', () => {
                     const rawdata = fs.readFileSync(`${assetsDirPath}/hymns/${file}/meta.json`);
                     const metaData = JSON.parse(rawdata);
                     expect(metaData).toBeDefined();
-                    expect(metaData['songs'].length).toEqual(300);
+                    expect(Object.keys(metaData['songs']).length).toEqual(300);
                 });
-
-                const lyricFileList = [];
                 subFolderContents.forEach(subfile => {
                     //files must follow ###.md format
-                    it(`MD file ${subfile} must be named in  ###.md format`, () => {
+                    it(`Markdown file ${subfile} must be named in  ###.md format`, () => {
                         if (!(subfile.toLowerCase() == '.ds_store') && !(subfile.toLowerCase() == 'thumbs.db') && !(subfile.toLowerCase() == 'meta.json')) {
                             regex = new RegExp(/\b\d\d\d.md\b/gi);
                             const res = regex.test(subfile);
                             if (!res) {
                                 console.error(`${subfile} is not named according to the standard`);
-                            } else {
-                                lyricFileList.push(file);
-                            }
+                            } 
                             expect(res).toEqual(true);
                         }
                     });
 
                     if (!(subfile.toLowerCase() == '.ds_store') && !(subfile.toLowerCase() == 'thumbs.db') && !(subfile.toLowerCase() == 'meta.json')) {
-                        describe(`MD File (${subfile})`, () => {
+                        describe(`Markdown file (${subfile})`, () => {
                             const rawdata = fs.readFileSync(`${assetsDirPath}/hymns/${file}/${subfile}`).toString();
                             const windowsNewLines = new RegExp("\r\n");
 
@@ -131,17 +126,31 @@ describe('SID_Hymnal', () => {
                                 expect(fileLines[0].substring(0, 3)).toEqual("## ");
                             });
 
-                            it(`Must must not include numbers. Numbers will be determined by the filename`, () => {
+                            it(`Must must not include numbers. Song Numbers will be determined by the filename`, () => {
                                 regex = new RegExp(/\d/gi);
                                 const res = regex.test(fileLines[0]);
-                                expect(rex).toEqual(false);
+                                expect(res).toEqual(false);
                             });
 
                             // TODO: write test to ban characters after /\nChorus/gi
 
-                            //{character}\nchorus\n should fail. chorus must be preceded by 2 \n\n
+                            it(`Must have a blank line before Chorus`, () => {
+                                regex = new RegExp(/.\nchorus\n/gi);
+                                const res = regex.test(rawdata);
+                                expect(res).toEqual(false);
+                            });
 
-                            //fail \n\n\n (no double lines)
+                            it(`Must must not have any characters after "\\nChorus"<--No characters allowed after this. Use (newline)Chorus(newline).`, () => {
+                                regex = new RegExp(/\nchorus./gi);
+                                const res = regex.test(rawdata);
+                                expect(res).toEqual(false);
+                            });
+
+                            it(`Must must not double line spacing`, () => {
+                                regex = new RegExp(/\n\n\n/gi);
+                                const res = regex.test(rawdata);
+                                expect(res).toEqual(false);
+                            });
 
                             describe(`Song title ${fileLines[0]}`, () => {
                                 it(`Must immediately be followed by a new empty line (NO SPACE/CHARACTERS) before the verse`, () => {
@@ -150,6 +159,19 @@ describe('SID_Hymnal', () => {
                             });
                         });
                     }
+                });
+                it(`Must contain 300 lyric markdown files`, () => {
+                    const lyricFileList = [];
+                    subFolderContents.forEach(subfile => {
+                        if (!(subfile.toLowerCase() == '.ds_store') && !(subfile.toLowerCase() == 'thumbs.db') && !(subfile.toLowerCase() == 'meta.json')) {
+                            regex = new RegExp(/\b\d\d\d.md\b/gi);
+                            const res = regex.test(subfile);
+                            if (res) {
+                                lyricFileList.push(file);
+                            }
+                        }
+                    });
+                    expect(lyricFileList.length).toEqual(300);
                 });
             });
         });
