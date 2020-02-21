@@ -7,6 +7,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:sid_hymnal/common/shared_methods.dart';
 import 'package:sid_hymnal/common/shared_prefs.dart';
 import 'package:sid_hymnal/models/hymn.dart';
+import 'package:sid_hymnal/models/hymnal.dart';
 import 'package:sid_hymnal/screens/android/favorites_page.dart';
 import 'package:sid_hymnal/screens/android/search_page.dart';
 import 'package:sid_hymnal/screens/core/hymn_search.dart';
@@ -28,6 +29,9 @@ class _HomePageState extends State<HomePage> {
   bool _isPlayingAudio = false;
   int _currentHymnNumber = 1;
   Hymn _currentHymnData;
+  Hymn _currentHymn;
+  Map<int, Hymn> _pages = {};
+  PageController _controller;
   int currentIndex = 0;
   AudioPlayer audioPlayerInstance;
   static final scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -41,12 +45,28 @@ class _HomePageState extends State<HomePage> {
   selfInit() async {
     //get last viewed hymn
     _currentHymnNumber = globalUserSettings.getLastHymnNumber();
-    print(globalUserSettings.toString());
+
+    _controller = PageController(
+      initialPage: _currentHymnNumber - 1,
+    );
+
+    _currentHymn = await Hymn.create(_currentHymnNumber, globalUserSettings.getLanguage());
+
+    _pages.putIfAbsent(_currentHymnNumber - 1, () => _currentHymn);
+
+    Hymn nextHymn = await Hymn.create(_currentHymn.getNumber() + 1, globalUserSettings.getLanguage());
+
+    _pages.putIfAbsent(nextHymn.getNumber() - 1, () => nextHymn);
+
+    Hymn prevHymn = await Hymn.create(_currentHymn.getNumber() - 1, globalUserSettings.getLanguage());
+
+    _pages.putIfAbsent(prevHymn.getNumber() - 1, () => prevHymn);
+
     bool favoriteState = await checkIfFavorite(_currentHymnNumber);
-    Hymn hymnData = await Hymn.create(_currentHymnNumber, globalUserSettings.getLanguage());
+
     setState(() {
       _isFavorite = favoriteState;
-      _currentHymnData = hymnData;
+      _currentHymnData = _currentHymn;
       _isLoading = false;
     });
 
@@ -332,25 +352,51 @@ class _HomePageState extends State<HomePage> {
             ),
             backgroundColor: globalUserSettings.isNightMode() ? Colors.black87 : Theme.of(context).scaffoldBackgroundColor,
             drawer: Drawer(
-                child: new ListView(children: <Widget>[
+              child: ListView.builder(
+                  itemCount: globalLanguageList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Hymnal hymnal = globalLanguageList[globalLanguageList.keys.toList()[index]];
+                    return ListTile(
+                      title: Text(hymnal.title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      subtitle: Text(hymnal.language, style: TextStyle(color: Color(0Xff2f557f))),
+                      onTap: (){
+                        setState(() {
+                          globalUserSettings.setLanguage(hymnal.languageCode);
+                        });
+                      },
+                    );
+                  }),
+              /*new ListView(children: <Widget>[
               ListTile(
                 title: Text("SID Hymnal", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 subtitle: Text("English", style: TextStyle(color: Color(0Xff2f557f))),
               ),
-            ])),
+            ])*/
+            ),
             body: _isLoading == true
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : Markdown(
-                    data: this._currentHymnData.outputMarkdown(),
-                    styleSheet: MarkdownStyleSheet(
-                      h2: TextStyle(
-                          color: globalUserSettings.isNightMode() ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
-                      p: TextStyle(
-                          color: globalUserSettings.isNightMode() ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize()).toDouble()),
-                      blockSpacing: globalUserSettings.getFontSize().toDouble(),
-                    ),
+                : PageView.builder(
+                    controller: _controller,
+                    onPageChanged: (int index) async {
+                      if (this._isPlayingAudio) {
+                        audioPlayerInstance.stop();
+                        setState(() {
+                          this._isPlayingAudio = false;
+                        });
+                      }
+                      bool favoriteStatus = await checkIfFavorite(index + 1);
+                      setState(() {
+                        _isFavorite = favoriteStatus;
+                        this._currentHymn = _pages[index];
+                      });
+                      saveLastHymn(index + 1);
+                      lazyLoad(index);
+                    },
+                    itemBuilder: (BuildContext context, int index) {
+                      return generatePage(_pages[index]);
+                    },
                   ),
             floatingActionButton: FloatingActionButton(
               backgroundColor: Color(0Xff2f557f),
@@ -401,33 +447,61 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Markdown generatePage(Hymn hymn) {
+    return Markdown(
+      data: hymn.outputMarkdown(),
+      styleSheet: MarkdownStyleSheet(
+        h2: TextStyle(color: globalUserSettings.isNightMode() ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
+        p: TextStyle(color: globalUserSettings.isNightMode() ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize()).toDouble()),
+        blockSpacing: globalUserSettings.getFontSize().toDouble(),
+      ),
+    );
+  }
+
   renderHymn() async {
     saveLastHymn(this._currentHymnNumber);
     bool favoriteState = await checkIfFavorite(this._currentHymnNumber);
-    Hymn hymnData = await Hymn.create(this._currentHymnNumber, globalUserSettings.getLanguage());
-
+    // Hymn hymnData = await Hymn.create(this._currentHymnNumber, globalUserSettings.getLanguage());
 
     if (audioPlayerInstance != null) {
       audioPlayerInstance.stop();
       audioPlayer.clearCache();
     }
+    if (!_pages.containsKey(this._currentHymnNumber - 1) && this._currentHymnNumber < hymnList.length) {
+      Hymn hymn = await Hymn.create((this._currentHymnNumber), globalUserSettings.getLanguage());
+      _pages.putIfAbsent((this._currentHymnNumber - 1), () => hymn);
+    }
     setState(() {
       this._isPlayingAudio = false;
       this._isFavorite = favoriteState;
-      this._currentHymnData = hymnData;
+      _controller.jumpToPage(this._currentHymnNumber - 1);
     });
   }
 
-  toggleNightMode() {
-    setState(() {
-      globalUserSettings.setNightMode(!globalUserSettings.isNightMode());
-    });
-    saveNightModeState(globalUserSettings.isNightMode());
+  void lazyLoad(int hymnNumber) async {
+    bool pageAdded = false;
+    // next page
+    if (!_pages.containsKey(hymnNumber + 1) && hymnNumber < hymnList.length) {
+      Hymn hymn = await Hymn.create((hymnNumber + 2), globalUserSettings.getLanguage());
+
+      _pages.putIfAbsent((hymnNumber + 1), () => hymn);
+      pageAdded = true;
+    }
+    //prev page
+    if (!_pages.containsKey(hymnNumber - 1) && hymnNumber > 0) {
+      Hymn hymn = await Hymn.create((hymnNumber), globalUserSettings.getLanguage());
+      _pages.putIfAbsent((hymnNumber - 1), () => hymn);
+      pageAdded = true;
+    }
+
+    if (pageAdded) {
+      setState(() {});
+    }
   }
 
   loadHymnList() async {
     String rawMeta = await rootBundle.loadString('assets/hymns/${globalUserSettings.getLanguage()}/meta.json');
-    List tmpList = new List();
+    List<String> tmpList = new List();
 
     Map<dynamic, dynamic> songList = json.decode(rawMeta)['songs'];
     for (int i = 1; i < (songList.keys.length + 1); i++) {
@@ -439,5 +513,12 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       hymnList = tmpList;
     });
+  }
+
+  toggleNightMode() {
+    setState(() {
+      globalUserSettings.setNightMode(!globalUserSettings.isNightMode());
+    });
+    saveNightModeState(globalUserSettings.isNightMode());
   }
 }

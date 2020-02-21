@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sid_hymnal/common/shared_methods.dart';
 import 'package:sid_hymnal/main.dart';
-import 'package:sid_hymnal/models/hymn.dart';
 import 'package:sid_hymnal/screens/ios/view_hymn.dart';
 
 import 'favorites_menu.dart';
@@ -57,10 +56,10 @@ class _MyFavoritesState extends State<MyFavorites> {
   }
 
   launchIOSHymnView(int hymnNumber) async {
-    Hymn hymnData = await Hymn.create(hymnNumber, globalUserSettings.getLanguage());
+    // Hymn hymnData = await Hymn.create(hymnNumber, globalUserSettings.getLanguage());
     Navigator.of(context).push(
       new CupertinoPageRoute<bool>(
-        builder: (BuildContext context) => new ViewHymn(hymnData),
+        builder: (BuildContext context) => new ViewHymn(hymnNumber),
       ),
     );
   }
