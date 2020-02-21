@@ -4,7 +4,7 @@ SID Seventh-day Adventist Hymnal
 
 ## Screenshots
 
-![Hymn App](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/hymn_app.jpg)
+![hymn_app](https://user-images.githubusercontent.com/47924887/75007990-6d53a700-547f-11ea-8462-c587aeb475f7.jpg)
 <details>
   <summary>
     Click for more screenshots
