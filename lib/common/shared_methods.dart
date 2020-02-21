@@ -1,9 +1,31 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:share/share.dart';
 import 'package:sid_hymnal/common/shared_prefs.dart';
+import 'package:sid_hymnal/models/hymnal.dart';
 import 'package:sid_hymnal/models/user_settings.dart';
+
+Future<Map<String, Hymnal>> getAvailableLanguages() async {
+  Map<String, Hymnal> hymnals = {};
+
+    hymnals.putIfAbsent("en", ()=> Hymnal("SID Hymnal", "English", "en"));
+    String rawList = await rootBundle.loadString('assets/translations.json');
+    List translations = json.decode(rawList);
+
+    String rawSupportedLanguages = await rootBundle.loadString('assets/iso_639_1.json');
+    Map supportedLanguages = json.decode(rawSupportedLanguages);
+
+    translations.forEach((translation){
+      if(supportedLanguages.containsKey(translation)){
+          hymnals.putIfAbsent(translation, ()=> new Hymnal("SID Hymnal", supportedLanguages[translation], translation));
+      }
+    });
+
+    return hymnals;
+
+}
 
 Future<UserSettings> getUserSettings() async {
   UserSettings userSettings = new UserSettings();

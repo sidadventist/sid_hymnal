@@ -7,8 +7,8 @@ import 'package:sid_hymnal/models/hymn.dart';
 import '../../main.dart';
 
 class ViewHymn extends StatefulWidget {
-  final Hymn _hymn;
-  ViewHymn(this._hymn);
+  final int _hymnNumber;
+  ViewHymn(this._hymnNumber);
 
   @override
   _ViewHymnState createState() => _ViewHymnState();
@@ -18,15 +18,29 @@ class _ViewHymnState extends State<ViewHymn> {
   bool _isFavorite = false;
   bool _isPlayingAudio = false;
   bool _isLoading = true;
+  Hymn _currentHymn;
+  Map<int, Hymn> _pages = {};
   AudioPlayer audioPlayerInstance;
 
   selfInit() async {
-    bool favoriteState = await checkIfFavorite(widget._hymn.getNumber());
+    _currentHymn = await Hymn.create(widget._hymnNumber, globalUserSettings.getLanguage());
+
+    bool favoriteState = await checkIfFavorite(_currentHymn.getNumber());
+
+    _pages.putIfAbsent(widget._hymnNumber - 1, () => _currentHymn);
+
+    Hymn nextHymn = await Hymn.create(_currentHymn.getNumber() + 1, globalUserSettings.getLanguage());
+
+    _pages.putIfAbsent(nextHymn.getNumber() - 1, () => nextHymn);
+
+    Hymn prevHymn = await Hymn.create(_currentHymn.getNumber() - 1, globalUserSettings.getLanguage());
+
+    _pages.putIfAbsent(prevHymn.getNumber() - 1, () => prevHymn);
+
     setState(() {
       _isFavorite = favoriteState;
       _isLoading = false;
     });
-
   }
 
   @override
@@ -56,22 +70,22 @@ class _ViewHymnState extends State<ViewHymn> {
               CupertinoButton(
                 padding: EdgeInsets.all(0),
                 child: this._isPlayingAudio == true ? Icon(CupertinoIcons.pause) : Icon(CupertinoIcons.play_arrow),
-                onPressed: widget._hymn != null && widget._hymn.hasAudio()
+                onPressed: _currentHymn != null && _currentHymn.hasAudio()
                     ? () {
-                          if (this._isPlayingAudio) {
-                            audioPlayerInstance.stop();
+                        if (this._isPlayingAudio) {
+                          audioPlayerInstance.stop();
+                          setState(() {
+                            this._isPlayingAudio = false;
+                          });
+                          audioPlayer.clearCache();
+                        } else {
+                          audioPlayer.play(_currentHymn.getAudioPath()).then((player) {
                             setState(() {
-                              this._isPlayingAudio = false;
+                              this._isPlayingAudio = true;
                             });
-                            audioPlayer.clearCache();
-                          } else {
-                            audioPlayer.play(widget._hymn.getAudioPath()).then((player) {
-                              setState(() {
-                                this._isPlayingAudio = true;
-                              });
-                              audioPlayerInstance = player;
-                            });
-                          }
+                            audioPlayerInstance = player;
+                          });
+                        }
                       }
                     : null,
               ),
@@ -80,11 +94,11 @@ class _ViewHymnState extends State<ViewHymn> {
                 child: Icon(_isFavorite ? CupertinoIcons.heart_solid : CupertinoIcons.heart),
                 onPressed: () async {
                   if (_isFavorite) {
-                    await unmarkAsFavorite(widget._hymn.getNumber());
+                    await unmarkAsFavorite(_currentHymn.getNumber());
                   } else {
-                    await markAsFavorite(widget._hymn.getNumber());
+                    await markAsFavorite(_currentHymn.getNumber());
                   }
-                  bool favoriteState = await checkIfFavorite(widget._hymn.getNumber());
+                  bool favoriteState = await checkIfFavorite(_currentHymn.getNumber());
                   setState(() {
                     _isFavorite = favoriteState;
                   });
@@ -103,7 +117,7 @@ class _ViewHymnState extends State<ViewHymn> {
                 padding: EdgeInsets.all(0),
                 child: Icon(IconData(0xf4d2, fontFamily: CupertinoIcons.iconFont, fontPackage: CupertinoIcons.iconFontPackage)),
                 onPressed: () {
-                  // shareSong(widget._hymn.toString());
+                  // shareSong(_currentHymn.toString());
                 },
               ),
             ],
@@ -111,16 +125,61 @@ class _ViewHymnState extends State<ViewHymn> {
       child: _isLoading == true
           ? Center(child: CupertinoActivityIndicator())
           : SafeArea(
-              child: Markdown(
-                data: this.widget._hymn.outputMarkdown(),
-                styleSheet: MarkdownStyleSheet(
-                  h2: TextStyle(
-                      color: globalUserSettings.isNightMode() ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
-                  p: TextStyle(color: globalUserSettings.isNightMode() ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize()).toDouble()),
-                  blockSpacing: globalUserSettings.getFontSize().toDouble(),
+              child: PageView.builder(
+                controller: PageController(
+                  initialPage: this._currentHymn.getNumber() - 1,
                 ),
+                onPageChanged: (int index) async {
+                  if (this._isPlayingAudio) {
+                    audioPlayerInstance.stop();
+                    setState(() {
+                      this._isPlayingAudio = false;
+                    });
+                  }
+                  bool favoriteStatus = await checkIfFavorite(index + 1);
+                  setState(() {
+                    _isFavorite = favoriteStatus;
+                    this._currentHymn = _pages[index];
+                  });
+                  lazyLoad(index);
+                },
+                itemBuilder: (BuildContext context, int index) {
+                  return generatePage(_pages[index]);
+                },
               ),
             ),
+    );
+  }
+
+  void lazyLoad(int hymnNumber) async {
+    bool pageAdded = false;
+    // next page
+    if (!_pages.containsKey(hymnNumber + 1) && hymnNumber < hymnList.length) {
+      Hymn hymn = await Hymn.create((hymnNumber + 2), globalUserSettings.getLanguage());
+
+      _pages.putIfAbsent((hymnNumber + 1), () => hymn);
+      pageAdded = true;
+    }
+    //prev page
+    if (!_pages.containsKey(hymnNumber - 1) && hymnNumber > 0) {
+      Hymn hymn = await Hymn.create((hymnNumber), globalUserSettings.getLanguage());
+      _pages.putIfAbsent((hymnNumber - 1), () => hymn);
+      pageAdded = true;
+    }
+
+    if (pageAdded) {
+      setState(() {});
+    }
+  }
+
+  Markdown generatePage(Hymn hymn) {
+    return Markdown(
+      data: hymn.outputMarkdown(),
+      styleSheet: MarkdownStyleSheet(
+        h2: TextStyle(color: globalUserSettings.isNightMode() ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
+        p: TextStyle(color: globalUserSettings.isNightMode() ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize()).toDouble()),
+        blockSpacing: globalUserSettings.getFontSize().toDouble(),
+      ),
     );
   }
 
