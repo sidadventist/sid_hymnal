@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sid_hymnal/main.dart';
-import 'package:sid_hymnal/models/hymn.dart';
 import 'package:sid_hymnal/screens/ios/view_hymn.dart';
 
 class HymnSearch extends StatefulWidget {
@@ -101,10 +100,10 @@ class _HymnSearchState extends State<HymnSearch> {
   }
 
   launchIOSHymnView(int hymnNumber) async {
-    Hymn hymnData = await Hymn.create(hymnNumber, globalUserSettings.getLanguage());
+    // Hymn hymnData = await Hymn.create(hymnNumber, globalUserSettings.getLanguage());
     Navigator.of(context).push(
       new CupertinoPageRoute<bool>(
-        builder: (BuildContext context) => new ViewHymn(hymnData),
+        builder: (BuildContext context) => new ViewHymn(hymnNumber),
       ),
     );
   }

@@ -6,7 +6,10 @@ import 'package:sid_hymnal/screens/homepage.dart';
 import 'dart:io' show Platform;
 import 'package:audioplayers/audio_cache.dart';
 
-List hymnList = new List();
+import 'models/hymnal.dart';
+
+List<String> hymnList = new List();
+Map<String, Hymnal> globalLanguageList = {};
 String appLayoutMode = "android";
 UserSettings globalUserSettings;
 final audioPlayer = AudioCache();
@@ -14,7 +17,8 @@ final audioPlayer = AudioCache();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   globalUserSettings = await getUserSettings();
-  //appLayoutMode = "ios";
+  globalLanguageList = await getAvailableLanguages();
+  // appLayoutMode = "ios";
   if (Platform.isIOS) {
     appLayoutMode = "ios";
   }
