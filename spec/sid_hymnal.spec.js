@@ -122,6 +122,10 @@ describe('SID_Hymnal', () => {
                             rawdata.replace(windowsNewLines, new RegExp("\n"));
                             const fileLines = rawdata.split(new RegExp("\n"));
 
+                            it(`Must contain at least 3 lines`, () => {
+                                expect(fileLines.length).toBeGreaterThan(2);
+                            });
+
                             it(`Must begin with level 2 heading (## Your_Song_Title)`, () => {
                                 expect(fileLines[0].substring(0, 3)).toEqual("## ");
                             });
