@@ -18,7 +18,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   globalUserSettings = await getUserSettings();
   globalLanguageList = await getAvailableLanguages();
-  // appLayoutMode = "ios";
+  //appLayoutMode = "ios";
   if (Platform.isIOS) {
     appLayoutMode = "ios";
   }

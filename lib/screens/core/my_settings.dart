@@ -124,7 +124,7 @@ class _MySettingsState extends State<MySettings> {
             title: Text("Copyright"),
             subtitle: Text("View copyright information"),
             onTap: () async {
-              String url = "https://github.com/sidadventist/sid_hymnal/copyright.md";
+              String url = "https://github.com/sidadventist/sid_hymnal/blob/master/COPYRIGHT.md";
               if (await canLaunch(url)) {
                 await launch(url);
               } else {
@@ -138,7 +138,7 @@ class _MySettingsState extends State<MySettings> {
             title: Text("Privacy Policy"),
             subtitle: Text("View the privacy policy"),
             onTap: () async {
-              String url = "https://github.com/sidadventist/sid_hymnal/privacy.md";
+              String url = "https://github.com/sidadventist/sid_hymnal/blob/master/PRIVACY.md";
               if (await canLaunch(url)) {
                 await launch(url);
               } else {
@@ -174,7 +174,7 @@ class _MySettingsState extends State<MySettings> {
             title: Text("Contribute"),
             subtitle: Text("Join the SID Hymnal development"),
             onTap: () async {
-              String url = "https://github.com/sidadventist/sid_hymnal/contributing.md";
+              String url = "https://github.com/sidadventist/sid_hymnal/blob/master/CONTRIBUTING.md";
               if (await canLaunch(url)) {
                 await launch(url);
               } else {
