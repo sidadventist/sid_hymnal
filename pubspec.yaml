@@ -15,8 +15,6 @@ dependencies:
 
   flutter_markdown: ^0.3.3
 
-#  assets_audio_player: ^1.2.3
-
   audioplayers: ^0.14.0
 
   cupertino_icons: ^0.1.3
@@ -26,6 +24,12 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.7.4
+# run this command:
+# -------------
+# "flutter pub run flutter_launcher_icons:main" 
+# -------------
+# to generate icons
 
 flutter:
 
@@ -36,5 +40,9 @@ flutter:
     - assets/audio/
     - assets/hymns/
     - assets/hymns/en/
-
+  
+flutter_icons:
+  android: "launcher_icon" 
+  ios: true
+  image_path: "assets/icon.png"
   
