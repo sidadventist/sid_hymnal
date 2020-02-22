@@ -44,25 +44,31 @@ class _HomePageState extends State<HomePage> {
 
   selfInit() async {
     //get last viewed hymn
-    _currentHymnNumber = globalUserSettings.getLastHymnNumber();
 
-    _controller = PageController(
-      initialPage: _currentHymnNumber - 1,
-    );
+    await loadHymnList();
+
+    _currentHymnNumber = globalUserSettings.getLastHymnNumber();
 
     _currentHymn = await Hymn.create(_currentHymnNumber, globalUserSettings.getLanguage());
 
     _pages.putIfAbsent(_currentHymnNumber - 1, () => _currentHymn);
 
-    Hymn nextHymn = await Hymn.create(_currentHymn.getNumber() + 1, globalUserSettings.getLanguage());
+    if (_currentHymn.getNumber() < hymnList.length){
+      Hymn nextHymn = await Hymn.create(_currentHymn.getNumber() + 1, globalUserSettings.getLanguage());
 
-    _pages.putIfAbsent(nextHymn.getNumber() - 1, () => nextHymn);
+      _pages.putIfAbsent(nextHymn.getNumber() - 1, () => nextHymn);
+    }
 
-    Hymn prevHymn = await Hymn.create(_currentHymn.getNumber() - 1, globalUserSettings.getLanguage());
+    if (_currentHymn.getNumber() > 1) {
+      Hymn prevHymn = await Hymn.create(_currentHymn.getNumber() - 1, globalUserSettings.getLanguage());
 
-    _pages.putIfAbsent(prevHymn.getNumber() - 1, () => prevHymn);
-
+      _pages.putIfAbsent(prevHymn.getNumber() - 1, () => prevHymn);
+    }
     bool favoriteState = await checkIfFavorite(_currentHymnNumber);
+
+    _controller = PageController(
+      initialPage: _currentHymnNumber - 1,
+    );
 
     setState(() {
       _isFavorite = favoriteState;
@@ -70,19 +76,7 @@ class _HomePageState extends State<HomePage> {
       _isLoading = false;
     });
 
-    /*
-    audioPlayerState = audioPlayer.fixedPlayer.onPlayerStateChanged.listen((AudioPlayerState status) {
-      print("player status $status");
-      if (status == AudioPlayerState.PLAYING) {
-        setState(() {
-          this._isPlayingAudio = true;
-        });
-      } else {
-        this._isPlayingAudio = false;
-      }
-    });
-    */
-    loadHymnList();
+    renderHymn();
   }
 
   @override
@@ -359,7 +353,7 @@ class _HomePageState extends State<HomePage> {
                     return ListTile(
                       title: Text(hymnal.title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                       subtitle: Text(hymnal.language, style: TextStyle(color: Color(0Xff2f557f))),
-                      onTap: (){
+                      onTap: () {
                         setState(() {
                           globalUserSettings.setLanguage(hymnal.languageCode);
                         });
@@ -461,7 +455,6 @@ class _HomePageState extends State<HomePage> {
   renderHymn() async {
     saveLastHymn(this._currentHymnNumber);
     bool favoriteState = await checkIfFavorite(this._currentHymnNumber);
-    // Hymn hymnData = await Hymn.create(this._currentHymnNumber, globalUserSettings.getLanguage());
 
     if (audioPlayerInstance != null) {
       audioPlayerInstance.stop();
@@ -472,10 +465,12 @@ class _HomePageState extends State<HomePage> {
       _pages.putIfAbsent((this._currentHymnNumber - 1), () => hymn);
     }
     setState(() {
+      this._currentHymnData = this._pages[_currentHymnNumber - 1];
       this._isPlayingAudio = false;
       this._isFavorite = favoriteState;
-      _controller.jumpToPage(this._currentHymnNumber - 1);
     });
+
+    _controller.jumpToPage(this._currentHymnNumber - 1);
   }
 
   void lazyLoad(int hymnNumber) async {
