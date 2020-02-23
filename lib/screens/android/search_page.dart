@@ -10,7 +10,7 @@ class SearchPage extends StatelessWidget {
       appBar: AppBar(
               title: Text("Search"),
       ),
-      body: HymnSearch(language),
+      body: HymnSearch(),
     );
   }
 }

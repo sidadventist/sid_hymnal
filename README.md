@@ -21,7 +21,7 @@ SID Seventh-day Adventist Hymnal
 
 ## Contributing
 
-Please read [CONTRIBUTING.md]()
+Please read [CONTRIBUTING.md](https://github.com/sidadventist/sid_hymnal/blob/master/CONTRIBUTING.md)
 
 
 
