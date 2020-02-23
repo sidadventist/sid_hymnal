@@ -5,6 +5,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:sid_hymnal/common/shared_methods.dart';
 import 'package:sid_hymnal/models/hymn.dart';
 import '../../main.dart';
+import 'bottom_picker.dart';
 
 class ViewHymn extends StatefulWidget {
   final int _hymnNumber;
@@ -28,7 +29,6 @@ class _ViewHymnState extends State<ViewHymn> {
     bool favoriteState = await checkIfFavorite(_currentHymn.getNumber());
 
     _pages.putIfAbsent(widget._hymnNumber - 1, () => _currentHymn);
-
 
     if (_currentHymn.getNumber() < hymnList.length) {
       Hymn nextHymn = await Hymn.create(_currentHymn.getNumber() + 1, globalUserSettings.getLanguage());
@@ -119,12 +119,39 @@ class _ViewHymnState extends State<ViewHymn> {
               ),
               */
               CupertinoButton(
-                padding: EdgeInsets.all(0),
-                child: Icon(IconData(0xf4d2, fontFamily: CupertinoIcons.iconFont, fontPackage: CupertinoIcons.iconFontPackage)),
-                onPressed: () {
-                  // shareSong(_currentHymn.toString());
-                },
-              ),
+                  padding: EdgeInsets.all(0),
+                  child: Icon(IconData(0xf4d2, fontFamily: CupertinoIcons.iconFont, fontPackage: CupertinoIcons.iconFontPackage)),
+                  onPressed: () async {
+                    int currentLanguage = globalLanguageList.keys.toList().indexOf(globalUserSettings.getLanguage());
+                    final FixedExtentScrollController scrollController = FixedExtentScrollController(initialItem: currentLanguage);
+
+                    await showCupertinoModalPopup<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return BottomPicker(
+                          child: CupertinoPicker(
+                            scrollController: scrollController,
+                            itemExtent: kPickerItemHeight,
+                            backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
+                            onSelectedItemChanged: (int index) {
+                              globalUserSettings.setLanguage(globalLanguageList[globalLanguageList.keys.toList()[index]].languageCode);
+                            },
+                            children: List<Widget>.generate(globalLanguageList.length, (int index) {
+                              return Center(
+                                child: Text(globalLanguageList[globalLanguageList.keys.toList()[index]].language),
+                              );
+                            }),
+                          ),
+                        );
+                      },
+                    );
+
+                    int currentHymnNumber = this._currentHymn.getNumber();
+                    _pages.clear();
+                    setState(() {
+                      lazyLoad(currentHymnNumber);
+                    });
+                  }),
             ],
           )),
       child: _isLoading == true
@@ -135,18 +162,8 @@ class _ViewHymnState extends State<ViewHymn> {
                   initialPage: this._currentHymn.getNumber() - 1,
                 ),
                 onPageChanged: (int index) async {
-                  if (this._isPlayingAudio) {
-                    audioPlayerInstance.stop();
-                    setState(() {
-                      this._isPlayingAudio = false;
-                    });
-                  }
-                  bool favoriteStatus = await checkIfFavorite(index + 1);
-                  setState(() {
-                    _isFavorite = favoriteStatus;
-                    this._currentHymn = _pages[index];
-                  });
-                  lazyLoad(index);
+                  print(index);
+                  renderHymn(index + 1);
                 },
                 itemBuilder: (BuildContext context, int index) {
                   return generatePage(_pages[index]);
@@ -156,20 +173,23 @@ class _ViewHymnState extends State<ViewHymn> {
     );
   }
 
-  void lazyLoad(int hymnNumber) async {
+  Future<void> lazyLoad(int hymnNumber) async {
     bool pageAdded = false;
-    // next page
-    if (!_pages.containsKey(hymnNumber + 1) && hymnNumber < hymnList.length) {
-      Hymn hymn = await Hymn.create((hymnNumber + 2), globalUserSettings.getLanguage());
 
-      _pages.putIfAbsent((hymnNumber + 1), () => hymn);
-      pageAdded = true;
+    _currentHymn = await Hymn.create(hymnNumber, globalUserSettings.getLanguage());
+
+    _pages.putIfAbsent(hymnNumber - 1, () => _currentHymn);
+
+    if (_currentHymn.getNumber() < hymnList.length) {
+      Hymn nextHymn = await Hymn.create(_currentHymn.getNumber() + 1, globalUserSettings.getLanguage());
+
+      _pages.putIfAbsent(nextHymn.getNumber() - 1, () => nextHymn);
     }
-    //prev page
-    if (!_pages.containsKey(hymnNumber - 1) && hymnNumber > 0) {
-      Hymn hymn = await Hymn.create((hymnNumber), globalUserSettings.getLanguage());
-      _pages.putIfAbsent((hymnNumber - 1), () => hymn);
-      pageAdded = true;
+
+    if (_currentHymn.getNumber() > 1) {
+      Hymn prevHymn = await Hymn.create(_currentHymn.getNumber() - 1, globalUserSettings.getLanguage());
+
+      _pages.putIfAbsent(prevHymn.getNumber() - 1, () => prevHymn);
     }
 
     if (pageAdded) {
@@ -186,6 +206,21 @@ class _ViewHymnState extends State<ViewHymn> {
         blockSpacing: globalUserSettings.getFontSize().toDouble(),
       ),
     );
+  }
+
+  renderHymn(int hymnNumber) async {
+    await lazyLoad(hymnNumber);
+    if (this._isPlayingAudio) {
+      audioPlayerInstance.stop();
+      setState(() {
+        this._isPlayingAudio = false;
+      });
+    }
+    bool favoriteStatus = await checkIfFavorite(hymnNumber);
+    setState(() {
+      _isFavorite = favoriteStatus;
+      this._currentHymn = _pages[hymnNumber - 1];
+    });
   }
 
   toggleNightMode() {
