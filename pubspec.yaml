@@ -40,6 +40,7 @@ flutter:
     - assets/audio/
     - assets/hymns/
     - assets/hymns/en/
+    - assets/hymns/nr/
   
 flutter_icons:
   android: "launcher_icon" 

@@ -16,6 +16,7 @@
   "devDependencies": {
     "eslint-plugin-jasmine": "^4.1.0",
     "jasmine": "^3.5.0",
-    "jasmine-core": "^3.5.0"
+    "jasmine-core": "^3.5.0",
+    "yaml": "^1.7.2"
   }
 }

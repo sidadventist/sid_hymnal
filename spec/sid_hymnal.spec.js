@@ -1,5 +1,11 @@
 const fs = require('fs');
 const path = require('path');
+const YAML = require('yaml');
+const pubFile = fs.readFileSync(`${__dirname}/../pubspec.yaml`, 'utf8');
+const pubspecContents = YAML.parse(pubFile);
+const appAssets = pubspecContents['flutter']['assets'];
+const rawLanguagesListFile = fs.readFileSync(`${__dirname}/../assets/translations.json`);
+const languagesListFile = JSON.parse(rawLanguagesListFile);
 
 describe('SID_Hymnal', () => {
     const assetDirectories = [];
@@ -84,6 +90,16 @@ describe('SID_Hymnal', () => {
                     expect(subFolderContents).toContain("meta.json");
                 });
 
+                it(`Must be registered under assets in the pubspec.yaml file in the following format "- assets/hymns/${file}/"`, () => {
+                    expect(appAssets).toContain(`assets/hymns/${file}/`);
+                });
+
+                it(`ISO 639-1 code (${file}) Must be listed in "assets/translations.json"`, () => {
+                    if (file != "en") {
+                        expect(languagesListFile).toContain(`${file}`);
+                    }
+                });
+
                 let songListLength = 0;
                 //the meta.json must contain a "title" and "songs" key
                 it(`Must have  "title" and "songs" keys (CASE-SENSITIVE) defined in "meta.json"`, () => {
@@ -109,7 +125,7 @@ describe('SID_Hymnal', () => {
                             const res = regex.test(subfile);
                             if (!res) {
                                 console.error(`${subfile} is not named according to the standard`);
-                            } 
+                            }
                             expect(res).toEqual(true);
                         }
                     });

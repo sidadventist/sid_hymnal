@@ -29,13 +29,18 @@ class _ViewHymnState extends State<ViewHymn> {
 
     _pages.putIfAbsent(widget._hymnNumber - 1, () => _currentHymn);
 
-    Hymn nextHymn = await Hymn.create(_currentHymn.getNumber() + 1, globalUserSettings.getLanguage());
 
-    _pages.putIfAbsent(nextHymn.getNumber() - 1, () => nextHymn);
+    if (_currentHymn.getNumber() < hymnList.length) {
+      Hymn nextHymn = await Hymn.create(_currentHymn.getNumber() + 1, globalUserSettings.getLanguage());
 
-    Hymn prevHymn = await Hymn.create(_currentHymn.getNumber() - 1, globalUserSettings.getLanguage());
+      _pages.putIfAbsent(nextHymn.getNumber() - 1, () => nextHymn);
+    }
 
-    _pages.putIfAbsent(prevHymn.getNumber() - 1, () => prevHymn);
+    if (_currentHymn.getNumber() > 1) {
+      Hymn prevHymn = await Hymn.create(_currentHymn.getNumber() - 1, globalUserSettings.getLanguage());
+
+      _pages.putIfAbsent(prevHymn.getNumber() - 1, () => prevHymn);
+    }
 
     setState(() {
       _isFavorite = favoriteState;
@@ -69,7 +74,7 @@ class _ViewHymnState extends State<ViewHymn> {
             children: <Widget>[
               CupertinoButton(
                 padding: EdgeInsets.all(0),
-                child: this._isPlayingAudio == true ? Icon(CupertinoIcons.pause) : Icon(CupertinoIcons.play_arrow),
+                child: this._isPlayingAudio == true ? Icon(CupertinoIcons.pause_solid) : Icon(CupertinoIcons.play_arrow_solid),
                 onPressed: _currentHymn != null && _currentHymn.hasAudio()
                     ? () {
                         if (this._isPlayingAudio) {

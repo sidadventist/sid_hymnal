@@ -55,6 +55,7 @@ class _HymnSearchState extends State<HymnSearch> {
                           controller: searchTextController,
                           autofocus: true,
                           placeholder: "Search Hymn...",
+                          clearButtonMode: OverlayVisibilityMode.editing,
                         )
                       : TextField(
                           controller: searchTextController,
