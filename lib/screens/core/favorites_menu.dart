@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sid_hymnal/common/shared_methods.dart';
+
+import '../../main.dart';
 
 class FavoritesContextMenu extends StatefulWidget {
   final int hymnNumber;
@@ -46,21 +49,50 @@ class _FavoritesContextMenuState extends State<FavoritesContextMenu> {
 }
 
 Future<int> displayFavoritesContextMenu(BuildContext context, int hymnNumber) async {
-  var res = await showGeneralDialog(
-    context: context,
-    pageBuilder: (BuildContext buildContext, Animation<double> animation, Animation<double> secondaryAnimation) {
-      return Center(child: Padding(padding: EdgeInsets.all(16), child: FavoritesContextMenu(hymnNumber)));
-    },
-    barrierDismissible: true,
-    barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    barrierColor: Colors.black45,
-    transitionDuration: const Duration(milliseconds: 200),
-  );
+  if (appLayoutMode == "ios") {
+    var res = await showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+          title: Text(hymnList[hymnNumber-1]),
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+              child: const Text('Delete'),
+              onPressed: () {
+                unmarkAsFavorite(hymnNumber);
+                Navigator.pop(context, true);
+              },
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: const Text('Cancel'),
+            isDefaultAction: true,
+            onPressed: () {
+              Navigator.pop(context, false);
+            },
+          )),
+    );
 
-  if (res != null && int.parse(res) > 0) {
-    return int.parse(res);
+    if (res != null && res !=false) {
+      return 1;
+    }
+    return 0;
+  } else {
+    var res = await showGeneralDialog(
+      context: context,
+      pageBuilder: (BuildContext buildContext, Animation<double> animation, Animation<double> secondaryAnimation) {
+        return Center(child: Padding(padding: EdgeInsets.all(16), child: FavoritesContextMenu(hymnNumber)));
+      },
+      barrierDismissible: true,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierColor: Colors.black45,
+      transitionDuration: const Duration(milliseconds: 200),
+    );
+
+    if (res != null && int.parse(res) > 0) {
+      return int.parse(res);
+    }
+    return 0;
   }
-  return 0;
 }
 
 closeFavoritesContextMenu(BuildContext context) {

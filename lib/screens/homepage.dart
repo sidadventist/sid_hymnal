@@ -17,6 +17,41 @@ import 'android/settings_page.dart';
 import 'core/hymn_keypad.dart';
 import 'core/my_favorites.dart';
 
+class _BottomPicker extends StatelessWidget {
+  final double _kPickerSheetHeight = 216.0;
+
+  const _BottomPicker({
+    Key key,
+    @required this.child,
+  })  : assert(child != null),
+        super(key: key);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: _kPickerSheetHeight,
+      padding: const EdgeInsets.only(top: 6.0),
+      color: CupertinoColors.systemBackground.resolveFrom(context),
+      child: DefaultTextStyle(
+        style: TextStyle(
+          color: CupertinoColors.label.resolveFrom(context),
+          fontSize: 22.0,
+        ),
+        child: GestureDetector(
+          // Blocks taps from propagating to the modal sheet and popping.
+          onTap: () {},
+          child: SafeArea(
+            top: false,
+            child: child,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -34,12 +69,11 @@ class _HomePageState extends State<HomePage> {
   PageController _controller;
   int currentIndex = 0;
   AudioPlayer audioPlayerInstance;
+  final double _kPickerItemHeight = 32.0;
   static final scaffoldKey = new GlobalKey<ScaffoldState>();
-
   static final GlobalKey<NavigatorState> firstTabNavKey = new GlobalKey<NavigatorState>();
   static final GlobalKey<NavigatorState> secondTabNavKey = new GlobalKey<NavigatorState>();
   static final GlobalKey<NavigatorState> thirdTabNavKey = new GlobalKey<NavigatorState>();
-
   List<String> choices = <String>["Share", "Mark as Favorite", "Favorites", "Dark Mode", "Settings"];
 
   selfInit() async {
@@ -53,7 +87,7 @@ class _HomePageState extends State<HomePage> {
 
     _pages.putIfAbsent(_currentHymnNumber - 1, () => _currentHymn);
 
-    if (_currentHymn.getNumber() < hymnList.length){
+    if (_currentHymn.getNumber() < hymnList.length) {
       Hymn nextHymn = await Hymn.create(_currentHymn.getNumber() + 1, globalUserSettings.getLanguage());
 
       _pages.putIfAbsent(nextHymn.getNumber() - 1, () => nextHymn);
@@ -146,10 +180,34 @@ class _HomePageState extends State<HomePage> {
                                 ? CupertinoButton(
                                     padding: EdgeInsets.all(0),
                                     child: Icon(IconData(0xf4d2, fontFamily: CupertinoIcons.iconFont, fontPackage: CupertinoIcons.iconFontPackage)),
-                                    onPressed: () {
-                                      // shareSong(widget._hymn.toString());
-                                    },
-                                  )
+                                    onPressed: () async {
+                                      int currentLanguage = globalLanguageList.keys.toList().indexOf(globalUserSettings.getLanguage());
+                                      final FixedExtentScrollController scrollController = FixedExtentScrollController(initialItem: currentLanguage);
+
+                                      await showCupertinoModalPopup<void>(
+                                        context: context,
+                                        // semanticsDismissible: true,
+                                        builder: (BuildContext context) {
+                                          return _BottomPicker(
+                                            child: CupertinoPicker(
+                                              scrollController: scrollController,
+                                              itemExtent: _kPickerItemHeight,
+                                              backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
+                                              onSelectedItemChanged: (int index) {
+                                                setState(() {
+                                                  globalUserSettings.setLanguage(globalLanguageList[globalLanguageList.keys.toList()[index]].languageCode);
+                                                });
+                                              },
+                                              children: List<Widget>.generate(globalLanguageList.length, (int index) {
+                                                return Center(
+                                                  child: Text(globalLanguageList[globalLanguageList.keys.toList()[index]].language),
+                                                );
+                                              }),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    })
                                 : null,
                           ),
                           child: _isLoading == true
@@ -353,10 +411,12 @@ class _HomePageState extends State<HomePage> {
                     return ListTile(
                       title: Text(hymnal.title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                       subtitle: Text(hymnal.language, style: TextStyle(color: Color(0Xff2f557f))),
-                      onTap: () {
-                        setState(() {
-                          globalUserSettings.setLanguage(hymnal.languageCode);
-                        });
+                      onTap: () async {
+                        globalUserSettings.setLanguage(hymnal.languageCode);
+                        Navigator.pop(context);
+                        _pages.clear();
+                        renderHymn();
+                        lazyLoad(this._currentHymnNumber - 1);
                       },
                     );
                   }),
@@ -374,18 +434,8 @@ class _HomePageState extends State<HomePage> {
                 : PageView.builder(
                     controller: _controller,
                     onPageChanged: (int index) async {
-                      if (this._isPlayingAudio) {
-                        audioPlayerInstance.stop();
-                        setState(() {
-                          this._isPlayingAudio = false;
-                        });
-                      }
-                      bool favoriteStatus = await checkIfFavorite(index + 1);
-                      setState(() {
-                        _isFavorite = favoriteStatus;
-                        this._currentHymn = _pages[index];
-                      });
-                      saveLastHymn(index + 1);
+                      this._currentHymnNumber = index + 1;
+                      renderHymn();
                       lazyLoad(index);
                     },
                     itemBuilder: (BuildContext context, int index) {
@@ -469,11 +519,12 @@ class _HomePageState extends State<HomePage> {
       this._isPlayingAudio = false;
       this._isFavorite = favoriteState;
     });
-
-    _controller.jumpToPage(this._currentHymnNumber - 1);
+    if (_controller.hasClients) {
+      _controller.jumpToPage(this._currentHymnNumber - 1);
+    }
   }
 
-  void lazyLoad(int hymnNumber) async {
+  Future<void> lazyLoad(int hymnNumber) async {
     bool pageAdded = false;
     // next page
     if (!_pages.containsKey(hymnNumber + 1) && hymnNumber < hymnList.length) {
