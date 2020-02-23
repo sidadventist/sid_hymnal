@@ -4,8 +4,6 @@ import 'package:sid_hymnal/main.dart';
 import 'package:sid_hymnal/screens/ios/view_hymn.dart';
 
 class HymnSearch extends StatefulWidget {
-  final String language;
-  HymnSearch(this.language);
   @override
   _HymnSearchState createState() => _HymnSearchState();
 }
@@ -101,7 +99,6 @@ class _HymnSearchState extends State<HymnSearch> {
   }
 
   launchIOSHymnView(int hymnNumber) async {
-    // Hymn hymnData = await Hymn.create(hymnNumber, globalUserSettings.getLanguage());
     Navigator.of(context).push(
       new CupertinoPageRoute<bool>(
         builder: (BuildContext context) => new ViewHymn(hymnNumber),

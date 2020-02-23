@@ -7,6 +7,8 @@ import 'package:sid_hymnal/common/shared_prefs.dart';
 import 'package:sid_hymnal/models/hymnal.dart';
 import 'package:sid_hymnal/models/user_settings.dart';
 
+import '../main.dart';
+
 Future<Map<String, Hymnal>> getAvailableLanguages() async {
   Map<String, Hymnal> hymnals = {};
 
@@ -121,4 +123,19 @@ Future<List<dynamic>> getFavoriteHymns() async {
     currentFavorites = json.decode(rawList);
   } catch (e) {}
   return currentFavorites.reversed.toList();
+}
+
+Future<List>getHymnList() async {
+  String rawMeta = await rootBundle.loadString('assets/hymns/${globalUserSettings.getLanguage()}/meta.json');
+  List<String> tmpList = new List();
+
+  Map<dynamic, dynamic> songList = json.decode(rawMeta)['songs'];
+  for (int i = 1; i < (songList.keys.length + 1); i++) {
+    if (songList["$i"] == null) {
+      throw ("Missing hymn $i from meta file");
+    }
+    tmpList.add("$i" + ". " + songList["$i"]);
+  }
+ 
+  return tmpList;
 }

@@ -13,12 +13,13 @@ Map<String, Hymnal> globalLanguageList = {};
 String appLayoutMode = "android";
 UserSettings globalUserSettings;
 final audioPlayer = AudioCache();
+const kPickerItemHeight = 32.0;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   globalUserSettings = await getUserSettings();
   globalLanguageList = await getAvailableLanguages();
-  // appLayoutMode = "ios";
+  appLayoutMode = "ios";
   if (Platform.isIOS) {
     appLayoutMode = "ios";
   }
