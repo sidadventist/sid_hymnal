@@ -10,21 +10,22 @@ import 'package:sid_hymnal/models/user_settings.dart';
 Future<Map<String, Hymnal>> getAvailableLanguages() async {
   Map<String, Hymnal> hymnals = {};
 
-    hymnals.putIfAbsent("en", ()=> Hymnal("SID Hymnal", "English", "en"));
-    String rawList = await rootBundle.loadString('assets/translations.json');
-    List translations = json.decode(rawList);
+  hymnals.putIfAbsent("en", () => Hymnal("SID Hymnal", "English", "en"));
+  String rawList = await rootBundle.loadString('assets/translations.json');
+  List translations = json.decode(rawList);
 
-    String rawSupportedLanguages = await rootBundle.loadString('assets/iso_639_1.json');
-    Map supportedLanguages = json.decode(rawSupportedLanguages);
+  String rawSupportedLanguages = await rootBundle.loadString('assets/iso_639_1.json');
+  Map supportedLanguages = json.decode(rawSupportedLanguages);
 
-    translations.forEach((translation){
-      if(supportedLanguages.containsKey(translation)){
-          hymnals.putIfAbsent(translation, ()=> new Hymnal("SID Hymnal", supportedLanguages[translation], translation));
-      }
-    });
+  translations.forEach((translation) async {
+    if (supportedLanguages.containsKey(translation)) {
+      String rawHymnalMetadata = await rootBundle.loadString('assets/hymns/$translation/meta.json');
+      Map hymnalMetadata = json.decode(rawHymnalMetadata);
+      hymnals.putIfAbsent(translation, () => new Hymnal(hymnalMetadata['title'], supportedLanguages[translation], translation));
+    }
+  });
 
-    return hymnals;
-
+  return hymnals;
 }
 
 Future<UserSettings> getUserSettings() async {
@@ -51,7 +52,6 @@ Future<UserSettings> getUserSettings() async {
   userSettings.setLanguage("en");
   userSettings.setNightMode(isNightMode);
   userSettings.setLastHymnNumber(currentHymnNumber);
-
 
   return userSettings;
 }
