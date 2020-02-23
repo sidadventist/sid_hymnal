@@ -1,8 +1,6 @@
-import 'dart:convert';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:sid_hymnal/common/shared_methods.dart';
 import 'package:sid_hymnal/common/shared_prefs.dart';
@@ -16,41 +14,8 @@ import '../main.dart';
 import 'android/settings_page.dart';
 import 'core/hymn_keypad.dart';
 import 'core/my_favorites.dart';
+import 'ios/bottom_picker.dart';
 
-class _BottomPicker extends StatelessWidget {
-  final double _kPickerSheetHeight = 216.0;
-
-  const _BottomPicker({
-    Key key,
-    @required this.child,
-  })  : assert(child != null),
-        super(key: key);
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: _kPickerSheetHeight,
-      padding: const EdgeInsets.only(top: 6.0),
-      color: CupertinoColors.systemBackground.resolveFrom(context),
-      child: DefaultTextStyle(
-        style: TextStyle(
-          color: CupertinoColors.label.resolveFrom(context),
-          fontSize: 22.0,
-        ),
-        child: GestureDetector(
-          // Blocks taps from propagating to the modal sheet and popping.
-          onTap: () {},
-          child: SafeArea(
-            top: false,
-            child: child,
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class HomePage extends StatefulWidget {
   @override
@@ -69,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   PageController _controller;
   int currentIndex = 0;
   AudioPlayer audioPlayerInstance;
-  final double _kPickerItemHeight = 32.0;
+  
   static final scaffoldKey = new GlobalKey<ScaffoldState>();
   static final GlobalKey<NavigatorState> firstTabNavKey = new GlobalKey<NavigatorState>();
   static final GlobalKey<NavigatorState> secondTabNavKey = new GlobalKey<NavigatorState>();
@@ -77,10 +42,9 @@ class _HomePageState extends State<HomePage> {
   List<String> choices = <String>["Share", "Mark as Favorite", "Favorites", "Dark Mode", "Settings"];
 
   selfInit() async {
+    hymnList = await getHymnList();
+
     //get last viewed hymn
-
-    await loadHymnList();
-
     _currentHymnNumber = globalUserSettings.getLastHymnNumber();
 
     _currentHymn = await Hymn.create(_currentHymnNumber, globalUserSettings.getLanguage());
@@ -188,15 +152,13 @@ class _HomePageState extends State<HomePage> {
                                         context: context,
                                         // semanticsDismissible: true,
                                         builder: (BuildContext context) {
-                                          return _BottomPicker(
+                                          return BottomPicker(
                                             child: CupertinoPicker(
                                               scrollController: scrollController,
-                                              itemExtent: _kPickerItemHeight,
+                                              itemExtent: kPickerItemHeight,
                                               backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
                                               onSelectedItemChanged: (int index) {
-                                                setState(() {
-                                                  globalUserSettings.setLanguage(globalLanguageList[globalLanguageList.keys.toList()[index]].languageCode);
-                                                });
+                                                globalUserSettings.setLanguage(globalLanguageList[globalLanguageList.keys.toList()[index]].languageCode);
                                               },
                                               children: List<Widget>.generate(globalLanguageList.length, (int index) {
                                                 return Center(
@@ -207,6 +169,16 @@ class _HomePageState extends State<HomePage> {
                                           );
                                         },
                                       );
+
+                                      setState(() {
+                                        _isLoading = true;
+                                      });
+
+                                      hymnList = await getHymnList();
+
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
                                     })
                                 : null,
                           ),
@@ -214,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                               ? Center(child: CupertinoActivityIndicator())
                               : SafeArea(
                                   child: Scaffold(
-                                  body: HymnSearch(globalUserSettings.getLanguage()),
+                                  body: HymnSearch(),
                                 ))));
                   break;
                 case 1:
@@ -543,22 +515,6 @@ class _HomePageState extends State<HomePage> {
     if (pageAdded) {
       setState(() {});
     }
-  }
-
-  loadHymnList() async {
-    String rawMeta = await rootBundle.loadString('assets/hymns/${globalUserSettings.getLanguage()}/meta.json');
-    List<String> tmpList = new List();
-
-    Map<dynamic, dynamic> songList = json.decode(rawMeta)['songs'];
-    for (int i = 1; i < (songList.keys.length + 1); i++) {
-      if (songList["$i"] == null) {
-        throw ("Missing hymn $i from meta file");
-      }
-      tmpList.add("$i" + ". " + songList["$i"]);
-    }
-    setState(() {
-      hymnList = tmpList;
-    });
   }
 
   toggleNightMode() {
