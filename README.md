@@ -21,7 +21,7 @@ SID Seventh-day Adventist Hymnal
 
 ## Contributing
 
-Please read [CONTRIBUTING.md]()s
+Please read [CONTRIBUTING.md]()
 
 
 
