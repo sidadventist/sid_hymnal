@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="sid_hymnal"
+        android:label="SID Hymnal"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
