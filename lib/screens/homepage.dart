@@ -16,7 +16,6 @@ import 'core/hymn_keypad.dart';
 import 'core/my_favorites.dart';
 import 'ios/bottom_picker.dart';
 
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -34,12 +33,12 @@ class _HomePageState extends State<HomePage> {
   PageController _controller;
   int currentIndex = 0;
   AudioPlayer audioPlayerInstance;
-  
+
   static final scaffoldKey = new GlobalKey<ScaffoldState>();
   static final GlobalKey<NavigatorState> firstTabNavKey = new GlobalKey<NavigatorState>();
   static final GlobalKey<NavigatorState> secondTabNavKey = new GlobalKey<NavigatorState>();
   static final GlobalKey<NavigatorState> thirdTabNavKey = new GlobalKey<NavigatorState>();
-  List<String> choices = <String>["Share", "Mark as Favorite", "Favorites", "Dark Mode", "Settings"];
+  List<String> choices = <String>["Share", "Add to Favorites", "Dark Mode"];
 
   selfInit() async {
     hymnList = await getHymnList();
@@ -101,19 +100,14 @@ class _HomePageState extends State<HomePage> {
             shareSong(_currentHymnData.toString());
           }
           break;
-        case "Mark as Favorite":
+        case "Add to Favorites":
           {
             callMarkAsFavorite(_currentHymnNumber);
           }
           break;
-        case "Favorites":
+        case "Remove Favorite":
           {
-            callDisplayFavoritesPage(context);
-          }
-          break;
-        case "Settings":
-          {
-            callDisplaySettingsPage(context);
+            callUnmarkAsFavorite(_currentHymnNumber);
           }
           break;
         case "Dark Mode":
@@ -355,9 +349,12 @@ class _HomePageState extends State<HomePage> {
                             ),
                           );
                           break;
-                        case "Mark as Favorite":
+                        case "Add to Favorites":
                           return _isFavorite
-                              ? null
+                              ?  PopupMenuItem<String>(
+                                  value: "Remove Favorite",
+                                  child: Text("Remove Favorite"),
+                                )
                               : PopupMenuItem<String>(
                                   value: choice,
                                   child: Text(choice),
@@ -376,7 +373,46 @@ class _HomePageState extends State<HomePage> {
             ),
             backgroundColor: globalUserSettings.isNightMode() ? Colors.black87 : Theme.of(context).scaffoldBackgroundColor,
             drawer: Drawer(
-              child: ListView.builder(
+                child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                DrawerHeader(
+                  decoration: BoxDecoration(color: Colors.white, image: DecorationImage(image: AssetImage("assets/header.jpg"), fit: BoxFit.cover)),
+                  child: Center(child:Text("SID Hymnal", style: TextStyle(color: Colors.white))),
+                ),
+                ListTile(
+                    title: Text("Home"),
+                    leading: Icon(Icons.home),
+                    onTap: () {
+                      Navigator.pop(context);
+                    }),
+                ListTile(
+                  title: Text("Favorites"),
+                  leading: Icon(Icons.favorite),
+                  onTap: () {
+                    Navigator.pop(context);
+                    callDisplayFavoritesPage(context);
+                  },
+                ),
+                ListTile(
+                    title: Text("Languages"),
+                    leading: Icon(Icons.language),
+                    onTap: () {
+                      Navigator.pop(context);
+                    }),
+                ListTile(
+                  title: Text("Settings"),
+                  leading: Icon(Icons.settings),
+                  onTap: () {
+                    Navigator.pop(context);
+                    callDisplaySettingsPage(context);
+                  },
+                ),
+              ],
+            )
+
+                /*
+              ListView.builder(
                   itemCount: globalLanguageList.length,
                   itemBuilder: (BuildContext context, int index) {
                     Hymnal hymnal = globalLanguageList[globalLanguageList.keys.toList()[index]];
@@ -392,13 +428,9 @@ class _HomePageState extends State<HomePage> {
                       },
                     );
                   }),
-              /*new ListView(children: <Widget>[
-              ListTile(
-                title: Text("SID Hymnal", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                subtitle: Text("English", style: TextStyle(color: Color(0Xff2f557f))),
-              ),
-            ])*/
-            ),
+             
+             */
+                ),
             body: _isLoading == true
                 ? Center(
                     child: CircularProgressIndicator(),
@@ -456,8 +488,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   callMarkAsFavorite(int hymnNumber) async {
-    await markAsFavorite(_currentHymnNumber);
-    bool favoriteState = await checkIfFavorite(_currentHymnNumber);
+    await markAsFavorite(hymnNumber);
+    bool favoriteState = await checkIfFavorite(hymnNumber);
+    setState(() {
+      _isFavorite = favoriteState;
+    });
+  }
+  callUnmarkAsFavorite(int hymnNumber) async {
+    await unmarkAsFavorite(hymnNumber);
+    bool favoriteState = await checkIfFavorite(hymnNumber);
     setState(() {
       _isFavorite = favoriteState;
     });
