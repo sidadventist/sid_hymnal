@@ -5,7 +5,7 @@ import 'package:sid_hymnal/models/user_settings.dart';
 import 'package:sid_hymnal/screens/homepage.dart';
 import 'dart:io' show Platform;
 import 'package:audioplayers/audio_cache.dart';
-
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'models/hymnal.dart';
 
 List<String> hymnList = new List();
@@ -15,11 +15,22 @@ UserSettings globalUserSettings;
 final audioPlayer = AudioCache();
 const kPickerItemHeight = 32.0;
 
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.verbose);
+  OneSignal.shared.init(
+    "cc96c7d7-2a82-4378-a13f-376eacd31540",
+    iOSSettings: {
+      OSiOSSettings.autoPrompt: true,
+      OSiOSSettings.inAppLaunchUrl: true
+    }
+  );
+  OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
   globalUserSettings = await getUserSettings();
   globalLanguageList = await getAvailableLanguages();
-  appLayoutMode = "ios";
+  // appLayoutMode = "ios";
   if (Platform.isIOS) {
     appLayoutMode = "ios";
   }
