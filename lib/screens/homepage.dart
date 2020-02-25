@@ -5,12 +5,12 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:sid_hymnal/common/shared_methods.dart';
 import 'package:sid_hymnal/common/shared_prefs.dart';
 import 'package:sid_hymnal/models/hymn.dart';
-import 'package:sid_hymnal/models/hymnal.dart';
 import 'package:sid_hymnal/screens/android/favorites_page.dart';
 import 'package:sid_hymnal/screens/android/search_page.dart';
 import 'package:sid_hymnal/screens/core/hymn_search.dart';
 import 'package:sid_hymnal/screens/core/my_settings.dart';
 import '../main.dart';
+import 'android/languages_page.dart';
 import 'android/settings_page.dart';
 import 'core/hymn_keypad.dart';
 import 'core/my_favorites.dart';
@@ -351,7 +351,7 @@ class _HomePageState extends State<HomePage> {
                           break;
                         case "Add to Favorites":
                           return _isFavorite
-                              ?  PopupMenuItem<String>(
+                              ? PopupMenuItem<String>(
                                   value: "Remove Favorite",
                                   child: Text("Remove Favorite"),
                                 )
@@ -378,7 +378,7 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 DrawerHeader(
                   decoration: BoxDecoration(color: Colors.white, image: DecorationImage(image: AssetImage("assets/header.jpg"), fit: BoxFit.cover)),
-                  child: Center(child:Text("SID Hymnal", style: TextStyle(color: Colors.white))),
+                  child: Center(child: Text("SID Hymnal", style: TextStyle(color: Colors.white))),
                 ),
                 ListTile(
                     title: Text("Home"),
@@ -391,7 +391,7 @@ class _HomePageState extends State<HomePage> {
                   leading: Icon(Icons.favorite),
                   onTap: () {
                     Navigator.pop(context);
-                    callDisplayFavoritesPage(context);
+                    _displayFavoritesPage(context);
                   },
                 ),
                 ListTile(
@@ -399,38 +399,18 @@ class _HomePageState extends State<HomePage> {
                     leading: Icon(Icons.language),
                     onTap: () {
                       Navigator.pop(context);
+                      _displayLanguagesPage(context);
                     }),
                 ListTile(
                   title: Text("Settings"),
                   leading: Icon(Icons.settings),
                   onTap: () {
                     Navigator.pop(context);
-                    callDisplaySettingsPage(context);
+                    _displaySettingsPage(context);
                   },
                 ),
               ],
-            )
-
-                /*
-              ListView.builder(
-                  itemCount: globalLanguageList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    Hymnal hymnal = globalLanguageList[globalLanguageList.keys.toList()[index]];
-                    return ListTile(
-                      title: Text(hymnal.title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                      subtitle: Text(hymnal.language, style: TextStyle(color: Color(0Xff2f557f))),
-                      onTap: () async {
-                        globalUserSettings.setLanguage(hymnal.languageCode);
-                        Navigator.pop(context);
-                        _pages.clear();
-                        renderHymn();
-                        lazyLoad(this._currentHymnNumber - 1);
-                      },
-                    );
-                  }),
-             
-             */
-                ),
+            )),
             body: _isLoading == true
                 ? Center(
                     child: CircularProgressIndicator(),
@@ -461,7 +441,7 @@ class _HomePageState extends State<HomePage> {
           );
   }
 
-  callDisplayFavoritesPage(context) async {
+  _displayFavoritesPage(context) async {
     int newNumber = await displayFavoritesPage(context);
     bool favoriteState = await checkIfFavorite(_currentHymnNumber);
     if (newNumber < 1) {
@@ -474,7 +454,7 @@ class _HomePageState extends State<HomePage> {
     renderHymn();
   }
 
-  callDisplaySettingsPage(context) async {
+  _displaySettingsPage(context) async {
     await displaySettingsPage(context);
     //update current font size. At the moment its the only setting that is mutable, so we can just refresh it here
     int currentFontSize = await getIntDataLocally(key: "fontSize");
@@ -487,6 +467,14 @@ class _HomePageState extends State<HomePage> {
     renderHymn();
   }
 
+  _displayLanguagesPage(context) async {
+    await displayLanguagesPage(context);
+    hymnList = await getHymnList();
+    _pages.clear();
+    renderHymn();
+    lazyLoad(this._currentHymnNumber -1);
+  }
+
   callMarkAsFavorite(int hymnNumber) async {
     await markAsFavorite(hymnNumber);
     bool favoriteState = await checkIfFavorite(hymnNumber);
@@ -494,6 +482,7 @@ class _HomePageState extends State<HomePage> {
       _isFavorite = favoriteState;
     });
   }
+
   callUnmarkAsFavorite(int hymnNumber) async {
     await unmarkAsFavorite(hymnNumber);
     bool favoriteState = await checkIfFavorite(hymnNumber);
@@ -537,6 +526,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> lazyLoad(int hymnNumber) async {
     bool pageAdded = false;
+
     // next page
     if (!_pages.containsKey(hymnNumber + 1) && hymnNumber < hymnList.length) {
       Hymn hymn = await Hymn.create((hymnNumber + 2), globalUserSettings.getLanguage());
@@ -545,7 +535,7 @@ class _HomePageState extends State<HomePage> {
       pageAdded = true;
     }
     //prev page
-    if (!_pages.containsKey(hymnNumber - 1) && hymnNumber > 0) {
+    if (!_pages.containsKey(hymnNumber - 1) && hymnNumber > 1) {
       Hymn hymn = await Hymn.create((hymnNumber), globalUserSettings.getLanguage());
       _pages.putIfAbsent((hymnNumber - 1), () => hymn);
       pageAdded = true;

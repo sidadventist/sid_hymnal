@@ -49,9 +49,15 @@ Future<UserSettings> getUserSettings() async {
   if (currentFontSize == null) {
     currentFontSize = 18;
   }
+  //get language
+  String currentLanguage = await getStringDataLocally(key: "language");
+
+  if (currentFontSize == null) {
+    currentLanguage = "en";
+  }
 
   userSettings.setFontSize(currentFontSize);
-  userSettings.setLanguage("en");
+  userSettings.setLanguage(currentLanguage);
   userSettings.setNightMode(isNightMode);
   userSettings.setLastHymnNumber(currentHymnNumber);
 
@@ -64,6 +70,10 @@ String padHymnNumber(int hymnNumber) {
 
 saveLastHymn(int hymnNumber) {
   writeIntDataLocally(key: "lastViewed", value: hymnNumber);
+}
+
+saveLastLanguage(String languageCode) {
+  writeStringDataLocally(key: "language", value: languageCode);
 }
 
 saveNightModeState(bool isNightMode) {
