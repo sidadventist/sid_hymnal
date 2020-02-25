@@ -1,3 +1,5 @@
+import 'package:sid_hymnal/common/shared_methods.dart';
+
 class UserSettings {
   int _lastHymn = 1;
   int _fontSize = 16;
@@ -21,7 +23,8 @@ class UserSettings {
     return this._language;
   }
 
-  setLanguage(String lang) {
+  setLanguage(String lang) async {
+    await saveLastLanguage(lang);
     this._language = lang;
   }
 
