@@ -52,7 +52,7 @@ Future<UserSettings> getUserSettings() async {
   //get language
   String currentLanguage = await getStringDataLocally(key: "language");
 
-  if (currentFontSize == null) {
+  if (currentLanguage == null) {
     currentLanguage = "en";
   }
 

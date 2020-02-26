@@ -378,7 +378,7 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 DrawerHeader(
                   decoration: BoxDecoration(color: Colors.white, image: DecorationImage(image: AssetImage("assets/header.jpg"), fit: BoxFit.cover)),
-                  child: Center(child: Text("SID Hymnal", style: TextStyle(color: Colors.white))),
+                  child:Container(),
                 ),
                 ListTile(
                     title: Text("Home"),
