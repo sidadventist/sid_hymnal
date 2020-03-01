@@ -2,7 +2,8 @@
 
 SID Seventh-day Adventist Hymnal
 
- ![playstore (1)](https://user-images.githubusercontent.com/47924887/75633098-c3a4b080-5c0a-11ea-8c56-8fb2cdb392dc.png) [View on Google Play](https://play.google.com/store/apps/details?id=com.sidadventist.sid_hymnal)      |    ![appstore](https://user-images.githubusercontent.com/47924887/75633074-9eb03d80-5c0a-11ea-9d0e-5da3f6ba7832.png) [View on App Store]() 
+[View on Google Play](https://play.google.com/store/apps/details?id=com.sidadventist.sid_hymnal)      |    
+[View on App Store]() 
 
 ## Screenshots
 
