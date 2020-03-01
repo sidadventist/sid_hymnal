@@ -168,6 +168,7 @@ class _ViewHymnState extends State<ViewHymn> {
                 itemBuilder: (BuildContext context, int index) {
                   return generatePage(_pages[index]);
                 },
+                itemCount: hymnList.length,
               ),
             ),
     );
@@ -180,7 +181,7 @@ class _ViewHymnState extends State<ViewHymn> {
 
     _pages.putIfAbsent(hymnNumber - 1, () => _currentHymn);
 
-    if (_currentHymn.getNumber() < hymnList.length) {
+    if (_currentHymn.getNumber() <= hymnList.length) {
       Hymn nextHymn = await Hymn.create(_currentHymn.getNumber() + 1, globalUserSettings.getLanguage());
 
       _pages.putIfAbsent(nextHymn.getNumber() - 1, () => nextHymn);

@@ -418,6 +418,7 @@ class _HomePageState extends State<HomePage> {
                 : PageView.builder(
                     controller: _controller,
                     onPageChanged: (int index) async {
+
                       this._currentHymnNumber = index + 1;
                       renderHymn();
                       lazyLoad(index);
@@ -425,6 +426,7 @@ class _HomePageState extends State<HomePage> {
                     itemBuilder: (BuildContext context, int index) {
                       return generatePage(_pages[index]);
                     },
+                    itemCount: hymnList.length,
                   ),
             floatingActionButton: FloatingActionButton(
               backgroundColor: Color(0Xff2f557f),
@@ -510,7 +512,7 @@ class _HomePageState extends State<HomePage> {
       audioPlayerInstance.stop();
       audioPlayer.clearCache();
     }
-    if (!_pages.containsKey(this._currentHymnNumber - 1) && this._currentHymnNumber < hymnList.length) {
+    if (!_pages.containsKey(this._currentHymnNumber - 1) && this._currentHymnNumber <= hymnList.length) {
       Hymn hymn = await Hymn.create((this._currentHymnNumber), globalUserSettings.getLanguage());
       _pages.putIfAbsent((this._currentHymnNumber - 1), () => hymn);
     }
@@ -528,7 +530,7 @@ class _HomePageState extends State<HomePage> {
     bool pageAdded = false;
 
     // next page
-    if (!_pages.containsKey(hymnNumber + 1) && hymnNumber < hymnList.length) {
+    if (!_pages.containsKey(hymnNumber + 1) && (hymnNumber+1) < hymnList.length) {
       Hymn hymn = await Hymn.create((hymnNumber + 2), globalUserSettings.getLanguage());
 
       _pages.putIfAbsent((hymnNumber + 1), () => hymn);
