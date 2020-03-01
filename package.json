@@ -1,6 +1,6 @@
 {
   "name": "sid_hymnal",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "description": "Official SID SDA Hymnal App",
   "main": "index.js",
   "directories": {
@@ -9,7 +9,8 @@
   },
   "scripts": {
     "dev-device": "flutter run --enable-software-rendering",
-    "test": "./node_modules/.bin/jasmine"
+    "test": "./node_modules/.bin/jasmine",
+    "build": "flutter build appbundle --release"
   },
   "author": "SID Tech Team",
   "license": "Apache-2.0",
