@@ -270,7 +270,7 @@ class _HomePageState extends State<HomePage> {
                 BottomNavigationBarItem(icon: Icon(CupertinoIcons.settings), title: Text("Settings"), activeIcon: Icon(CupertinoIcons.settings_solid))
               ],
               onTap: (index) {
-                /* if (currentIndex == index) { */
+                 if (currentIndex == index) { 
                 switch (index) {
                   case 0:
                     if (firstTabNavKey.currentState != null) {
@@ -288,8 +288,8 @@ class _HomePageState extends State<HomePage> {
                     }
                     break;
                 }
-                /*}
-                currentIndex = index;*/
+                }
+                currentIndex = index;
               },
             ),
           )
