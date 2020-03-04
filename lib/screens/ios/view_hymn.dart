@@ -75,24 +75,26 @@ class _ViewHymnState extends State<ViewHymn> {
               CupertinoButton(
                 padding: EdgeInsets.all(0),
                 child: this._isPlayingAudio == true ? Icon(CupertinoIcons.pause_solid) : Icon(CupertinoIcons.play_arrow_solid),
-                onPressed: _currentHymn != null && _currentHymn.hasAudio()
-                    ? () {
-                        if (this._isPlayingAudio) {
-                          audioPlayerInstance.stop();
-                          setState(() {
-                            this._isPlayingAudio = false;
-                          });
-                          audioPlayer.clearCache();
-                        } else {
-                          audioPlayer.play(_currentHymn.getAudioPath()).then((player) {
-                            setState(() {
-                              this._isPlayingAudio = true;
-                            });
-                            audioPlayerInstance = player;
-                          });
-                        }
-                      }
-                    : null,
+                onPressed: appLayoutMode == "ios"
+                    ? null
+                    : _currentHymn != null && _currentHymn.hasAudio()
+                        ? () {
+                            if (this._isPlayingAudio) {
+                              audioPlayerInstance.stop();
+                              setState(() {
+                                this._isPlayingAudio = false;
+                              });
+                              audioPlayer.clearCache();
+                            } else {
+                              audioPlayer.play(_currentHymn.getAudioPath()).then((player) {
+                                setState(() {
+                                  this._isPlayingAudio = true;
+                                });
+                                audioPlayerInstance = player;
+                              });
+                            }
+                          }
+                        : null,
               ),
               CupertinoButton(
                 padding: EdgeInsets.all(0),
