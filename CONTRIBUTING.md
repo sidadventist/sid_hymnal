@@ -22,13 +22,13 @@ Please remember to go through our [Code of Conduct]() before contributing.
 
 7. Wait for the reviewers to review your work
 
-## Contributing Hymn Translationss
+## Contributing Hymn Translations
 
-1. Hymns are located in the `assets/hymns/{language}` folder. The language folder must use ISO 639-1 Format
+1. Hymns are located in the `assets/hymns/{language}` folder. The language folder name must use ISO 639-1 Format.
 
 2. In each languange folder, there should be a meta.json, with the following properties
-    -title
-    -song (an object with the number of hymn matched to the title)
+    - title
+    - songs (an object with the number of hymn matched to the title)
 
     Example:
 ```
@@ -63,7 +63,7 @@ Please remember to go through our [Code of Conduct]() before contributing.
   - The last line of the Chorus must be followed by 2 new lines (`\n\n`)
 
   ### General 
-  - No 3 or more consecutive new lines (`\n\n\n`)
+  - No three or more consecutive new lines (`\n\n\n`)
   - Neither verses nor choruses should start with white-space or indentation
 
 
