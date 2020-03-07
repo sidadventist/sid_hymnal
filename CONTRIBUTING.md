@@ -1,34 +1,73 @@
 #sid_hymnal 
 
-Please remember to go through our [Code of Conduct]() before contributing.
+Please remember to go through our [Code of Conduct]() before contributing. 
+
+## What you need to know
+
+To contribute a translation. You can learn as you go.
+1. Git *Level: Minimal* [Tutorial]()
+2. Markdown *Level: Minimal* [Tutorial]()
+3. JSON *Level: Minimal* [Tutorial]()
+
+To contribute to the app code and/or unit tests:
+1. Git *Level: Proficient* [Tutorial]()
+2. Markdown *Level: Minimal* [Tutorial]()
+3. JSON *Level: Proficient* [Tutorial]()
+4. Dart/Flutter. *Level: Proficient or Expert* [Tutorial]()
+5. Node.js *Level: Proficient* [Tutorial]()
+6. Be familiar with Android Studio [Tutorial]()
+7. Be familiar with XCode [Tutorial]()
+Good to also know:
+8. Java
+9. Kotlin
+10. Objective C
+11. Swift
+12. Ruby
+
+To contribute to unit tests (for the repo)
+1. Git *Level: Proficient* [Tutorial]()
+2. Markdown *Level: Minimal* [Tutorial]()
+3. JSON *Level: Proficient* [Tutorial]()
+4. YAML *Level: Proficient or Expert* [Tutorial]()
+5. Node.js *Level: Proficient* [Tutorial]()
+6. Jasmine *Level: Proficient* [Tutorial]()
 
 ## Steps to Contributing
 
-1. Fork of this repo. 
+1. Fork of this repo. [How?](). 
 
-2. Install the relevant dev tools.
-  - [Node.js](https://nodejs.org/en/download/)
-  - [Flutter/Dart](https://flutter.dev/docs/get-started/install) (You can skip this step if you are only contributing a translations)
+2. Clone/download your fork to your machine. [How?]().
 
-3. Install dependencies on your local machine.
-  
-  - Node Packages. Run ```npm install```
+3. Install the following Dev Tools.
+  - [Node.js](https://nodejs.org/en/download/) *(Required)*
+  - [Flutter/Dart](https://flutter.dev/docs/get-started/install) (You can skip this step if you are only contributing a translation)
 
-4. Make your code edit/changes
+4. Install Dev Dependencies on your local machine by navigating to the folder where you cloned the repo, and running the following command:
 
-5. Run tests. ```npm test``` 
+```
+npm install
+```
 
-6. Open a pull request
+5. Make your code edit/changes using an IDE of your choice. For Flutter/Dart, we recommend [Visual Studio Code]()
 
-7. Wait for the reviewers to review your work
+6. Run tests by navigating to the folder where you cloned the repo, and running the following command: 
 
-## Contributing Hymn Translationss
+```
+npm test
+``` 
+7. Push you changes to your fork [How?]().
 
-1. Hymns are located in the `assets/hymns/{language}` folder. The language folder must use ISO 639-1 Format
+8. Open a pull request. [How?]().
 
-2. In each languange folder, there should be a meta.json, with the following properties
-    -title
-    -song (an object with the number of hymn matched to the title)
+9. Wait for the reviewers to review your work.
+
+## Contributing Hymn Translations
+
+1. Hymns are located in the `assets/hymns/{language}` folder. The language folder name must use ISO 639-1 Format.
+
+2. In each languange folder, there should be a `meta.json` file, with the following properties
+  - title
+  - songs (an object with the number of hymn matched to the title)
 
     Example:
 ```
@@ -54,23 +93,46 @@ Please remember to go through our [Code of Conduct]() before contributing.
 
   #### Verses
   - Verses must be preceded by exactly 2 new lines (`\n\n`)
-  - Verses must be followed by exactly 2 new lins  (`\n\n`)
+  - Verses must be followed by exactly 2 new lines (`\n\n`)
 
   #### Chorus
   - Add the word "Chorus", just above the chorus.
   - The word "Chorus" must be preceded by 2 new lines (`\n\n`)
-  - The word "Chorus" must be immediately followed by a new line `\n`
+  - The word "Chorus" must be immediately followed by a new line (`\n`)
   - The last line of the Chorus must be followed by 2 new lines (`\n\n`)
 
   ### General 
-  - No 3 or more consecutive new lines (`\n\n\n`)
+  - No three or more consecutive new lines (`\n\n\n`)
   - Neither verses nor choruses should start with white-space or indentation
 
 
 ## Contributing to the App
 
-  ### Reporting bugs
+### Reporting bugs
+To report a bug, [Open a new Issue here]().
 
-  ### Fixing bugs
+### Fixing bugs
+To fix a bug in the app, follow the steps below. This will save you from fixing something that has already been fixed or is in the process of getting fixed.
 
-  ### Adding features/functionality
+1. Visit the [issues section]() of this repo. 
+
+2. Check to see if the bug has already been reported. (If the bug has not been reported, [Open a new issue]() and report the bug).
+
+3. Open the issue and check to see if no one has already been assigned to work on the issue (bug). [How?]().
+
+4. If no one is assigned, use the comment section of the issue to inform the maintainers that you wish to work on the issue. 
+
+5. Once you get the go ahead from the maintainers, follow the **Steps to Contributing** (right at the top of this page)
+
+### Adding features/functionality
+To add a feature, follow the steps below.
+
+1. Visit the [issues section]() of this repo. 
+
+2. Locate the issue that describes the new feature you would like to implement. (If no issue about the feature exists, [Open a new issue]() and describe the feature you would like).
+
+3. Open the issue and check to see if no one has already been assigned to work on the issue (new feature). [How?]().
+
+4. If no one is assigned, use the comment section of the issue to inform the maintainers that you wish to work on the issue. 
+
+5. Once you get the go ahead from the maintainers, follow the **Steps to Contributing** (right at the top of this page).
