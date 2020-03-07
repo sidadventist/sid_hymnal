@@ -1,36 +1,36 @@
-#sid_hymnal 
+# sid_hymnal 
 
-Please remember to go through our [Code of Conduct]() before contributing. 
+Please remember to go through our [Code of Conduct](https://github.com/sidadventist/sid_hymnal/blob/patch/CODE_OF_CONDUCT.md) before contributing. 
 
 ## What you need to know
 
 To contribute a translation. You can learn as you go.
-1. Git *Level: Minimal* [Tutorial]()
-2. Markdown *Level: Minimal* [Tutorial]()
-3. JSON *Level: Minimal* [Tutorial]()
+1. Git *(Minimal)* [Tutorial](https://guides.github.com/introduction/git-handbook/)
+2. Markdown *(Minimal)* [Tutorial](https://guides.github.com/features/mastering-markdown/)
+3. JSON *(Minimal)* [Tutorial](https://www.w3schools.com/js/js_json_intro.asp)
 
 To contribute to the app code and/or unit tests:
-1. Git *Level: Proficient* [Tutorial]()
-2. Markdown *Level: Minimal* [Tutorial]()
-3. JSON *Level: Proficient* [Tutorial]()
-4. Dart/Flutter. *Level: Proficient or Expert* [Tutorial]()
-5. Node.js *Level: Proficient* [Tutorial]()
-6. Be familiar with Android Studio [Tutorial]()
-7. Be familiar with XCode [Tutorial]()
+1. Git *(Proficient)* [Tutorial](https://guides.github.com/introduction/git-handbook/)
+2. Markdown *(Minimal)* [Tutorial](https://guides.github.com/features/mastering-markdown/)
+3. JSON *(Proficient)* [Tutorial](https://www.w3schools.com/js/js_json_intro.asp)
+4. Dart/Flutter. *(Proficient or Expert)* [Tutorial](https://flutter.dev/docs/reference/tutorials)
+5. Node.js *(Proficient)* [Tutorial](https://www.w3schools.com/nodejs/)
+6. Be familiar with Android Studio [Link](https://developer.android.com/studio)
+7. Be familiar with XCode [Link](https://developer.apple.com/xcode/)
+
 Good to also know:
-8. Java
-9. Kotlin
-10. Objective C
-11. Swift
-12. Ruby
+8. Java [Link](https://www.java.com/)
+9. Kotlin [Link] (https://kotlinlang.org/)
+10. Objective-C [Link](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html)
+11. Swift [Link](https://developer.apple.com/swift/)
 
 To contribute to unit tests (for the repo)
-1. Git *Level: Proficient* [Tutorial]()
-2. Markdown *Level: Minimal* [Tutorial]()
-3. JSON *Level: Proficient* [Tutorial]()
-4. YAML *Level: Proficient or Expert* [Tutorial]()
-5. Node.js *Level: Proficient* [Tutorial]()
-6. Jasmine *Level: Proficient* [Tutorial]()
+1. Git *(Proficient)* [Tutorial](https://guides.github.com/introduction/git-handbook/)
+2. Markdown *(Minimal)* [Tutorial](https://guides.github.com/features/mastering-markdown/)
+3. JSON *(Proficient)* [Tutorial](https://www.w3schools.com/js/js_json_intro.asp)
+4. YAML *(Minimal)* [Tutorial](https://yaml.org/)
+5. Node.js *(Proficient)* [Tutorial](https://www.w3schools.com/nodejs/)
+5. Jasmine *(Proficient)* [Link](https://jasmine.github.io/pages/getting_started.html)
 
 ## Steps to Contributing
 
