@@ -20,10 +20,10 @@ Please remember to go through our [Code of Conduct](https://github.com/sidadvent
 
 Good to also know:
 
-8. Java [Link](https://www.java.com/)
-9. Kotlin [Link] (https://kotlinlang.org/)
+8. Java (https://www.java.com/)
+9. Kotlin (https://kotlinlang.org/)
 10. Objective-C [Link](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html)
-11. Swift [Link](https://developer.apple.com/swift/)
+11. Swift (https://developer.apple.com/swift/)
 
 #### To contribute to unit tests (for the repo)
 1. Git *(Proficient)* [Tutorial](https://guides.github.com/introduction/git-handbook/)
@@ -43,7 +43,7 @@ Good to also know:
   - [Node.js](https://nodejs.org/en/download/) *(Required)*
   - [Flutter/Dart](https://flutter.dev/docs/get-started/install) (You can skip this step if you are only contributing a translation)
 
-4. Install Dev Dependencies on your local machine by navigating to the folder where you cloned the repo, and running the following command:
+4. Install Dev Dependencies on your local machine by navigating to the folder where you cloned the repo, and running the following command (in Terminal/Command Prompt):
 
 ```
 npm install
@@ -51,7 +51,7 @@ npm install
 
 5. Make your code edit/changes using an IDE of your choice. For Flutter/Dart, we recommend [Visual Studio Code]()
 
-6. Run tests by navigating to the folder where you cloned the repo, and running the following command: 
+6. Run tests by navigating to the folder where you cloned the repo, and running the following command  (in Terminal/Command Prompt): 
 
 ```
 npm test
