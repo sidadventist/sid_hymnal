@@ -4,12 +4,12 @@ Please remember to go through our [Code of Conduct](https://github.com/sidadvent
 
 ## What you need to know
 
-To contribute a translation. You can learn as you go.
+#### To contribute a translation. You can learn as you go.
 1. Git *(Minimal)* [Tutorial](https://guides.github.com/introduction/git-handbook/)
 2. Markdown *(Minimal)* [Tutorial](https://guides.github.com/features/mastering-markdown/)
 3. JSON *(Minimal)* [Tutorial](https://www.w3schools.com/js/js_json_intro.asp)
 
-To contribute to the app code and/or unit tests:
+#### To contribute to the app code and/or unit tests:
 1. Git *(Proficient)* [Tutorial](https://guides.github.com/introduction/git-handbook/)
 2. Markdown *(Minimal)* [Tutorial](https://guides.github.com/features/mastering-markdown/)
 3. JSON *(Proficient)* [Tutorial](https://www.w3schools.com/js/js_json_intro.asp)
@@ -19,12 +19,13 @@ To contribute to the app code and/or unit tests:
 7. Be familiar with XCode [Link](https://developer.apple.com/xcode/)
 
 Good to also know:
+
 8. Java [Link](https://www.java.com/)
 9. Kotlin [Link] (https://kotlinlang.org/)
 10. Objective-C [Link](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html)
 11. Swift [Link](https://developer.apple.com/swift/)
 
-To contribute to unit tests (for the repo)
+#### To contribute to unit tests (for the repo)
 1. Git *(Proficient)* [Tutorial](https://guides.github.com/introduction/git-handbook/)
 2. Markdown *(Minimal)* [Tutorial](https://guides.github.com/features/mastering-markdown/)
 3. JSON *(Proficient)* [Tutorial](https://www.w3schools.com/js/js_json_intro.asp)
