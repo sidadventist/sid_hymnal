@@ -60,8 +60,7 @@ class Hymn {
 
   @override
   String toString() {
-    // return this._rawString;
-    return this._title;
+    return this._rawString;
   }
 
   String outputMarkdown() {
