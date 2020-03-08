@@ -1,6 +1,6 @@
 # sid_hymnal 
 
-Please remember to go through our [Code of Conduct](https://github.com/sidadventist/sid_hymnal/blob/patch/CODE_OF_CONDUCT.md) before contributing. 
+Please remember to go through our [Code of Conduct](https://github.com/sidadventist/sid_hymnal/blob/master/CODE_OF_CONDUCT.md) before contributing. 
 
 ## What you need to know
 
