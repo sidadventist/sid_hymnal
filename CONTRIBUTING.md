@@ -59,7 +59,7 @@ npm test
 ``` 
 7. Push you changes to your fork [How?](https://help.github.com/en/github/using-git/pushing-commits-to-a-remote-repository).
 
-8. Open a pull request. [How?](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork).
+8. Create a pull request. [How?](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork).
 
 9. Wait for the reviewers to review your work.
 
@@ -111,14 +111,14 @@ npm test
 ## Contributing to the App
 
 ### Reporting bugs
-To report a bug, [Open a new Issue here](https://github.com/sidadventist/sid_hymnal/issues/new?assignees=&labels=&template=bug_report.md&title=).
+To report a bug, [Create a new Issue here](https://github.com/sidadventist/sid_hymnal/issues/new?assignees=&labels=&template=bug_report.md&title=).
 
 ### Fixing bugs
 To fix a bug in the app, follow the steps below. This will save you from fixing something that has already been fixed or is in the process of getting fixed.
 
 1. Visit the [issues section](https://github.com/sidadventist/sid_hymnal/issues) of this repo. 
 
-2. Check to see if the bug has already been reported. (If the bug has not been reported, [Open a new issue](https://github.com/sidadventist/sid_hymnal/issues/new?assignees=&labels=&template=bug_report.md&title=) and report the bug).
+2. Check to see if the bug has already been reported. (If the bug has not been reported, [Create a new issue](https://github.com/sidadventist/sid_hymnal/issues/new?assignees=&labels=&template=bug_report.md&title=) and report the bug).
 
 3. Open the issue and check to see if no one has already been assigned to work on the issue (bug).
 
@@ -131,7 +131,7 @@ To add a feature, follow the steps below.
 
 1. Visit the [issues section](https://github.com/sidadventist/sid_hymnal/issues) of this repo. 
 
-2. Locate the issue that describes the new feature you would like to implement. (If no issue about the feature exists, [Open a new issue](https://github.com/sidadventist/sid_hymnal/issues/new?assignees=&labels=&template=feature_request.md&title=) and describe the feature you would like).
+2. Locate the issue that describes the new feature you would like to implement. (If no issue about the feature exists, [Create a new issue](https://github.com/sidadventist/sid_hymnal/issues/new?assignees=&labels=&template=feature_request.md&title=) and describe the feature you would like).
 
 3. Open the issue and check to see if no one has already been assigned to work on the issue (new feature).
 
