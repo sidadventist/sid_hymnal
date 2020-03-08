@@ -10,7 +10,7 @@
   "scripts": {
     "dev-device": "flutter run --enable-software-rendering",
     "test": "./node_modules/.bin/jasmine",
-    "build": "flutter build appbundle --release"
+    "build-android": "flutter build appbundle --release"
   },
   "author": "SID Tech Team",
   "license": "Apache-2.0",

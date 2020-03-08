@@ -51,7 +51,7 @@ class _HymnSearchState extends State<HymnSearch> {
                   appLayoutMode == "ios"
                       ? CupertinoTextField(
                           controller: searchTextController,
-                          autofocus: true,
+                          autofocus: false,
                           placeholder: "Search Hymn...",
                           clearButtonMode: OverlayVisibilityMode.editing,
                         )

@@ -70,7 +70,7 @@ npm test
 2. In each languange folder, there should be a `meta.json` file, with the following properties
   - title
   - songs (an object with the number of hymn matched to the title)
-
+  
     Example:
 ```
     {
