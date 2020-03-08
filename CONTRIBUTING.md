@@ -35,11 +35,12 @@ Good to also know:
 
 ## Steps to Contributing
 
-1. Fork of this repo. [How?](). 
+1. Fork of this repo. [How?](https://guides.github.com/activities/forking/). 
 
-2. Clone/download your fork to your machine. [How?]().
+2. Clone/download your fork to your machine. [How?](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository).
 
-3. Install the following Dev Tools.
+3. Download and install the following Dev Tools.
+  - [Git](https://git-scm.com/downloads) *(Required)*
   - [Node.js](https://nodejs.org/en/download/) *(Required)*
   - [Flutter/Dart](https://flutter.dev/docs/get-started/install) (You can skip this step if you are only contributing a translation)
 
@@ -49,16 +50,16 @@ Good to also know:
 npm install
 ```
 
-5. Make your code edit/changes using an IDE of your choice. For Flutter/Dart, we recommend [Visual Studio Code]()
+5. Make your code edit/changes using an IDE of your choice. For Flutter/Dart, we recommend [Visual Studio Code](https://code.visualstudio.com/)
 
 6. Run tests by navigating to the folder where you cloned the repo, and running the following command  (in Terminal/Command Prompt): 
 
 ```
 npm test
 ``` 
-7. Push you changes to your fork [How?]().
+7. Push you changes to your fork [How?](https://help.github.com/en/github/using-git/pushing-commits-to-a-remote-repository).
 
-8. Open a pull request. [How?]().
+8. Open a pull request. [How?](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork).
 
 9. Wait for the reviewers to review your work.
 
@@ -110,16 +111,16 @@ npm test
 ## Contributing to the App
 
 ### Reporting bugs
-To report a bug, [Open a new Issue here]().
+To report a bug, [Open a new Issue here](https://github.com/sidadventist/sid_hymnal/issues/new?assignees=&labels=&template=bug_report.md&title=).
 
 ### Fixing bugs
 To fix a bug in the app, follow the steps below. This will save you from fixing something that has already been fixed or is in the process of getting fixed.
 
-1. Visit the [issues section]() of this repo. 
+1. Visit the [issues section](https://github.com/sidadventist/sid_hymnal/issues) of this repo. 
 
-2. Check to see if the bug has already been reported. (If the bug has not been reported, [Open a new issue]() and report the bug).
+2. Check to see if the bug has already been reported. (If the bug has not been reported, [Open a new issue](https://github.com/sidadventist/sid_hymnal/issues/new?assignees=&labels=&template=bug_report.md&title=) and report the bug).
 
-3. Open the issue and check to see if no one has already been assigned to work on the issue (bug). [How?]().
+3. Open the issue and check to see if no one has already been assigned to work on the issue (bug).
 
 4. If no one is assigned, use the comment section of the issue to inform the maintainers that you wish to work on the issue. 
 
@@ -128,11 +129,11 @@ To fix a bug in the app, follow the steps below. This will save you from fixing 
 ### Adding features/functionality
 To add a feature, follow the steps below.
 
-1. Visit the [issues section]() of this repo. 
+1. Visit the [issues section](https://github.com/sidadventist/sid_hymnal/issues) of this repo. 
 
-2. Locate the issue that describes the new feature you would like to implement. (If no issue about the feature exists, [Open a new issue]() and describe the feature you would like).
+2. Locate the issue that describes the new feature you would like to implement. (If no issue about the feature exists, [Open a new issue](https://github.com/sidadventist/sid_hymnal/issues/new?assignees=&labels=&template=feature_request.md&title=) and describe the feature you would like).
 
-3. Open the issue and check to see if no one has already been assigned to work on the issue (new feature). [How?]().
+3. Open the issue and check to see if no one has already been assigned to work on the issue (new feature).
 
 4. If no one is assigned, use the comment section of the issue to inform the maintainers that you wish to work on the issue. 
 
