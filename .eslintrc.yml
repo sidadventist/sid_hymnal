@@ -1,0 +1,14 @@
+env:
+  es6: true
+  node: true
+  jasmine: true
+extends:
+  - google
+plugins:
+  - jasmine
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+parserOptions:
+  ecmaVersion: 2018
+rules: {}
