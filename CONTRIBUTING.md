@@ -15,15 +15,15 @@ Please remember to go through our [Code of Conduct](https://github.com/sidadvent
 3. JSON *(Proficient)* [Tutorial](https://www.w3schools.com/js/js_json_intro.asp)
 4. Dart/Flutter. *(Proficient or Expert)* [Tutorial](https://flutter.dev/docs/reference/tutorials)
 5. Node.js *(Proficient)* [Tutorial](https://www.w3schools.com/nodejs/)
-6. Be familiar with Android Studio [Link](https://developer.android.com/studio)
-7. Be familiar with XCode [Link](https://developer.apple.com/xcode/)
+6. Be familiar with [Android Studio](https://developer.android.com/studio)
+7. Be familiar with [XCode](https://developer.apple.com/xcode/)
 
 Good to also know:
 
-8. Java (https://www.java.com/)
-9. Kotlin (https://kotlinlang.org/)
-10. Objective-C [Link](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html)
-11. Swift (https://developer.apple.com/swift/)
+8. [Java](https://www.java.com/)
+9. [Kotlin](https://kotlinlang.org/)
+10. [Objective-C](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html)
+11. [Swift](https://developer.apple.com/swift/)
 
 #### To contribute to unit tests (for the repo)
 1. Git *(Proficient)* [Tutorial](https://guides.github.com/introduction/git-handbook/)
