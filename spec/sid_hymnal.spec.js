@@ -109,7 +109,7 @@ describe('SID_Hymnal', () => {
           expect(Object.keys(metaData)).toContain('songs');
         });
 
-        it(`Must have 300 songs in "meta.json" songs key`, () => {
+        it(`Must have at least 300 songs in "meta.json" songs key`, () => {
           const rawdata = fs.readFileSync(`${assetsDirPath}/hymns/${file}/meta.json`);
           const metaData = JSON.parse(rawdata);
           expect(metaData).toBeDefined();
@@ -178,7 +178,7 @@ describe('SID_Hymnal', () => {
             });
           }
         });
-        it(`Must contain 300 lyric markdown files`, () => {
+        it(`Must contain lyric markdown files for each entry in "meta.json" `, () => {
           const lyricFileList = [];
           subFolderContents.forEach((subfile) => {
             if (!(subfile.toLowerCase() == '.ds_store') && !(subfile.toLowerCase() == 'thumbs.db') && !(subfile.toLowerCase() == 'meta.json')) {
@@ -189,7 +189,10 @@ describe('SID_Hymnal', () => {
               }
             }
           });
-          expect(lyricFileList.length).toEqual(300);
+          const rawdata = fs.readFileSync(`${assetsDirPath}/hymns/${file}/meta.json`);
+          const metaData = JSON.parse(rawdata);
+          expect(metaData).toBeDefined();
+          expect(lyricFileList.length).toEqual(Object.keys(metaData['songs']).length);
         });
       });
     });
