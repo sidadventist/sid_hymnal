@@ -35,9 +35,10 @@ Good to also know:
 
 ## Steps to Contributing
 
-1. Fork of this repo. [How?](https://guides.github.com/activities/forking/). 
+1. Fork of this repo. [How?](https://guides.github.com/activities/forking/#fork) 
 
-2. Clone/download your fork to your machine. [How?](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository).
+2. Clone/download your fork to your machine. [How?](https://guides.github.com/activities/forking/#clone) 
+    - [Supplementary Reading](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository)
 
 3. Download and install the following Dev Tools.
   - [Git](https://git-scm.com/downloads) *(Required)*
@@ -57,15 +58,21 @@ npm install
 ```
 npm test
 ``` 
-7. Push you changes to your fork [How?](https://help.github.com/en/github/using-git/pushing-commits-to-a-remote-repository).
+   **BEFORE Creating a Pull Request, please ensure that you have run the above command to test your code/contribution first**
 
-8. Create a pull request. [How?](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork).
+7. Push you changes to your fork [How?](https://guides.github.com/activities/forking/#making-changes)
+
+    - [Supplementary Reading](https://help.github.com/en/github/using-git/pushing-commits-to-a-remote-repository)
+
+8. Create a pull request. [How?](https://guides.github.com/activities/forking/#making-a-pull-request)
+
+    - [Supplementary Reading](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork)
 
 9. Wait for the reviewers to review your work.
 
 ## Contributing Hymn Translations
 
-1. Hymns are located in the `assets/hymns/{language}` folder. The language folder name must use ISO 639-1 Format.
+1. Hymns are located in the `assets/hymns/{language}` folder. The language folder name must use [ISO 639-1 Format](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
 
 2. In each languange folder, there should be a `meta.json` file, with the following properties
   - title
