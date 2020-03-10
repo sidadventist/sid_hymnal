@@ -3,8 +3,8 @@
 SID Seventh-day Adventist Hymnal
 
 #### Developer Versions:
-- [View on Google Play](https://play.google.com/apps/testing/com.sidadventist.sid_hymnal)
-- [View on App Store]() 
+- [Join Android Testers](https://play.google.com/apps/testing/com.sidadventist.sid_hymnal)
+- [Join iOS Testers](https://testflight.apple.com/join/v1YATYEr) 
 
 ## Screenshots
 
