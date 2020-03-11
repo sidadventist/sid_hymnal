@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
 
   selfInit() async {
     hymnList = await getHymnList();
-
+    cIStoAH = await getCIStoAH();
     //get last viewed hymn
     _currentHymnNumber = globalUserSettings.getLastHymnNumber();
 

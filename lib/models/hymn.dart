@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:sid_hymnal/common/shared_methods.dart';
+import 'package:sid_hymnal/main.dart';
 
 class Hymn {
   int _number;
@@ -25,7 +26,8 @@ class Hymn {
         if (parts[i].substring(0, 3) != "## ") {
           throw ("Title does not start with ## and a space");
         }
-        _srcTitle = "$hymnNumber ${parts[i].substring(2, parts[i].length)}";
+        String ahNumber = cIStoAH["$hymnNumber"] != null ? "(AH "+cIStoAH["$hymnNumber"]+")" : "";
+        _srcTitle = "$hymnNumber ${parts[i].substring(2, parts[i].length)} $ahNumber";
         continue;
       }
 
