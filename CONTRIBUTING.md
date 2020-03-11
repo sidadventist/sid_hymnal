@@ -1,15 +1,41 @@
 # sid_hymnal 
 
 Please remember to go through our [Code of Conduct](https://github.com/sidadventist/sid_hymnal/blob/master/CODE_OF_CONDUCT.md) before contributing. 
+## Jump to Section
 
-## What you need to know
+[I. What you need to know](#i-what-you-need-to-know)
+
+[II. Steps to Contributing](#ii-steps-to-contributing)
+
+[III. Contributing Spellings and Grammar Corrections](#iii-contributing-spellings-and-grammar-corrections)
+
+[IV. Contributing Hymn Translations](#iv-contributing-hymn-translations)
+
+[V. Contributing to the App](#v-contributing-to-the-app)
+
+  - [Reporting Bugs](#reporting-bugs)
+  - [Fixing bugs]("fixing-bugs)
+  - [Adding features/functionality](#adding-featuresfunctionality)
+
+
+## I. What you need to know
 
 #### To contribute a translation. You can learn as you go.
+
+<details>
+    <summary>To contribute a translation. (You can learn as you go):</summary>
+
+#### To contribute a translation. (You can learn as you go):
 1. Git *(Minimal)* [Tutorial](https://guides.github.com/introduction/git-handbook/)
 2. Markdown *(Minimal)* [Tutorial](https://guides.github.com/features/mastering-markdown/)
 3. JSON *(Minimal)* [Tutorial](https://www.w3schools.com/js/js_json_intro.asp)
 
-#### To contribute to the app code and/or unit tests:
+</details>
+
+<details>
+    <summary>To contribute to the app code and/or unit tests:</summary>
+    
+#### To contribute to the app code and/or unit tests:   
 1. Git *(Proficient)* [Tutorial](https://guides.github.com/introduction/git-handbook/)
 2. Markdown *(Minimal)* [Tutorial](https://guides.github.com/features/mastering-markdown/)
 3. JSON *(Proficient)* [Tutorial](https://www.w3schools.com/js/js_json_intro.asp)
@@ -25,6 +51,12 @@ Good to also know:
 10. [Objective-C](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html)
 11. [Swift](https://developer.apple.com/swift/)
 
+</details>
+
+
+<details>
+    <summary>To contribute to unit tests (for the repo):</summary>
+    
 #### To contribute to unit tests (for the repo)
 1. Git *(Proficient)* [Tutorial](https://guides.github.com/introduction/git-handbook/)
 2. Markdown *(Minimal)* [Tutorial](https://guides.github.com/features/mastering-markdown/)
@@ -33,7 +65,9 @@ Good to also know:
 5. Node.js *(Proficient)* [Tutorial](https://www.w3schools.com/nodejs/)
 5. Jasmine *(Proficient)* [Link](https://jasmine.github.io/pages/getting_started.html)
 
-## Steps to Contributing
+</details>
+
+## II. Steps to Contributing
 
 1. Fork of this repo. [How?](https://guides.github.com/activities/forking/#fork) 
 
@@ -70,7 +104,17 @@ npm test
 
 9. Wait for the reviewers to review your work.
 
-## Contributing Hymn Translations
+## III. Contributing Spellings and Grammar Corrections
+
+There are two ways you can use to correct spellings and/or grammar in the Lyrics.
+
+A. You can locate the hymn file and edit it right in the browser.
+
+B. You can manually fork this repo, clone it on your local machine, locate the hymn file(s) and edit.
+
+Hymns are located in the `assets/hymns/{language}` folder.
+
+## IV. Contributing Hymn Translations
 
 1. Hymns are located in the `assets/hymns/{language}` folder. The language folder name must use [ISO 639-1 Format](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
 
@@ -115,7 +159,7 @@ npm test
   - Neither verses nor choruses should start with white-space or indentation
 
 
-## Contributing to the App
+## V. Contributing to the App
 
 ### Reporting bugs
 To report a bug, [Create a new Issue here](https://github.com/sidadventist/sid_hymnal/issues/new?assignees=&labels=&template=bug_report.md&title=).
