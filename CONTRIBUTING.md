@@ -20,8 +20,6 @@ Please remember to go through our [Code of Conduct](https://github.com/sidadvent
 
 ## I. What you need to know
 
-#### To contribute a translation. You can learn as you go.
-
 <details>
     <summary>To contribute a translation. (You can learn as you go):</summary>
 
