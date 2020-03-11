@@ -14,7 +14,6 @@ import 'android/languages_page.dart';
 import 'android/settings_page.dart';
 import 'core/hymn_keypad.dart';
 import 'core/my_favorites.dart';
-import 'ios/bottom_picker.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -38,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   static final GlobalKey<NavigatorState> firstTabNavKey = new GlobalKey<NavigatorState>();
   static final GlobalKey<NavigatorState> secondTabNavKey = new GlobalKey<NavigatorState>();
   static final GlobalKey<NavigatorState> thirdTabNavKey = new GlobalKey<NavigatorState>();
-  List<String> choices = <String>["Share", "Add to Favorites", "Dark Mode"];
+  List<String> choices = <String>["Play Audio", "Add to Favorites", "Dark Mode", "Share"];
 
   selfInit() async {
     hymnList = await getHymnList();
@@ -115,6 +114,24 @@ class _HomePageState extends State<HomePage> {
             toggleNightMode();
           }
           break;
+        case "Play Audio":
+          {
+            if (this._isPlayingAudio) {
+              audioPlayerInstance.stop();
+              setState(() {
+                this._isPlayingAudio = false;
+              });
+              audioPlayer.clearCache();
+            } else {
+              audioPlayer.play(this._currentHymnData.getAudioPath()).then((player) {
+                setState(() {
+                  this._isPlayingAudio = true;
+                });
+                audioPlayerInstance = player;
+              });
+            }
+          }
+          break;
         default:
           {
             print("Invalid choice");
@@ -139,31 +156,7 @@ class _HomePageState extends State<HomePage> {
                                     padding: EdgeInsets.all(0),
                                     child: Icon(IconData(0xf4d2, fontFamily: CupertinoIcons.iconFont, fontPackage: CupertinoIcons.iconFontPackage)),
                                     onPressed: () async {
-                                      int currentLanguage = globalLanguageList.keys.toList().indexOf(globalUserSettings.getLanguage());
-                                      final FixedExtentScrollController scrollController = FixedExtentScrollController(initialItem: currentLanguage);
-
-                                      await showCupertinoModalPopup<void>(
-                                        context: context,
-                                        // semanticsDismissible: true,
-                                        builder: (BuildContext context) {
-                                          return BottomPicker(
-                                            child: CupertinoPicker(
-                                              scrollController: scrollController,
-                                              itemExtent: kPickerItemHeight,
-                                              backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
-                                              onSelectedItemChanged: (int index) {
-                                                globalUserSettings.setLanguage(globalLanguageList[globalLanguageList.keys.toList()[index]].languageCode);
-                                              },
-                                              children: List<Widget>.generate(globalLanguageList.length, (int index) {
-                                                return Center(
-                                                  child: Text(globalLanguageList[globalLanguageList.keys.toList()[index]].language),
-                                                );
-                                              }),
-                                            ),
-                                          );
-                                        },
-                                      );
-
+                                      await showLanguageActions(context);
                                       setState(() {
                                         _isLoading = true;
                                       });
@@ -270,24 +263,24 @@ class _HomePageState extends State<HomePage> {
                 BottomNavigationBarItem(icon: Icon(CupertinoIcons.settings), title: Text("Settings"), activeIcon: Icon(CupertinoIcons.settings_solid))
               ],
               onTap: (index) {
-                 if (currentIndex == index) { 
-                switch (index) {
-                  case 0:
-                    if (firstTabNavKey.currentState != null) {
-                      firstTabNavKey.currentState.popUntil((r) => r.isFirst);
-                    }
-                    break;
-                  case 1:
-                    if (secondTabNavKey.currentState != null) {
-                      secondTabNavKey.currentState.popUntil((r) => r.isFirst);
-                    }
-                    break;
-                  case 2:
-                    if (thirdTabNavKey.currentState != null) {
-                      thirdTabNavKey.currentState.popUntil((r) => r.isFirst);
-                    }
-                    break;
-                }
+                if (currentIndex == index) {
+                  switch (index) {
+                    case 0:
+                      if (firstTabNavKey.currentState != null) {
+                        firstTabNavKey.currentState.popUntil((r) => r.isFirst);
+                      }
+                      break;
+                    case 1:
+                      if (secondTabNavKey.currentState != null) {
+                        secondTabNavKey.currentState.popUntil((r) => r.isFirst);
+                      }
+                      break;
+                    case 2:
+                      if (thirdTabNavKey.currentState != null) {
+                        thirdTabNavKey.currentState.popUntil((r) => r.isFirst);
+                      }
+                      break;
+                  }
                 }
                 currentIndex = index;
               },
@@ -298,6 +291,7 @@ class _HomePageState extends State<HomePage> {
             appBar: AppBar(
               title: Text("SID Hymnal"),
               actions: <Widget>[
+                /*
                 IconButton(
                   icon: this._isPlayingAudio == true ? Icon(Icons.stop) : Icon(Icons.play_arrow),
                   onPressed: this._currentHymnData != null && this._currentHymnData.hasAudio()
@@ -319,6 +313,7 @@ class _HomePageState extends State<HomePage> {
                         }
                       : null,
                 ),
+                */
                 IconButton(
                   icon: Icon(Icons.search),
                   onPressed: hymnList.length < 1
@@ -331,6 +326,12 @@ class _HomePageState extends State<HomePage> {
                           _currentHymnNumber = newNumber;
                           renderHymn();
                         },
+                ),
+                IconButton(
+                  icon: Icon(Icons.translate),
+                  onPressed: () {
+                    _displayLanguagesPage(context);
+                  },
                 ),
                 PopupMenuButton<String>(
                   onCanceled: () {
@@ -347,6 +348,12 @@ class _HomePageState extends State<HomePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[Text(choice), Checkbox(activeColor: Colors.green, value: globalUserSettings.isNightMode(), onChanged: null)],
                             ),
+                          );
+                          break;
+                        case "Play Audio":
+                          return PopupMenuItem<String>(
+                            value: choice,
+                            child: Text(this._isPlayingAudio ? "Stop Audio" : "Play Audio"),
                           );
                           break;
                         case "Add to Favorites":
@@ -378,7 +385,7 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 DrawerHeader(
                   decoration: BoxDecoration(color: Colors.white, image: DecorationImage(image: AssetImage("assets/header.jpg"), fit: BoxFit.cover)),
-                  child:Container(),
+                  child: Container(),
                 ),
                 ListTile(
                     title: Text("Home"),
@@ -418,7 +425,6 @@ class _HomePageState extends State<HomePage> {
                 : PageView.builder(
                     controller: _controller,
                     onPageChanged: (int index) async {
-
                       this._currentHymnNumber = index + 1;
                       renderHymn();
                       lazyLoad(index);
@@ -474,7 +480,7 @@ class _HomePageState extends State<HomePage> {
     hymnList = await getHymnList();
     _pages.clear();
     renderHymn();
-    lazyLoad(this._currentHymnNumber -1);
+    lazyLoad(this._currentHymnNumber - 1);
   }
 
   callMarkAsFavorite(int hymnNumber) async {
@@ -530,14 +536,14 @@ class _HomePageState extends State<HomePage> {
     bool pageAdded = false;
 
     // next page
-    if (!_pages.containsKey(hymnNumber + 1) && (hymnNumber+1) < hymnList.length) {
+    if (!_pages.containsKey(hymnNumber + 1) && (hymnNumber + 1) < hymnList.length) {
       Hymn hymn = await Hymn.create((hymnNumber + 2), globalUserSettings.getLanguage());
 
       _pages.putIfAbsent((hymnNumber + 1), () => hymn);
       pageAdded = true;
     }
     //prev page
-    if (!_pages.containsKey(hymnNumber - 1) && hymnNumber > 1) {
+    if (!_pages.containsKey(hymnNumber - 1) && hymnNumber > 0) {
       Hymn hymn = await Hymn.create((hymnNumber), globalUserSettings.getLanguage());
       _pages.putIfAbsent((hymnNumber - 1), () => hymn);
       pageAdded = true;
