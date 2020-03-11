@@ -10,7 +10,10 @@ thumbs.db
 .buildlog/
 .history
 .svn/
+.apk
+.aab
 
+#Node JS
 node_modules
 
 # IntelliJ related
