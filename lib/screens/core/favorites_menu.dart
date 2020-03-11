@@ -53,23 +53,25 @@ Future<int> displayFavoritesContextMenu(BuildContext context, int hymnNumber) as
     var res = await showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
-          title: Text(hymnList[hymnNumber-1]),
+          // title: Text(hymnList[hymnNumber-1]),
           actions: <Widget>[
             CupertinoActionSheetAction(
               child: const Text('Delete'),
+              isDestructiveAction: true,
               onPressed: () {
                 unmarkAsFavorite(hymnNumber);
                 Navigator.pop(context, true);
               },
             ),
-          ],
-          cancelButton: CupertinoActionSheetAction(
+            CupertinoActionSheetAction(
             child: const Text('Cancel'),
             isDefaultAction: true,
             onPressed: () {
               Navigator.pop(context, false);
             },
-          )),
+          )
+          ],
+         ),
     );
 
     if (res != null && res !=false) {

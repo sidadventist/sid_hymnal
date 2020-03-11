@@ -10,6 +10,7 @@ class HymnSearch extends StatefulWidget {
 
 class _HymnSearchState extends State<HymnSearch> {
   bool isLoading = true;
+  bool _includeLyricsSearch = false;
   String filter;
   TextEditingController searchTextController = new TextEditingController();
 
@@ -55,13 +56,28 @@ class _HymnSearchState extends State<HymnSearch> {
                           placeholder: "Search Hymn...",
                           clearButtonMode: OverlayVisibilityMode.editing,
                         )
-                      : TextField(
-                          controller: searchTextController,
-                          autofocus: true,
-                          textAlign: TextAlign.left,
-                          decoration: InputDecoration(
-                            hintText: 'Search Hymn...',
-                          ),
+                      : Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            TextField(
+                              controller: searchTextController,
+                              autofocus: true,
+                              textAlign: TextAlign.left,
+                              decoration: InputDecoration(
+                                hintText: 'Search Hymn...',
+                              ),
+                            ),
+                            ListTile(
+                              leading: Checkbox(value: _includeLyricsSearch, 
+                              onChanged: (value){
+                                setState(() {
+                                  _includeLyricsSearch = value;
+                                });
+                              }
+                              ),
+                              title: Text("Search in Lyrics"),
+                            )
+                          ],
                         ),
                   new Expanded(
                     child: new ListView.builder(

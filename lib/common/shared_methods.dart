@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share/share.dart';
@@ -135,7 +136,7 @@ Future<List<dynamic>> getFavoriteHymns() async {
   return currentFavorites.reversed.toList();
 }
 
-Future<List>getHymnList() async {
+Future<List> getHymnList() async {
   String rawMeta = await rootBundle.loadString('assets/hymns/${globalUserSettings.getLanguage()}/meta.json');
   List<String> tmpList = new List();
 
@@ -146,6 +147,27 @@ Future<List>getHymnList() async {
     }
     tmpList.add("$i" + ". " + songList["$i"]);
   }
- 
+
   return tmpList;
+}
+
+Future<void> showLanguageActions(BuildContext context) async {
+  await showCupertinoModalPopup<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return CupertinoActionSheet(
+        title: Text("Switch Language"),
+        actions: List<Widget>.generate(globalLanguageList.length, (int index) {
+          return CupertinoActionSheetAction(
+            child: Text(globalLanguageList[globalLanguageList.keys.toList()[index]].language, style: TextStyle(color: Colors.black)),
+            isDefaultAction: globalUserSettings.getLanguage() == globalLanguageList[globalLanguageList.keys.toList()[index]].languageCode ? true : false,
+            onPressed: () {
+              globalUserSettings.setLanguage(globalLanguageList[globalLanguageList.keys.toList()[index]].languageCode);
+              Navigator.of(context).pop(true);
+            },
+          );
+        }),
+      );
+    },
+  );
 }

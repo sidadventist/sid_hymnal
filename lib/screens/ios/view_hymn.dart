@@ -5,7 +5,6 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:sid_hymnal/common/shared_methods.dart';
 import 'package:sid_hymnal/models/hymn.dart';
 import '../../main.dart';
-import 'bottom_picker.dart';
 
 class ViewHymn extends StatefulWidget {
   final int _hymnNumber;
@@ -72,6 +71,7 @@ class _ViewHymnState extends State<ViewHymn> {
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              /*
               CupertinoButton(
                 padding: EdgeInsets.all(0),
                 child: this._isPlayingAudio == true ? Icon(CupertinoIcons.pause_solid) : Icon(CupertinoIcons.play_arrow_solid),
@@ -96,6 +96,7 @@ class _ViewHymnState extends State<ViewHymn> {
                           }
                         : null,
               ),
+              */
               CupertinoButton(
                 padding: EdgeInsets.all(0),
                 child: Icon(_isFavorite ? CupertinoIcons.heart_solid : CupertinoIcons.heart),
@@ -124,30 +125,8 @@ class _ViewHymnState extends State<ViewHymn> {
                   padding: EdgeInsets.all(0),
                   child: Icon(IconData(0xf4d2, fontFamily: CupertinoIcons.iconFont, fontPackage: CupertinoIcons.iconFontPackage)),
                   onPressed: () async {
-                    int currentLanguage = globalLanguageList.keys.toList().indexOf(globalUserSettings.getLanguage());
-                    final FixedExtentScrollController scrollController = FixedExtentScrollController(initialItem: currentLanguage);
-
-                    await showCupertinoModalPopup<void>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return BottomPicker(
-                          child: CupertinoPicker(
-                            scrollController: scrollController,
-                            itemExtent: kPickerItemHeight,
-                            backgroundColor: CupertinoColors.systemBackground.resolveFrom(context),
-                            onSelectedItemChanged: (int index) {
-                              globalUserSettings.setLanguage(globalLanguageList[globalLanguageList.keys.toList()[index]].languageCode);
-                            },
-                            children: List<Widget>.generate(globalLanguageList.length, (int index) {
-                              return Center(
-                                child: Text(globalLanguageList[globalLanguageList.keys.toList()[index]].language),
-                              );
-                            }),
-                          ),
-                        );
-                      },
-                    );
-
+                    await showLanguageActions(context);
+                    hymnList = await getHymnList();
                     int currentHymnNumber = this._currentHymn.getNumber();
                     _pages.clear();
                     setState(() {

@@ -116,7 +116,7 @@ class _MySettingsState extends State<MySettings> {
           ListTile(
             leading: appLayoutMode == "ios" ? Icon(CupertinoIcons.info) : Icon(Icons.info),
             title: Text("Version"),
-            subtitle: Text("1.0.7"),
+            subtitle: Text("1.0.8"),
           ),
           appLayoutMode == "ios" ? Divider() : Container(),
           ListTile(
