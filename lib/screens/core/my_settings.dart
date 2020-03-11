@@ -92,6 +92,28 @@ class _MySettingsState extends State<MySettings> {
                   subtitle: Text("Light text on dark background"),
                 )
               : Container(),
+
+          Divider(), 
+          Container(
+            padding: EdgeInsets.only(left: 16, top: 16),
+            child: Text(
+              "English Hymnal Version",
+            ),
+          ),  
+          RadioListTile(
+            value: "cis",
+            groupValue: "cis",
+            title: Text("Christ in Song"),
+            onChanged: (language) async {
+            },
+          ),    
+          RadioListTile(
+            value: "ah",
+            groupValue: "cis",
+            title: Text("Adventist Hymnal"),
+            onChanged: (language) async {
+            },
+          ),     
           Divider(),
           ListTile(
             leading: appLayoutMode == "ios" ? Icon(CupertinoIcons.bell) : Icon(Icons.notifications),
@@ -103,7 +125,7 @@ class _MySettingsState extends State<MySettings> {
                 : Checkbox(value: true, onChanged: null),
             title: Text("SID Announcements"),
             subtitle: Text("Get notified on SID events/announcements"),
-          ),
+          ), 
           Divider(),
           Container(
             padding: EdgeInsets.only(left: 16, top: 16),
