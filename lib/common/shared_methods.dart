@@ -151,6 +151,14 @@ Future<List> getHymnList() async {
   return tmpList;
 }
 
+Future<Map<dynamic, dynamic>> getCIStoAH() async {
+  String rawMeta = await rootBundle.loadString('assets/cis-ah.json');
+
+  Map<dynamic, dynamic> songList = json.decode(rawMeta);
+
+  return songList;
+}
+
 Future<void> showLanguageActions(BuildContext context) async {
   await showCupertinoModalPopup<void>(
     context: context,

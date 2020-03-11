@@ -9,6 +9,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'models/hymnal.dart';
 
 List<String> hymnList = new List();
+Map<String, dynamic> cIStoAH = {};
 Map<String, Hymnal> globalLanguageList = {};
 String appLayoutMode = "android";
 UserSettings globalUserSettings;
