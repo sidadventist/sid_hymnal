@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_version/get_version.dart';
 import 'package:sid_hymnal/common/shared_prefs.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:sid_hymnal/common/shared_methods.dart';
@@ -14,6 +15,14 @@ class MySettings extends StatefulWidget {
 }
 
 class _MySettingsState extends State<MySettings> {
+  String _version = "";
+
+  @override
+  void initState() {
+    super.initState();
+    getAppVersion();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -104,15 +113,13 @@ class _MySettingsState extends State<MySettings> {
             value: "cis",
             groupValue: "cis",
             title: Text("Christ in Song"),
-            onChanged: (language) async {
-            },
+            onChanged:null,
           ),    
           RadioListTile(
             value: "ah",
             groupValue: "cis",
             title: Text("Adventist Hymnal"),
-            onChanged: (language) async {
-            },
+            onChanged: null,
           ),     
           Divider(),
           ListTile(
@@ -138,7 +145,7 @@ class _MySettingsState extends State<MySettings> {
           ListTile(
             leading: appLayoutMode == "ios" ? Icon(CupertinoIcons.info) : Icon(Icons.info),
             title: Text("Version"),
-            subtitle: Text("1.0.8"),
+            subtitle: Text(_version),
           ),
           appLayoutMode == "ios" ? Divider() : Container(),
           ListTile(
@@ -207,5 +214,15 @@ class _MySettingsState extends State<MySettings> {
         ],
       ),
     );
+  }
+  Future<void> getAppVersion() async {
+    try {
+      String vers = await GetVersion.projectVersion;
+      setState(() {
+        _version = vers;
+      });
+    } catch(e) {
+      _version = 'Unknown';
+    }
   }
 }
