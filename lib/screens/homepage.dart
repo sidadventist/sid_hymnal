@@ -354,6 +354,7 @@ class _HomePageState extends State<HomePage> {
                           return PopupMenuItem<String>(
                             value: choice,
                             child: Text(this._isPlayingAudio ? "Stop Audio" : "Play Audio"),
+                            enabled: this._currentHymnData != null && this._currentHymnData.hasAudio() ? true : false,
                           );
                           break;
                         case "Add to Favorites":

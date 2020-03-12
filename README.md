@@ -6,26 +6,27 @@ SID Seventh-day Adventist Hymnal
 - [Join Android Testers](https://play.google.com/apps/testing/com.sidadventist.sid_hymnal)
 - [Join iOS Testers](https://testflight.apple.com/join/v1YATYEr) 
 
-## Screenshots
-
-![hymn_app](https://user-images.githubusercontent.com/47924887/75007990-6d53a700-547f-11ea-8462-c587aeb475f7.jpg)
-<details>
-  <summary>
-    Click for more screenshots
-  </summary>
-
-![App Search](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/hymn_app_search.jpg)
-  
-![Dark Mode](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/hymn_app_dark.jpg)
-
-![App Settings](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/hymn_app_settings.jpg)
-
-</details>
-
+![Hymn_app](https://raw.githubusercontent.com/sidadventist/sid_hymnal/master/screenshots/hymn_app.jpg)
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/sidadventist/sid_hymnal/blob/master/CONTRIBUTING.md)
+Where can I Start? You can start by visiting the [issues section](https://github.com/sidadventist/sid_hymnal/issues) to see the areas where we need help. [Go to Issues >> ](https://github.com/sidadventist/sid_hymnal/issues) 
 
+You can also use the links below:
+
+ - [I want to add a feature to the app](https://github.com/sidadventist/sid_hymnal/blob/master/CONTRIBUTING.md#adding-featuresfunctionality)
+ - [I want to help fix a problem in the app](https://github.com/sidadventist/sid_hymnal/issues) 
+ - [I want to report a problem](https://github.com/sidadventist/sid_hymnal/issues/new?assignees=&labels=&template=bug_report.md&title=)
+ - [I want to suggest a new feature](https://github.com/sidadventist/sid_hymnal/issues/new?assignees=&labels=&template=feature_request.md&title=)
+ - [I want to add a translation](https://github.com/sidadventist/sid_hymnal/blob/master/CONTRIBUTING.md#iv-contributing-hymn-translations)
+ - [I want edit, correct Lyrics](https://github.com/sidadventist/sid_hymnal/blob/master/CONTRIBUTING.md#iii-contributing-spellings-and-grammar-corrections)
+ - [I want to join the app testers](https://github.com/sidadventist/sid_hymnal/blob/master/CONTRIBUTING.md#joining-the-beta-testers)
+ - I want to write, edit or add to the repo documentation
+   - [Contributing.md](https://github.com/sidadventist/sid_hymnal/edit/master/CONTRIBUTING.md)
+   - [Readme.md](https://github.com/sidadventist/sid_hymnal/edit/master/README.md)
+   - [Privacy.md](https://github.com/sidadventist/sid_hymnal/edit/master/PRIVACY.md)
+
+
+Please read [CONTRIBUTING.md](https://github.com/sidadventist/sid_hymnal/blob/master/CONTRIBUTING.md)
 
 

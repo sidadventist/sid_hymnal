@@ -1,6 +1,6 @@
 name: sid_hymnal
 description: SID Seventh-day Adventist Hymnal
-version: 1.0.10+10
+version: 1.0.12+12
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -22,6 +22,8 @@ dependencies:
   onesignal_flutter: ^2.0.0
 
   share: ^0.6.3+5
+
+  get_version: ^0.2.1
 
 dev_dependencies:
   flutter_test:
