@@ -165,6 +165,13 @@ Hymns are located in the `assets/hymns/{language}` folder.
 
 ## V. Contributing to the App
 
+### Joining the Beta Testers
+
+You can join the Beta program to test the unreleased version of the app so you can test features and provide feedback.
+
+- [Join Android Testers](https://play.google.com/apps/testing/com.sidadventist.sid_hymnal)
+- [Join iOS Testers](https://testflight.apple.com/join/v1YATYEr) 
+
 ### Reporting bugs
 To report a bug, [Create a new Issue here](https://github.com/sidadventist/sid_hymnal/issues/new?assignees=&labels=&template=bug_report.md&title=).
 
