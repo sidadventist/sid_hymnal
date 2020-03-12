@@ -167,7 +167,7 @@ Future<void> showLanguageActions(BuildContext context) async {
         title: Text("Switch Language"),
         actions: List<Widget>.generate(globalLanguageList.length, (int index) {
           return CupertinoActionSheetAction(
-            child: Text(globalLanguageList[globalLanguageList.keys.toList()[index]].language, style: TextStyle(color: Colors.black)),
+            child: Text(globalLanguageList[globalLanguageList.keys.toList()[index]].language),
             isDefaultAction: globalUserSettings.getLanguage() == globalLanguageList[globalLanguageList.keys.toList()[index]].languageCode ? true : false,
             onPressed: () {
               globalUserSettings.setLanguage(globalLanguageList[globalLanguageList.keys.toList()[index]].languageCode);
