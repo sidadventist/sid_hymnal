@@ -20,20 +20,24 @@ Please remember to go through our [Code of Conduct](https://github.com/sidadvent
 
 ## I. What you need to know
 
-<details>
-    <summary>To contribute a translation. (You can learn as you go):</summary>
 
 #### To contribute a translation. (You can learn as you go):
+
+<details>
+    <summary>Click here for Details...</summary>
+
+
 1. Git *(Minimal)* [Tutorial](https://guides.github.com/introduction/git-handbook/)
 2. Markdown *(Minimal)* [Tutorial](https://guides.github.com/features/mastering-markdown/)
 3. JSON *(Minimal)* [Tutorial](https://www.w3schools.com/js/js_json_intro.asp)
 
 </details>
 
-<details>
-    <summary>To contribute to the app code and/or unit tests:</summary>
-    
 #### To contribute to the app code and/or unit tests:   
+<details>
+    <summary>Click here for Details...</summary>
+    
+    
 1. Git *(Proficient)* [Tutorial](https://guides.github.com/introduction/git-handbook/)
 2. Markdown *(Minimal)* [Tutorial](https://guides.github.com/features/mastering-markdown/)
 3. JSON *(Proficient)* [Tutorial](https://www.w3schools.com/js/js_json_intro.asp)
@@ -52,10 +56,12 @@ Good to also know:
 </details>
 
 
-<details>
-    <summary>To contribute to unit tests (for the repo):</summary>
     
 #### To contribute to unit tests (for the repo)
+<details>
+    <summary>Click here for Details...</summary>
+  
+  
 1. Git *(Proficient)* [Tutorial](https://guides.github.com/introduction/git-handbook/)
 2. Markdown *(Minimal)* [Tutorial](https://guides.github.com/features/mastering-markdown/)
 3. JSON *(Proficient)* [Tutorial](https://www.w3schools.com/js/js_json_intro.asp)
