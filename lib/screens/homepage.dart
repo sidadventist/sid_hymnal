@@ -92,6 +92,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      platformBrightness = MediaQuery.of(context).platformBrightness;
+    });
+
     void _selectPopupMenuItem(String choice) {
       switch (choice) {
         case "Share":
@@ -148,7 +152,9 @@ class _HomePageState extends State<HomePage> {
                   return CupertinoTabView(
                       navigatorKey: firstTabNavKey,
                       builder: (BuildContext context) => CupertinoPageScaffold(
-                          backgroundColor: globalUserSettings.isNightMode() ? Colors.black87 : Theme.of(context).scaffoldBackgroundColor,
+                          backgroundColor: globalUserSettings.isNightMode() || platformBrightness == Brightness.dark
+                              ? Colors.black
+                              : Theme.of(context).scaffoldBackgroundColor,
                           navigationBar: CupertinoNavigationBar(
                             middle: Text("SID Hymnal"),
                             trailing: index == 0
@@ -180,7 +186,6 @@ class _HomePageState extends State<HomePage> {
                   return CupertinoTabView(
                     navigatorKey: secondTabNavKey,
                     builder: (BuildContext context) => CupertinoPageScaffold(
-                        backgroundColor: globalUserSettings.isNightMode() ? Colors.black87 : Theme.of(context).scaffoldBackgroundColor,
                         navigationBar: CupertinoNavigationBar(
                           middle: Text("Favorites"),
                           trailing: index == 0
@@ -197,13 +202,17 @@ class _HomePageState extends State<HomePage> {
                             ? Center(child: CupertinoActivityIndicator())
                             : SafeArea(
                                 child: Scaffold(
+                                backgroundColor: globalUserSettings.isNightMode() || platformBrightness == Brightness.dark
+                                    ? Colors.black
+                                    : Theme.of(context).scaffoldBackgroundColor,
                                 body: MyFavorites(),
                               ))),
                   );
                   break;
                 case 2:
                   return CupertinoPageScaffold(
-                      backgroundColor: globalUserSettings.isNightMode() ? Colors.black87 : Theme.of(context).scaffoldBackgroundColor,
+                      backgroundColor:
+                          globalUserSettings.isNightMode() || platformBrightness == Brightness.dark ? Colors.black : Theme.of(context).scaffoldBackgroundColor,
                       navigationBar: CupertinoNavigationBar(
                         middle: Text("Settings"),
                         trailing: index == 0
@@ -226,36 +235,6 @@ class _HomePageState extends State<HomePage> {
               }
               return null;
             },
-            /*
-            tabBuilder: (BuildContext context, int index) {
-              return CupertinoTabView(
-                
-                builder: (BuildContext context) {
-                  return CupertinoPageScaffold(
-                      backgroundColor: globalUserSettings.isNightMode() ? Colors.black87 : Theme.of(context).scaffoldBackgroundColor,
-                      navigationBar: CupertinoNavigationBar(
-                        middle: Text(index == 0 ? "SID Hymnal" : index == 1 ? "Favorites" : "Settings"),
-                        trailing: index == 0
-                            ? CupertinoButton(
-                                padding: EdgeInsets.all(0),
-                                child: Icon(IconData(0xf4d2, fontFamily: CupertinoIcons.iconFont, fontPackage: CupertinoIcons.iconFontPackage)),
-                                onPressed: () {
-                                  // shareSong(widget._hymn.toString());
-                                },
-                              )
-                            : null,
-                      ),
-                      child: _isLoading == true
-                          ? Center(child: CupertinoActivityIndicator())
-                          : SafeArea(
-                              child: Scaffold(
-                                  body: index == 0 ? HymnSearch(globalUserSettings.getLanguage()) : index == 1 ? MyFavorites() : MySettings(scaffoldKey)),
-                            ));
-                },
-              );
-            },
-            
-            */
             tabBar: CupertinoTabBar(
               items: [
                 BottomNavigationBarItem(icon: Icon(CupertinoIcons.book), title: Text("Hymns"), activeIcon: Icon(CupertinoIcons.book_solid)),
@@ -346,7 +325,10 @@ class _HomePageState extends State<HomePage> {
                             value: choice,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[Text(choice), Checkbox(activeColor: Colors.green, value: globalUserSettings.isNightMode(), onChanged: null)],
+                              children: <Widget>[
+                                Text(choice),
+                                Checkbox(activeColor: Colors.green, value: globalUserSettings.isNightMode(), onChanged: (value) {})
+                              ],
                             ),
                           );
                           break;
@@ -379,7 +361,8 @@ class _HomePageState extends State<HomePage> {
                 )
               ],
             ),
-            backgroundColor: globalUserSettings.isNightMode() ? Colors.black87 : Theme.of(context).scaffoldBackgroundColor,
+            backgroundColor:
+                globalUserSettings.isNightMode() || platformBrightness == Brightness.dark ? Colors.black : Theme.of(context).scaffoldBackgroundColor,
             drawer: Drawer(
                 child: ListView(
               padding: EdgeInsets.zero,
@@ -504,8 +487,12 @@ class _HomePageState extends State<HomePage> {
     return Markdown(
       data: hymn.outputMarkdown(),
       styleSheet: MarkdownStyleSheet(
-        h2: TextStyle(color: globalUserSettings.isNightMode() ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
-        p: TextStyle(color: globalUserSettings.isNightMode() ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize()).toDouble()),
+        h2: TextStyle(
+            color: globalUserSettings.isNightMode() || platformBrightness == Brightness.dark ? Colors.white : Colors.black,
+            fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
+        p: TextStyle(
+            color: globalUserSettings.isNightMode() || platformBrightness == Brightness.dark ? Colors.white : Colors.black,
+            fontSize: (globalUserSettings.getFontSize()).toDouble()),
         blockSpacing: globalUserSettings.getFontSize().toDouble(),
       ),
     );

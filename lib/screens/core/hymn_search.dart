@@ -67,18 +67,6 @@ class _HymnSearchState extends State<HymnSearch> {
                                 hintText: 'Search Hymn...',
                               ),
                             ),
-                            /*
-                            CheckboxListTile(
-                              value: _includeLyricsSearch,
-                               onChanged: (value){
-                                setState(() {
-                                  _includeLyricsSearch = value;
-                                });
-                              },
-                              title: Text("Search in Lyrics"),
-                            ), 
-                            Divider(),
-                            */
                           ],
                         ),
                   new Expanded(
@@ -88,8 +76,12 @@ class _HymnSearchState extends State<HymnSearch> {
                         return filter == null || filter == ""
                             ? ListTile(
                                 title: cIStoAH["${(index + 1)}"] != null
-                                    ? Text("${hymnList[index]} (AH " + cIStoAH["${(index + 1)}"] + ")")
-                                    : Text(hymnList[index]),
+                                    ? Text(
+                                        "${hymnList[index]} (AH " + cIStoAH["${(index + 1)}"] + ")",
+                                      )
+                                    : Text(
+                                        hymnList[index],
+                                      ),
                                 onTap: () async {
                                   if (appLayoutMode == "ios") {
                                     launchIOSHymnView(index + 1);
@@ -104,8 +96,12 @@ class _HymnSearchState extends State<HymnSearch> {
                                     .contains(filter.toLowerCase())
                                 ? ListTile(
                                     title: cIStoAH["${(index + 1)}"] != null
-                                        ? Text("${hymnList[index]} (AH " + cIStoAH["${(index + 1)}"] + ")")
-                                        : Text(hymnList[index]),
+                                        ? Text(
+                                            "${hymnList[index]} (AH " + cIStoAH["${(index + 1)}"] + ")",
+                                          )
+                                        : Text(
+                                            hymnList[index],
+                                          ),
                                     onTap: () {
                                       if (appLayoutMode == "ios") {
                                         launchIOSHymnView(index + 1);

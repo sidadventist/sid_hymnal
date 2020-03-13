@@ -65,7 +65,7 @@ class _ViewHymnState extends State<ViewHymn> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      backgroundColor: globalUserSettings.isNightMode() ? Colors.black87 : Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: globalUserSettings.isNightMode() || platformBrightness == Brightness.dark ? Colors.black : Theme.of(context).scaffoldBackgroundColor,
       navigationBar: CupertinoNavigationBar(
           middle: Text("SID Hymnal"),
           trailing: Row(
@@ -112,15 +112,6 @@ class _ViewHymnState extends State<ViewHymn> {
                   });
                 },
               ),
-              /*
-              CupertinoButton(
-                padding: EdgeInsets.all(0),
-                child: Icon(globalUserSettings.isNightMode() ? CupertinoIcons.brightness_solid : CupertinoIcons.brightness),
-                onPressed: () {
-                  toggleNightMode();
-                },
-              ),
-              */
               CupertinoButton(
                   padding: EdgeInsets.all(0),
                   child: Icon(IconData(0xf4d2, fontFamily: CupertinoIcons.iconFont, fontPackage: CupertinoIcons.iconFontPackage)),
@@ -183,8 +174,8 @@ class _ViewHymnState extends State<ViewHymn> {
     return Markdown(
       data: hymn.outputMarkdown(),
       styleSheet: MarkdownStyleSheet(
-        h2: TextStyle(color: globalUserSettings.isNightMode() ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
-        p: TextStyle(color: globalUserSettings.isNightMode() ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize()).toDouble()),
+        h2: TextStyle(color: globalUserSettings.isNightMode() || platformBrightness == Brightness.dark ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
+        p: TextStyle(color: globalUserSettings.isNightMode() || platformBrightness == Brightness.dark ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize()).toDouble()),
         blockSpacing: globalUserSettings.getFontSize().toDouble(),
       ),
     );

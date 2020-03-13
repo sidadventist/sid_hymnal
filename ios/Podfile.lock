@@ -2,10 +2,14 @@ PODS:
   - audioplayers (0.0.1):
     - Flutter
   - Flutter (1.0.0)
+  - get_version (0.0.1):
+    - Flutter
   - OneSignal (2.12.6)
   - onesignal_flutter (2.3.3):
     - Flutter
     - OneSignal (= 2.12.6)
+  - package_info (0.0.1):
+    - Flutter
   - path_provider (0.0.1):
     - Flutter
   - share (0.5.2):
@@ -26,8 +30,10 @@ PODS:
 DEPENDENCIES:
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
   - Flutter (from `Flutter`)
+  - get_version (from `.symlinks/plugins/get_version/ios`)
   - OneSignal (< 3.0, >= 2.9.3)
   - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
+  - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - share (from `.symlinks/plugins/share/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
@@ -46,8 +52,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/audioplayers/ios"
   Flutter:
     :path: Flutter
+  get_version:
+    :path: ".symlinks/plugins/get_version/ios"
   onesignal_flutter:
     :path: ".symlinks/plugins/onesignal_flutter/ios"
+  package_info:
+    :path: ".symlinks/plugins/package_info/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   share:
@@ -68,8 +78,10 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   audioplayers: 84f968cea3f2deab00ec4f8ff53358b3c0b3992c
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  get_version: 2bc18c4e26a265571662cab5d38f8b50dc8c1c77
   OneSignal: a6df91542d1cf133b9dd19d89f2b533d8f2d3163
   onesignal_flutter: 0db2f05befedb1ef79399b571bff4c9ba5410f6a
+  package_info: 48b108e75b8802c2d5e126f208ef540561c98aef
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   share: bae0a282aab4483288913fc4dc0b935d4b491f2e
   shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
