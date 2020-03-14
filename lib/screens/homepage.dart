@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
           break;
         case "Dark Mode":
           {
-            toggleNightMode();
+            toggleNightModeMenu(context);
           }
           break;
         case "Play Audio":
@@ -152,9 +152,6 @@ class _HomePageState extends State<HomePage> {
                   return CupertinoTabView(
                       navigatorKey: firstTabNavKey,
                       builder: (BuildContext context) => CupertinoPageScaffold(
-                          backgroundColor: globalUserSettings.isNightMode() || platformBrightness == Brightness.dark
-                              ? Colors.black
-                              : Theme.of(context).scaffoldBackgroundColor,
                           navigationBar: CupertinoNavigationBar(
                             middle: Text("SID Hymnal"),
                             trailing: index == 0
@@ -202,17 +199,12 @@ class _HomePageState extends State<HomePage> {
                             ? Center(child: CupertinoActivityIndicator())
                             : SafeArea(
                                 child: Scaffold(
-                                backgroundColor: globalUserSettings.isNightMode() || platformBrightness == Brightness.dark
-                                    ? Colors.black
-                                    : Theme.of(context).scaffoldBackgroundColor,
                                 body: MyFavorites(),
                               ))),
                   );
                   break;
                 case 2:
                   return CupertinoPageScaffold(
-                      backgroundColor:
-                          globalUserSettings.isNightMode() || platformBrightness == Brightness.dark ? Colors.black : Theme.of(context).scaffoldBackgroundColor,
                       navigationBar: CupertinoNavigationBar(
                         middle: Text("Settings"),
                         trailing: index == 0
@@ -321,16 +313,7 @@ class _HomePageState extends State<HomePage> {
                     return choices.map((String choice) {
                       switch (choice) {
                         case "Dark Mode":
-                          return PopupMenuItem<String>(
-                            value: choice,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(choice),
-                                Checkbox(activeColor: Colors.green, value: globalUserSettings.isNightMode(), onChanged: (value) {})
-                              ],
-                            ),
-                          );
+                          return PopupMenuItem<String>(value: choice, child: Text("Dark Mode..."));
                           break;
                         case "Play Audio":
                           return PopupMenuItem<String>(
@@ -361,8 +344,6 @@ class _HomePageState extends State<HomePage> {
                 )
               ],
             ),
-            backgroundColor:
-                globalUserSettings.isNightMode() || platformBrightness == Brightness.dark ? Colors.black : Theme.of(context).scaffoldBackgroundColor,
             drawer: Drawer(
                 child: ListView(
               padding: EdgeInsets.zero,
@@ -387,7 +368,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 ListTile(
                     title: Text("Languages"),
-                    leading: Icon(Icons.language),
+                    leading: Icon(Icons.translate),
                     onTap: () {
                       Navigator.pop(context);
                       _displayLanguagesPage(context);
@@ -406,20 +387,25 @@ class _HomePageState extends State<HomePage> {
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : PageView.builder(
-                    controller: _controller,
-                    onPageChanged: (int index) async {
-                      this._currentHymnNumber = index + 1;
-                      renderHymn();
-                      lazyLoad(index);
-                    },
-                    itemBuilder: (BuildContext context, int index) {
-                      return generatePage(_pages[index]);
-                    },
-                    itemCount: hymnList.length,
+                : Container(
+                    color: globalUserSettings.getNightMode() == "on" ? Colors.black87 : Theme.of(context).scaffoldBackgroundColor,
+                    child: PageView.builder(
+                      pageSnapping: true,
+                      controller: _controller,
+                      onPageChanged: (int index) async {
+                        this._currentHymnNumber = index + 1;
+                        renderHymn();
+                        lazyLoad(index);
+                      },
+                      itemBuilder: (BuildContext context, int index) {
+                        return generatePage(_pages[index], Theme.of(context).textTheme.body1.color);
+                      },
+                      itemCount: hymnList.length,
+                    ),
                   ),
             floatingActionButton: FloatingActionButton(
-              backgroundColor: Color(0Xff2f557f),
+              backgroundColor: Theme.of(context).primaryColor,
+              foregroundColor: Colors.white,
               child: Icon(Icons.dialpad),
               onPressed: () async {
                 int newNumber = await displayHymnKeypad(context);
@@ -483,16 +469,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Markdown generatePage(Hymn hymn) {
+  Markdown generatePage(Hymn hymn, Color textColor) {
     return Markdown(
       data: hymn.outputMarkdown(),
       styleSheet: MarkdownStyleSheet(
-        h2: TextStyle(
-            color: globalUserSettings.isNightMode() || platformBrightness == Brightness.dark ? Colors.white : Colors.black,
-            fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
-        p: TextStyle(
-            color: globalUserSettings.isNightMode() || platformBrightness == Brightness.dark ? Colors.white : Colors.black,
-            fontSize: (globalUserSettings.getFontSize()).toDouble()),
+        h2: TextStyle(color: textColor, fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
+        p: TextStyle(color: textColor, fontSize: (globalUserSettings.getFontSize()).toDouble()),
         blockSpacing: globalUserSettings.getFontSize().toDouble(),
       ),
     );
@@ -542,10 +524,8 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  toggleNightMode() {
-    setState(() {
-      globalUserSettings.setNightMode(!globalUserSettings.isNightMode());
-    });
-    saveNightModeState(globalUserSettings.isNightMode());
+  toggleNightModeMenu(BuildContext context) async {
+    await showDarkModeOptions(context);
+    setState(() {});
   }
 }

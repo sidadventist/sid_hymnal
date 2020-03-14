@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sid_hymnal/common/shared_methods.dart';
 import 'package:sid_hymnal/common/shared_theme_data.dart';
 import 'package:sid_hymnal/models/user_settings.dart';
@@ -8,6 +9,7 @@ import 'dart:io' show Platform;
 import 'package:audioplayers/audio_cache.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'models/hymnal.dart';
+import 'models/theme_changer.dart';
 
 List<String> hymnList = new List();
 Map<String, dynamic> cIStoAH = {};
@@ -24,7 +26,7 @@ void main() async {
   OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
   globalUserSettings = await getUserSettings();
   globalLanguageList = await getAvailableLanguages();
-  appLayoutMode = "ios";
+  // appLayoutMode = "ios";
   if (Platform.isIOS) {
     appLayoutMode = "ios";
   }
@@ -32,20 +34,33 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of the application.
   @override
   Widget build(BuildContext context) {
+    print(globalUserSettings.toString());
+
+    return ChangeNotifierProvider<ThemeChanger>(
+      builder: (_) => ThemeChanger(globalUserSettings.getNightMode() == "on" ? androidCustomDarkTheme : androidCustomLightTheme),
+      child: new AppWithTheme(),
+    );
+  }
+}
+
+class AppWithTheme extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeChanger>(context);
+
     return Platform.isIOS
         ? CupertinoApp(
             title: 'SID Hymnal',
             debugShowCheckedModeBanner: false,
-            theme: globalUserSettings.isNightMode() || platformBrightness == Brightness.dark ? iosCustomDarkTheme : iosCustomLightTheme,
+            // theme: theme.getTheme(),
             home: HomePage(),
           )
         : MaterialApp(
             title: 'SID Hymnal',
             debugShowCheckedModeBanner: false,
-            theme: globalUserSettings.isNightMode() || platformBrightness == Brightness.dark ? androidCustomDarkTheme : androidCustomLightTheme,
+            theme: theme.getTheme(),
             home: HomePage(),
           );
   }

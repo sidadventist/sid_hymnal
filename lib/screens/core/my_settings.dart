@@ -84,43 +84,37 @@ class _MySettingsState extends State<MySettings> {
               ],
             ),
           ),
-          appLayoutMode == "ios" ? Divider() : Container(),
-          appLayoutMode == "ios"
-              ? ListTile(
-                  leading: Icon(CupertinoIcons.brightness),
-                  trailing: CupertinoSwitch(
-                    value: globalUserSettings.isNightMode(),
-                    onChanged: (value) {
-                      setState(() {
-                        globalUserSettings.setNightMode(value);
-                      });
-                      saveNightModeState(value);
-                    },
-                  ),
-                  title: Text("Dark Mode"),
-                  subtitle: Text("Light text on dark background"),
-                )
-              : Container(),
-
-          Divider(), 
+          Divider(),
+          ListTile(
+            leading: Icon(appLayoutMode == "ios" ? CupertinoIcons.brightness : Icons.brightness_medium),
+            title: Text("Dark Mode"),
+            subtitle: Text("${globalUserSettings.getNightMode().substring(0, 1).toUpperCase()}${globalUserSettings.getNightMode().substring(1, globalUserSettings.getNightMode().length)}"),
+            onTap: () async {
+              await showDarkModeOptions(context);
+              setState(() {
+                
+              });
+            },
+          ),
+          Divider(),
           Container(
             padding: EdgeInsets.only(left: 16, top: 16),
             child: Text(
               "English Hymnal Version",
             ),
-          ),  
+          ),
           RadioListTile(
             value: "cis",
             groupValue: "cis",
             title: Text("Christ in Song"),
-            onChanged:null,
-          ),    
+            onChanged: null,
+          ),
           RadioListTile(
             value: "ah",
             groupValue: "cis",
             title: Text("Adventist Hymnal"),
             onChanged: null,
-          ),     
+          ),
           Divider(),
           ListTile(
             leading: appLayoutMode == "ios" ? Icon(CupertinoIcons.bell) : Icon(Icons.notifications),
@@ -132,7 +126,7 @@ class _MySettingsState extends State<MySettings> {
                 : Checkbox(value: true, onChanged: null),
             title: Text("SID Announcements"),
             subtitle: Text("Get notified on SID events/announcements"),
-          ), 
+          ),
           Divider(),
           Container(
             padding: EdgeInsets.only(left: 16, top: 16),
@@ -215,13 +209,14 @@ class _MySettingsState extends State<MySettings> {
       ),
     );
   }
+
   Future<void> getAppVersion() async {
     try {
       String vers = await GetVersion.projectVersion;
       setState(() {
         _version = vers;
       });
-    } catch(e) {
+    } catch (e) {
       _version = 'Unknown';
     }
   }

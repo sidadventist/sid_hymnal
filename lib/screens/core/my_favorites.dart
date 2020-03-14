@@ -36,8 +36,6 @@ class _MyFavoritesState extends State<MyFavorites> {
                             return ListTile(
                               title: Text(
                                 hymnList[snapshot.data[index] - 1],
-                                style:
-                                    TextStyle(color: globalUserSettings.isNightMode() || platformBrightness == Brightness.dark ? Colors.white : Colors.black),
                               ),
                               onLongPress: () async {
                                 await displayFavoritesContextMenu(context, snapshot.data[index]);

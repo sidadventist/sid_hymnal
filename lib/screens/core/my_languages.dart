@@ -38,7 +38,7 @@ class _MyLanguagesState extends State<MyLanguages> {
             value: hymnal.languageCode,
             groupValue: globalUserSettings.getLanguage(),
             title: Text(hymnal.language, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            subtitle: Text(hymnal.title, style: TextStyle(color: Color(0Xff2f557f))),
+            subtitle: Text(hymnal.title),
             onChanged: (language) async {
               await globalUserSettings.setLanguage(language);
               Navigator.pop(context);

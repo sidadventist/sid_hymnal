@@ -65,7 +65,6 @@ class _ViewHymnState extends State<ViewHymn> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      backgroundColor: globalUserSettings.isNightMode() || platformBrightness == Brightness.dark ? Colors.black : Theme.of(context).scaffoldBackgroundColor,
       navigationBar: CupertinoNavigationBar(
           middle: Text("SID Hymnal"),
           trailing: Row(
@@ -174,8 +173,8 @@ class _ViewHymnState extends State<ViewHymn> {
     return Markdown(
       data: hymn.outputMarkdown(),
       styleSheet: MarkdownStyleSheet(
-        h2: TextStyle(color: globalUserSettings.isNightMode() || platformBrightness == Brightness.dark ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
-        p: TextStyle(color: globalUserSettings.isNightMode() || platformBrightness == Brightness.dark ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize()).toDouble()),
+        h2: TextStyle(fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
+        p: TextStyle(fontSize: (globalUserSettings.getFontSize()).toDouble()),
         blockSpacing: globalUserSettings.getFontSize().toDouble(),
       ),
     );
@@ -194,12 +193,5 @@ class _ViewHymnState extends State<ViewHymn> {
       _isFavorite = favoriteStatus;
       this._currentHymn = _pages[hymnNumber - 1];
     });
-  }
-
-  toggleNightMode() {
-    setState(() {
-      globalUserSettings.setNightMode(!globalUserSettings.isNightMode());
-    });
-    saveNightModeState(globalUserSettings.isNightMode());
   }
 }

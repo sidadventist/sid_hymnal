@@ -3,7 +3,7 @@ import 'package:sid_hymnal/common/shared_methods.dart';
 class UserSettings {
   int _lastHymn = 1;
   int _fontSize = 16;
-  bool _nightMode = false;
+  String _nightMode = "auto";
   String _language = "en";
   UserSettings();
 
@@ -11,7 +11,7 @@ class UserSettings {
     return this._fontSize;
   }
 
-  bool isNightMode() {
+  String getNightMode() {
     return this._nightMode;
   }
 
@@ -36,7 +36,8 @@ class UserSettings {
     this._fontSize = size;
   }
   
-  setNightMode(bool setting) {
+  setNightMode(String setting) {
+    saveNightModeState(setting);
     this._nightMode = setting;
   }
 
