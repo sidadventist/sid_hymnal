@@ -2,8 +2,10 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:provider/provider.dart';
 import 'package:sid_hymnal/common/shared_methods.dart';
 import 'package:sid_hymnal/models/hymn.dart';
+import 'package:sid_hymnal/models/theme_changer.dart';
 import '../../main.dart';
 
 class ViewHymn extends StatefulWidget {
@@ -64,8 +66,11 @@ class _ViewHymnState extends State<ViewHymn> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeChanger>(context);
+
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
+          actionsForegroundColor: theme.getCupertinoTheme().primaryColor,
           middle: Text("SID Hymnal"),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
@@ -128,19 +133,21 @@ class _ViewHymnState extends State<ViewHymn> {
       child: _isLoading == true
           ? Center(child: CupertinoActivityIndicator())
           : SafeArea(
-              child: PageView.builder(
-                controller: PageController(
-                  initialPage: this._currentHymn.getNumber() - 1,
-                ),
-                onPageChanged: (int index) async {
-                  print(index);
-                  renderHymn(index + 1);
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  return generatePage(_pages[index]);
-                },
-                itemCount: hymnList.length,
-              ),
+              child: Container(
+                  color: globalUserSettings.getNightMode() == "on" ? Colors.black : Theme.of(context).scaffoldBackgroundColor,
+                  child: PageView.builder(
+                    controller: PageController(
+                      initialPage: this._currentHymn.getNumber() - 1,
+                    ),
+                    onPageChanged: (int index) async {
+                      print(index);
+                      renderHymn(index + 1);
+                    },
+                    itemBuilder: (BuildContext context, int index) {
+                      return generatePage(_pages[index], Theme.of(context).textTheme.body1.color);
+                    },
+                    itemCount: hymnList.length,
+                  )),
             ),
     );
   }
@@ -169,12 +176,12 @@ class _ViewHymnState extends State<ViewHymn> {
     }
   }
 
-  Markdown generatePage(Hymn hymn) {
+  Markdown generatePage(Hymn hymn, Color textColor) {
     return Markdown(
       data: hymn.outputMarkdown(),
       styleSheet: MarkdownStyleSheet(
-        h2: TextStyle(fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
-        p: TextStyle(fontSize: (globalUserSettings.getFontSize()).toDouble()),
+        h2: TextStyle(color: textColor, fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
+        p: TextStyle(color: textColor, fontSize: (globalUserSettings.getFontSize()).toDouble()),
         blockSpacing: globalUserSettings.getFontSize().toDouble(),
       ),
     );

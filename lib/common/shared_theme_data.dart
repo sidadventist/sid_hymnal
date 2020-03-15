@@ -1,18 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sid_hymnal/main.dart';
 
 final CupertinoThemeData iosCustomDarkTheme = CupertinoThemeData(
-    primaryColor: Color(0Xff34a0ff), //Color(0Xff2f557f)
-    scaffoldBackgroundColor: Colors.black,
-    textTheme: CupertinoTextThemeData(textStyle: TextStyle(color: Colors.white)));
+    primaryColor: CupertinoColors.systemIndigo, //Color(0Xff2f557f)
+    textTheme: CupertinoTextThemeData(textStyle: TextStyle(color: Colors.white)),
+    brightness: Brightness.dark);
 
 final CupertinoThemeData iosCustomLightTheme = CupertinoThemeData(
-  primaryColor: Color(0Xff2f557f),
-);
+    primaryColor: Color(0Xff2f557f), // ALPS
+    brightness: Brightness.light);
 
 final androidCustomDarkTheme = ThemeData(
   primarySwatch: Colors.indigo,
-  primaryColor: Color(0Xff2f557f),
+  primaryColor: appLayoutMode == "ios" ? Color(0Xff34a0ff) : Color(0Xff2f557f),
+  scaffoldBackgroundColor: Color(0Xff212121),
   brightness: Brightness.dark,
 );
 

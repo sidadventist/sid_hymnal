@@ -88,32 +88,19 @@ class _MySettingsState extends State<MySettings> {
           ListTile(
             leading: Icon(appLayoutMode == "ios" ? CupertinoIcons.brightness : Icons.brightness_medium),
             title: Text("Dark Mode"),
-            subtitle: Text("${globalUserSettings.getNightMode().substring(0, 1).toUpperCase()}${globalUserSettings.getNightMode().substring(1, globalUserSettings.getNightMode().length)}"),
+            subtitle: Text(
+                "${globalUserSettings.getNightMode().substring(0, 1).toUpperCase()}${globalUserSettings.getNightMode().substring(1, globalUserSettings.getNightMode().length)}"),
             onTap: () async {
               await showDarkModeOptions(context);
-              setState(() {
-                
-              });
+              setState(() {});
             },
           ),
           Divider(),
-          Container(
-            padding: EdgeInsets.only(left: 16, top: 16),
-            child: Text(
-              "English Hymnal Version",
-            ),
-          ),
-          RadioListTile(
-            value: "cis",
-            groupValue: "cis",
-            title: Text("Christ in Song"),
-            onChanged: null,
-          ),
-          RadioListTile(
-            value: "ah",
-            groupValue: "cis",
-            title: Text("Adventist Hymnal"),
-            onChanged: null,
+          ListTile(
+            leading: Icon(appLayoutMode == "ios" ? CupertinoIcons.book : Icons.book),
+            title: Text("English Hymnal Version"),
+            subtitle: Text("Christ in Song"),
+            onTap: () async {},
           ),
           Divider(),
           ListTile(

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sid_hymnal/common/shared_methods.dart';
-import 'package:sid_hymnal/common/shared_theme_data.dart';
 import 'package:sid_hymnal/models/user_settings.dart';
 import 'package:sid_hymnal/screens/homepage.dart';
 import 'dart:io' show Platform;
@@ -37,9 +36,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(globalUserSettings.toString());
-
     return ChangeNotifierProvider<ThemeChanger>(
-      builder: (_) => ThemeChanger(globalUserSettings.getNightMode() == "on" ? androidCustomDarkTheme : androidCustomLightTheme),
+      builder: (_) => ThemeChanger(),
       child: new AppWithTheme(),
     );
   }
@@ -54,7 +52,7 @@ class AppWithTheme extends StatelessWidget {
         ? CupertinoApp(
             title: 'SID Hymnal',
             debugShowCheckedModeBanner: false,
-            // theme: theme.getTheme(),
+            theme: theme.getCupertinoTheme(),
             home: HomePage(),
           )
         : MaterialApp(

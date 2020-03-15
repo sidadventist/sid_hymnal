@@ -1,25 +1,45 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sid_hymnal/common/shared_theme_data.dart';
 
+import '../main.dart';
+
 class ThemeChanger with ChangeNotifier {
-  ThemeData _themeData;
+  ThemeChanger();
 
-  ThemeChanger(this._themeData);
-
-  ThemeData getTheme() => _themeData;
-  setTheme(String nightMode) {
-    if (nightMode == "on") {
-      _themeData = androidCustomDarkTheme;
+  ThemeData getTheme() {
+    if (globalUserSettings.getNightMode() == "on") {
+      return androidCustomDarkTheme;
+    } else if (globalUserSettings.getNightMode() == "auto") {
+      if (WidgetsBinding.instance.window.platformBrightness == Brightness.dark) {
+        return androidCustomDarkTheme;
+      } else {
+        return androidCustomLightTheme;
+      }
     } else {
-      _themeData = androidCustomLightTheme;
+      return androidCustomLightTheme;
     }
-    notifyListeners();
   }
-  /*
-  setTheme(ThemeData theme) {
-    _themeData = theme;
 
+  CupertinoThemeData getCupertinoTheme() {
+    if (globalUserSettings.getNightMode() == "on") {
+      return iosCustomDarkTheme;
+    } else if (globalUserSettings.getNightMode() == "auto") {
+      if (WidgetsBinding.instance.window.platformBrightness == Brightness.dark) {
+        return iosCustomDarkTheme;
+      } else {
+        return iosCustomLightTheme;
+      }
+    } else {
+      return iosCustomLightTheme;
+    }
+  }
+
+  void setNightMode(String nightMode) {
     notifyListeners();
   }
-  */
+
+  void notifyChange() {
+    notifyListeners();
+  }
 }

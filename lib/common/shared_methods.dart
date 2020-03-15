@@ -175,7 +175,7 @@ Future<void> showDarkModeOptions(BuildContext context) async {
               isDefaultAction: globalUserSettings.getNightMode() == darkModeOptions[index] ? true : false,
               onPressed: () {
                 globalUserSettings.setNightMode(darkModeOptions[index]);
-                theme.setTheme(darkModeOptions[index]);
+                theme.setNightMode(darkModeOptions[index]);
                 Navigator.of(context).pop(true);
               },
             );
@@ -206,7 +206,7 @@ Future<void> showDarkModeOptions(BuildContext context) async {
                               value: darkModeOptions[index],
                               onChanged: (value) async {
                                 globalUserSettings.setNightMode(darkModeOptions[index]);
-                                theme.setTheme(darkModeOptions[index]);
+                                theme.setNightMode(darkModeOptions[index]);
                                 Navigator.of(context).pop(true);
                               });
                         },

@@ -2,9 +2,11 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:provider/provider.dart';
 import 'package:sid_hymnal/common/shared_methods.dart';
 import 'package:sid_hymnal/common/shared_prefs.dart';
 import 'package:sid_hymnal/models/hymn.dart';
+import 'package:sid_hymnal/models/theme_changer.dart';
 import 'package:sid_hymnal/screens/android/favorites_page.dart';
 import 'package:sid_hymnal/screens/android/search_page.dart';
 import 'package:sid_hymnal/screens/core/hymn_search.dart';
@@ -20,7 +22,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   BuildContext context;
   bool _isLoading = true;
   bool _isFavorite = false;
@@ -32,6 +34,7 @@ class _HomePageState extends State<HomePage> {
   PageController _controller;
   int currentIndex = 0;
   AudioPlayer audioPlayerInstance;
+  ThemeChanger theme;
 
   static final scaffoldKey = new GlobalKey<ScaffoldState>();
   static final GlobalKey<NavigatorState> firstTabNavKey = new GlobalKey<NavigatorState>();
@@ -78,11 +81,13 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     selfInit();
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     if (audioPlayerInstance != null) {
       audioPlayerInstance.stop();
       audioPlayer.clearCache();
@@ -92,9 +97,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      platformBrightness = MediaQuery.of(context).platformBrightness;
-    });
+    if (globalUserSettings.getNightMode() == "auto") {
+      setState(() {
+        platformBrightness = WidgetsBinding.instance.window.platformBrightness;
+        print("brightness updated to $platformBrightness");
+      });
+    }
+
+    theme = Provider.of<ThemeChanger>(context);
 
     void _selectPopupMenuItem(String choice) {
       switch (choice) {
@@ -153,6 +163,7 @@ class _HomePageState extends State<HomePage> {
                       navigatorKey: firstTabNavKey,
                       builder: (BuildContext context) => CupertinoPageScaffold(
                           navigationBar: CupertinoNavigationBar(
+                            actionsForegroundColor: theme.getCupertinoTheme().primaryColor,
                             middle: Text("SID Hymnal"),
                             trailing: index == 0
                                 ? CupertinoButton(
@@ -228,6 +239,8 @@ class _HomePageState extends State<HomePage> {
               return null;
             },
             tabBar: CupertinoTabBar(
+              // backgroundColor: theme.getCupertinoTheme().barBackgroundColor,
+              activeColor: theme.getCupertinoTheme().primaryColor,
               items: [
                 BottomNavigationBarItem(icon: Icon(CupertinoIcons.book), title: Text("Hymns"), activeIcon: Icon(CupertinoIcons.book_solid)),
                 BottomNavigationBarItem(icon: Icon(CupertinoIcons.heart), title: Text("Favorites"), activeIcon: Icon(CupertinoIcons.heart_solid)),
@@ -388,7 +401,7 @@ class _HomePageState extends State<HomePage> {
                     child: CircularProgressIndicator(),
                   )
                 : Container(
-                    color: globalUserSettings.getNightMode() == "on" ? Colors.black87 : Theme.of(context).scaffoldBackgroundColor,
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     child: PageView.builder(
                       pageSnapping: true,
                       controller: _controller,
@@ -527,5 +540,12 @@ class _HomePageState extends State<HomePage> {
   toggleNightModeMenu(BuildContext context) async {
     await showDarkModeOptions(context);
     setState(() {});
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    if (globalUserSettings.getNightMode() == "auto") {
+      theme.notifyChange();
+    }
   }
 }

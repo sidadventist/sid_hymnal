@@ -10,7 +10,6 @@ class HymnSearch extends StatefulWidget {
 
 class _HymnSearchState extends State<HymnSearch> {
   bool isLoading = true;
-  bool _includeLyricsSearch = false;
   String filter;
   TextEditingController searchTextController = new TextEditingController();
 
