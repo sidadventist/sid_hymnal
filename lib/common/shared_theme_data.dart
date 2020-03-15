@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sid_hymnal/main.dart';
 
 final CupertinoThemeData iosCustomDarkTheme = CupertinoThemeData(
-    primaryColor: CupertinoColors.systemIndigo, //Color(0Xff2f557f)
+    primaryColor: CupertinoColors.systemBlue, //Color(0Xff2f557f)
     textTheme: CupertinoTextThemeData(textStyle: TextStyle(color: Colors.white)),
     brightness: Brightness.dark);
 

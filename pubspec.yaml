@@ -1,6 +1,6 @@
 name: sid_hymnal
 description: SID Seventh-day Adventist Hymnal
-version: 1.0.12+12
+version: 1.0.13+13
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
