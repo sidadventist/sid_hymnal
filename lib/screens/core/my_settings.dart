@@ -55,7 +55,7 @@ class _MySettingsState extends State<MySettings> {
                       ? CupertinoSlider(
                           value: globalUserSettings.getFontSize().toDouble(),
                           min: 14,
-                          max: 20,
+                          max: 30,
                           divisions: 6,
                           onChanged: (value) {
                             writeIntDataLocally(key: "fontSize", value: value.toInt());
@@ -67,7 +67,7 @@ class _MySettingsState extends State<MySettings> {
                       : Slider(
                           value: globalUserSettings.getFontSize().toDouble(),
                           min: 14,
-                          max: 20,
+                          max: 30,
                           divisions: 6,
                           onChanged: (value) {
                             writeIntDataLocally(key: "fontSize", value: value.toInt());

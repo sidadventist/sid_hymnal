@@ -11,6 +11,7 @@ import 'package:sid_hymnal/screens/android/favorites_page.dart';
 import 'package:sid_hymnal/screens/android/search_page.dart';
 import 'package:sid_hymnal/screens/core/hymn_search.dart';
 import 'package:sid_hymnal/screens/core/my_settings.dart';
+import 'package:wakelock/wakelock.dart';
 import '../main.dart';
 import 'android/languages_page.dart';
 import 'android/settings_page.dart';
@@ -82,11 +83,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    Wakelock.enable();
     selfInit();
   }
 
   @override
   void dispose() {
+    Wakelock.disable();
     WidgetsBinding.instance.removeObserver(this);
     if (audioPlayerInstance != null) {
       audioPlayerInstance.stop();

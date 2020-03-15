@@ -1,6 +1,6 @@
 {
   "name": "sid_hymnal",
-  "version": "1.0.10",
+  "version": "1.0.14",
   "description": "Official SID SDA Hymnal App",
   "main": "index.js",
   "directories": {
