@@ -34,7 +34,9 @@ class _MyFavoritesState extends State<MyFavorites> {
                           itemCount: snapshot.data.length,
                           itemBuilder: (BuildContext context, int index) {
                             return ListTile(
-                              title: Text(hymnList[snapshot.data[index] - 1]),
+                              title: Text(
+                                hymnList[snapshot.data[index] - 1],
+                              ),
                               onLongPress: () async {
                                 await displayFavoritesContextMenu(context, snapshot.data[index]);
                                 setState(() {});
@@ -50,7 +52,7 @@ class _MyFavoritesState extends State<MyFavorites> {
                           },
                         )
                   : Center(
-                      child: appLayoutMode == "ios" ? CupertinoActivityIndicator() :CircularProgressIndicator(),
+                      child: appLayoutMode == "ios" ? CupertinoActivityIndicator() : CircularProgressIndicator(),
                     );
             }));
   }

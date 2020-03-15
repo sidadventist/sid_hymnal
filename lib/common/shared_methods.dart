@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:sid_hymnal/common/shared_prefs.dart';
 import 'package:sid_hymnal/models/hymnal.dart';
+import 'package:sid_hymnal/models/theme_changer.dart';
 import 'package:sid_hymnal/models/user_settings.dart';
-
 import '../main.dart';
 
 Future<Map<String, Hymnal>> getAvailableLanguages() async {
@@ -38,10 +39,10 @@ Future<UserSettings> getUserSettings() async {
   if (currentHymnNumber == null) {
     currentHymnNumber = 1;
   }
-  bool isNightMode = await getBoolDataLocally(key: "isNightMode");
+  String nightMode = await getDataLocally(key: "nightMode");
 
-  if (isNightMode == null) {
-    isNightMode = false;
+  if (nightMode == null) {
+    nightMode = "auto";
   }
 
   //get currentFontSize
@@ -59,7 +60,7 @@ Future<UserSettings> getUserSettings() async {
 
   userSettings.setFontSize(currentFontSize);
   userSettings.setLanguage(currentLanguage);
-  userSettings.setNightMode(isNightMode);
+  userSettings.setNightMode(nightMode);
   userSettings.setLastHymnNumber(currentHymnNumber);
 
   return userSettings;
@@ -77,8 +78,8 @@ saveLastLanguage(String languageCode) {
   writeStringDataLocally(key: "language", value: languageCode);
 }
 
-saveNightModeState(bool isNightMode) {
-  writeBoolDataLocally(key: "isNightMode", value: isNightMode);
+saveNightModeState(String nightModeSetting) {
+  writeDataLocally(key: "nightMode", value: nightModeSetting);
 }
 
 shareSong(String song) {
@@ -157,6 +158,69 @@ Future<Map<dynamic, dynamic>> getCIStoAH() async {
   Map<dynamic, dynamic> songList = json.decode(rawMeta);
 
   return songList;
+}
+
+Future<void> showDarkModeOptions(BuildContext context) async {
+  final theme = Provider.of<ThemeChanger>(context);
+  List<String> darkModeOptions = ["auto", "on", "off"];
+  if (appLayoutMode == "ios") {
+    await showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoActionSheet(
+          title: Text("Dark Mode"),
+          actions: List<Widget>.generate(darkModeOptions.length, (int index) {
+            return CupertinoActionSheetAction(
+              child: Text("${darkModeOptions[index].substring(0, 1).toUpperCase()}${darkModeOptions[index].substring(1, darkModeOptions[index].length)}"),
+              isDefaultAction: globalUserSettings.getNightMode() == darkModeOptions[index] ? true : false,
+              onPressed: () {
+                globalUserSettings.setNightMode(darkModeOptions[index]);
+                theme.setNightMode(darkModeOptions[index]);
+                Navigator.of(context).pop(true);
+              },
+            );
+          }),
+        );
+      },
+    );
+  } else {
+    await showGeneralDialog(
+      context: context,
+      pageBuilder: (BuildContext buildContext, Animation<double> animation, Animation<double> secondaryAnimation) {
+        return Center(
+            child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Material(
+                  child: Container(
+                      child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      new ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: darkModeOptions.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return RadioListTile(
+                              title: Text(
+                                  "${darkModeOptions[index].substring(0, 1).toUpperCase()}${darkModeOptions[index].substring(1, darkModeOptions[index].length)}"),
+                              groupValue: globalUserSettings.getNightMode(),
+                              value: darkModeOptions[index],
+                              onChanged: (value) async {
+                                globalUserSettings.setNightMode(darkModeOptions[index]);
+                                theme.setNightMode(darkModeOptions[index]);
+                                Navigator.of(context).pop(true);
+                              });
+                        },
+                      ),
+                    ],
+                  )),
+                )));
+      },
+      barrierDismissible: true,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierColor: Colors.black45,
+      transitionDuration: const Duration(milliseconds: 200),
+    );
+  }
 }
 
 Future<void> showLanguageActions(BuildContext context) async {

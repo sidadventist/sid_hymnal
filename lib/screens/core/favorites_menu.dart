@@ -18,7 +18,7 @@ class _FavoritesContextMenuState extends State<FavoritesContextMenu> {
   Widget build(BuildContext context) {
     return Material(
         child: Container(
-            color: Colors.white,
+            color: Theme.of(context).scaffoldBackgroundColor,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[

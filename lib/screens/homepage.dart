@@ -2,13 +2,16 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:provider/provider.dart';
 import 'package:sid_hymnal/common/shared_methods.dart';
 import 'package:sid_hymnal/common/shared_prefs.dart';
 import 'package:sid_hymnal/models/hymn.dart';
+import 'package:sid_hymnal/models/theme_changer.dart';
 import 'package:sid_hymnal/screens/android/favorites_page.dart';
 import 'package:sid_hymnal/screens/android/search_page.dart';
 import 'package:sid_hymnal/screens/core/hymn_search.dart';
 import 'package:sid_hymnal/screens/core/my_settings.dart';
+import 'package:wakelock/wakelock.dart';
 import '../main.dart';
 import 'android/languages_page.dart';
 import 'android/settings_page.dart';
@@ -20,7 +23,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   BuildContext context;
   bool _isLoading = true;
   bool _isFavorite = false;
@@ -32,6 +35,7 @@ class _HomePageState extends State<HomePage> {
   PageController _controller;
   int currentIndex = 0;
   AudioPlayer audioPlayerInstance;
+  ThemeChanger theme;
 
   static final scaffoldKey = new GlobalKey<ScaffoldState>();
   static final GlobalKey<NavigatorState> firstTabNavKey = new GlobalKey<NavigatorState>();
@@ -78,11 +82,15 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    Wakelock.enable();
     selfInit();
   }
 
   @override
   void dispose() {
+    Wakelock.disable();
+    WidgetsBinding.instance.removeObserver(this);
     if (audioPlayerInstance != null) {
       audioPlayerInstance.stop();
       audioPlayer.clearCache();
@@ -92,6 +100,15 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (globalUserSettings.getNightMode() == "auto") {
+      setState(() {
+        platformBrightness = WidgetsBinding.instance.window.platformBrightness;
+        print("brightness updated to $platformBrightness");
+      });
+    }
+
+    theme = Provider.of<ThemeChanger>(context);
+
     void _selectPopupMenuItem(String choice) {
       switch (choice) {
         case "Share":
@@ -111,7 +128,7 @@ class _HomePageState extends State<HomePage> {
           break;
         case "Dark Mode":
           {
-            toggleNightMode();
+            toggleNightModeMenu(context);
           }
           break;
         case "Play Audio":
@@ -148,8 +165,8 @@ class _HomePageState extends State<HomePage> {
                   return CupertinoTabView(
                       navigatorKey: firstTabNavKey,
                       builder: (BuildContext context) => CupertinoPageScaffold(
-                          backgroundColor: globalUserSettings.isNightMode() ? Colors.black87 : Theme.of(context).scaffoldBackgroundColor,
                           navigationBar: CupertinoNavigationBar(
+                            actionsForegroundColor: theme.getCupertinoTheme().primaryColor,
                             middle: Text("SID Hymnal"),
                             trailing: index == 0
                                 ? CupertinoButton(
@@ -180,7 +197,6 @@ class _HomePageState extends State<HomePage> {
                   return CupertinoTabView(
                     navigatorKey: secondTabNavKey,
                     builder: (BuildContext context) => CupertinoPageScaffold(
-                        backgroundColor: globalUserSettings.isNightMode() ? Colors.black87 : Theme.of(context).scaffoldBackgroundColor,
                         navigationBar: CupertinoNavigationBar(
                           middle: Text("Favorites"),
                           trailing: index == 0
@@ -203,7 +219,6 @@ class _HomePageState extends State<HomePage> {
                   break;
                 case 2:
                   return CupertinoPageScaffold(
-                      backgroundColor: globalUserSettings.isNightMode() ? Colors.black87 : Theme.of(context).scaffoldBackgroundColor,
                       navigationBar: CupertinoNavigationBar(
                         middle: Text("Settings"),
                         trailing: index == 0
@@ -226,37 +241,9 @@ class _HomePageState extends State<HomePage> {
               }
               return null;
             },
-            /*
-            tabBuilder: (BuildContext context, int index) {
-              return CupertinoTabView(
-                
-                builder: (BuildContext context) {
-                  return CupertinoPageScaffold(
-                      backgroundColor: globalUserSettings.isNightMode() ? Colors.black87 : Theme.of(context).scaffoldBackgroundColor,
-                      navigationBar: CupertinoNavigationBar(
-                        middle: Text(index == 0 ? "SID Hymnal" : index == 1 ? "Favorites" : "Settings"),
-                        trailing: index == 0
-                            ? CupertinoButton(
-                                padding: EdgeInsets.all(0),
-                                child: Icon(IconData(0xf4d2, fontFamily: CupertinoIcons.iconFont, fontPackage: CupertinoIcons.iconFontPackage)),
-                                onPressed: () {
-                                  // shareSong(widget._hymn.toString());
-                                },
-                              )
-                            : null,
-                      ),
-                      child: _isLoading == true
-                          ? Center(child: CupertinoActivityIndicator())
-                          : SafeArea(
-                              child: Scaffold(
-                                  body: index == 0 ? HymnSearch(globalUserSettings.getLanguage()) : index == 1 ? MyFavorites() : MySettings(scaffoldKey)),
-                            ));
-                },
-              );
-            },
-            
-            */
             tabBar: CupertinoTabBar(
+              // backgroundColor: theme.getCupertinoTheme().barBackgroundColor,
+              activeColor: theme.getCupertinoTheme().primaryColor,
               items: [
                 BottomNavigationBarItem(icon: Icon(CupertinoIcons.book), title: Text("Hymns"), activeIcon: Icon(CupertinoIcons.book_solid)),
                 BottomNavigationBarItem(icon: Icon(CupertinoIcons.heart), title: Text("Favorites"), activeIcon: Icon(CupertinoIcons.heart_solid)),
@@ -342,13 +329,7 @@ class _HomePageState extends State<HomePage> {
                     return choices.map((String choice) {
                       switch (choice) {
                         case "Dark Mode":
-                          return PopupMenuItem<String>(
-                            value: choice,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[Text(choice), Checkbox(activeColor: Colors.green, value: globalUserSettings.isNightMode(), onChanged: null)],
-                            ),
-                          );
+                          return PopupMenuItem<String>(value: choice, child: Text("Dark Mode..."));
                           break;
                         case "Play Audio":
                           return PopupMenuItem<String>(
@@ -379,7 +360,6 @@ class _HomePageState extends State<HomePage> {
                 )
               ],
             ),
-            backgroundColor: globalUserSettings.isNightMode() ? Colors.black87 : Theme.of(context).scaffoldBackgroundColor,
             drawer: Drawer(
                 child: ListView(
               padding: EdgeInsets.zero,
@@ -404,7 +384,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 ListTile(
                     title: Text("Languages"),
-                    leading: Icon(Icons.language),
+                    leading: Icon(Icons.translate),
                     onTap: () {
                       Navigator.pop(context);
                       _displayLanguagesPage(context);
@@ -423,20 +403,25 @@ class _HomePageState extends State<HomePage> {
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : PageView.builder(
-                    controller: _controller,
-                    onPageChanged: (int index) async {
-                      this._currentHymnNumber = index + 1;
-                      renderHymn();
-                      lazyLoad(index);
-                    },
-                    itemBuilder: (BuildContext context, int index) {
-                      return generatePage(_pages[index]);
-                    },
-                    itemCount: hymnList.length,
+                : Container(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    child: PageView.builder(
+                      pageSnapping: true,
+                      controller: _controller,
+                      onPageChanged: (int index) async {
+                        this._currentHymnNumber = index + 1;
+                        renderHymn();
+                        lazyLoad(index);
+                      },
+                      itemBuilder: (BuildContext context, int index) {
+                        return generatePage(_pages[index], Theme.of(context).textTheme.body1.color);
+                      },
+                      itemCount: hymnList.length,
+                    ),
                   ),
             floatingActionButton: FloatingActionButton(
-              backgroundColor: Color(0Xff2f557f),
+              backgroundColor: Theme.of(context).primaryColor,
+              foregroundColor: Colors.white,
               child: Icon(Icons.dialpad),
               onPressed: () async {
                 int newNumber = await displayHymnKeypad(context);
@@ -500,12 +485,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Markdown generatePage(Hymn hymn) {
+  Markdown generatePage(Hymn hymn, Color textColor) {
     return Markdown(
       data: hymn.outputMarkdown(),
       styleSheet: MarkdownStyleSheet(
-        h2: TextStyle(color: globalUserSettings.isNightMode() ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
-        p: TextStyle(color: globalUserSettings.isNightMode() ? Colors.white : Colors.black, fontSize: (globalUserSettings.getFontSize()).toDouble()),
+        h2: TextStyle(color: textColor, fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
+        p: TextStyle(color: textColor, fontSize: (globalUserSettings.getFontSize()).toDouble()),
         blockSpacing: globalUserSettings.getFontSize().toDouble(),
       ),
     );
@@ -555,10 +540,15 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  toggleNightMode() {
-    setState(() {
-      globalUserSettings.setNightMode(!globalUserSettings.isNightMode());
-    });
-    saveNightModeState(globalUserSettings.isNightMode());
+  toggleNightModeMenu(BuildContext context) async {
+    await showDarkModeOptions(context);
+    setState(() {});
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    if (globalUserSettings.getNightMode() == "auto") {
+      theme.notifyChange();
+    }
   }
 }
