@@ -144,7 +144,7 @@ class _ViewHymnState extends State<ViewHymn> {
                       renderHymn(index + 1);
                     },
                     itemBuilder: (BuildContext context, int index) {
-                      return generatePage(_pages[index], Theme.of(context).textTheme.body1.color);
+                      return generatePage(_pages[index], theme.getTheme().textTheme.body1.color);
                     },
                     itemCount: hymnList.length,
                   )),
