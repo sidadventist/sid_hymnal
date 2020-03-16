@@ -56,7 +56,7 @@ class _MySettingsState extends State<MySettings> {
                           value: globalUserSettings.getFontSize().toDouble(),
                           min: 14,
                           max: 30,
-                          divisions: 6,
+                          divisions: 8,
                           onChanged: (value) {
                             writeIntDataLocally(key: "fontSize", value: value.toInt());
                             setState(() {
@@ -68,7 +68,7 @@ class _MySettingsState extends State<MySettings> {
                           value: globalUserSettings.getFontSize().toDouble(),
                           min: 14,
                           max: 30,
-                          divisions: 6,
+                          divisions: 8,
                           onChanged: (value) {
                             writeIntDataLocally(key: "fontSize", value: value.toInt());
                             setState(() {
