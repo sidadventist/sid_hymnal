@@ -159,6 +159,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     return appLayoutMode == "ios"
         ? CupertinoTabScaffold(
+            backgroundColor: globalUserSettings.getNightMode() == "on" ? Colors.black : Theme.of(context).scaffoldBackgroundColor,
             tabBuilder: (BuildContext context, int index) {
               switch (index) {
                 case 0:
@@ -189,9 +190,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           child: _isLoading == true
                               ? Center(child: CupertinoActivityIndicator())
                               : SafeArea(
-                                  child: Scaffold(
-                                  body: HymnSearch(),
-                                ))));
+                                  child: Theme(
+                                      data: theme.getTheme(),
+                                      child: Scaffold(
+                                        body: HymnSearch(),
+                                      )))));
                   break;
                 case 1:
                   return CupertinoTabView(
@@ -212,9 +215,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         child: _isLoading == true
                             ? Center(child: CupertinoActivityIndicator())
                             : SafeArea(
-                                child: Scaffold(
-                                body: MyFavorites(),
-                              ))),
+                                child: Theme(
+                                    data: theme.getTheme(),
+                                    child: Scaffold(
+                                      body: MyFavorites(),
+                                    )))),
                   );
                   break;
                 case 2:
@@ -234,9 +239,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       child: _isLoading == true
                           ? Center(child: CupertinoActivityIndicator())
                           : SafeArea(
-                              child: Scaffold(
-                              body: MySettings(thirdTabNavKey),
-                            )));
+                              child: Theme(
+                                  data: theme.getTheme(),
+                                  child: Scaffold(
+                                    body: MySettings(thirdTabNavKey),
+                                  ))));
                   break;
               }
               return null;
@@ -406,7 +413,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 : Container(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     child: PageView.builder(
-                      pageSnapping: true,
                       controller: _controller,
                       onPageChanged: (int index) async {
                         this._currentHymnNumber = index + 1;
@@ -414,7 +420,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         lazyLoad(index);
                       },
                       itemBuilder: (BuildContext context, int index) {
-                        return generatePage(_pages[index], Theme.of(context).textTheme.body1.color);
+                        return generatePage(_pages[index], theme.getTheme().textTheme.body1.color);
                       },
                       itemCount: hymnList.length,
                     ),

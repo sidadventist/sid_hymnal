@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sid_hymnal/main.dart';
+import 'package:sid_hymnal/models/theme_changer.dart';
 import 'package:sid_hymnal/screens/ios/view_hymn.dart';
 
 class HymnSearch extends StatefulWidget {
@@ -38,7 +40,12 @@ class _HymnSearchState extends State<HymnSearch> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+
+    final theme = Provider.of<ThemeChanger>(context);
+    
+    return Theme(
+      data: theme.getTheme(),
+      child: Container(
         padding: EdgeInsets.only(left: 8, right: 8),
         child: isLoading
             ? Container(
@@ -114,7 +121,7 @@ class _HymnSearchState extends State<HymnSearch> {
                     ),
                   )
                 ],
-              ));
+              )));
   }
 
   launchIOSHymnView(int hymnNumber) async {
