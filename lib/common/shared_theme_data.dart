@@ -13,8 +13,9 @@ final CupertinoThemeData iosCustomLightTheme = CupertinoThemeData(
 
 final androidCustomDarkTheme = ThemeData(
   primarySwatch: Colors.indigo,
-  primaryColor: appLayoutMode == "ios" ? Color(0Xff34a0ff) : Color(0Xff2f557f),
+  primaryColor: appLayoutMode == "ios" ? CupertinoColors.systemBlue : Color(0Xff2f557f),
   scaffoldBackgroundColor: Color(0Xff212121),
+  accentColor: appLayoutMode == "ios" ?CupertinoColors.systemBlue: Colors.blueAccent,
   brightness: Brightness.dark,
 );
 

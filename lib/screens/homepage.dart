@@ -497,6 +497,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       styleSheet: MarkdownStyleSheet(
         h2: TextStyle(color: textColor, fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
         p: TextStyle(color: textColor, fontSize: (globalUserSettings.getFontSize()).toDouble()),
+        code: TextStyle(color:  textColor, 
+        backgroundColor:  textColor == Colors.white? Colors.grey[700]: Colors.grey[200],
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+        fontFamily: "Courier New"
+        ),
         blockSpacing: globalUserSettings.getFontSize().toDouble(),
       ),
     );
