@@ -9,8 +9,9 @@ class Hymn {
   String _rawString;
   bool _hasAudio;
   String _audioPath;
+  String ahNumber;
 
-  Hymn._(this._number, this._title, this._sections, this._rawString, this._hasAudio, this._audioPath);
+  Hymn._(this._number, this._title, this._sections, this._rawString, this._hasAudio, this._audioPath, this.ahNumber);
 
   static Future<Hymn> create(int hymnNumber, String language) async {
     String sourceMD = await rootBundle.loadString('assets/hymns/$language/${padHymnNumber(hymnNumber)}.md');
@@ -19,6 +20,7 @@ class Hymn {
     List<String> parts = sourceMD.split(new RegExp("\n\n"));
     String _srcTitle;
     List<String> _srcSections = new List();
+    String ahNumber;
 
     for (int i = 0; i < parts.length; i++) {
       if (i == 0) {
@@ -26,8 +28,8 @@ class Hymn {
         if (parts[i].substring(0, 3) != "## ") {
           throw ("Title does not start with ## and a space");
         }
-        String ahNumber = cIStoAH["$hymnNumber"] != null ? "(AH "+cIStoAH["$hymnNumber"]+")" : "";
-        _srcTitle = "$hymnNumber ${parts[i].substring(2, parts[i].length)} $ahNumber";
+        ahNumber = cIStoAH["$hymnNumber"] != null ? cIStoAH["$hymnNumber"] : "";
+        _srcTitle = "$hymnNumber ${parts[i].substring(2, parts[i].length)}";
         continue;
       }
 
@@ -41,10 +43,10 @@ class Hymn {
     String audioPath = "audio/${padHymnNumber(hymnNumber)}.midi";
     bool hasAudio = await _assetExists("assets/$audioPath");
 
-    return Hymn._(hymnNumber, _srcTitle, _srcSections, sourceMD.substring(3), hasAudio, hasAudio ? audioPath : "");
+    return Hymn._(hymnNumber, _srcTitle, _srcSections, sourceMD.substring(3), hasAudio, hasAudio ? audioPath : "", ahNumber);
   }
 
-  String getAudioPath(){
+  String getAudioPath() {
     return this._audioPath;
   }
 
@@ -69,7 +71,11 @@ class Hymn {
     // returns a standardized, sanitized markdown
     String markdown = "";
 
-    markdown += "## ${this._title}\n\n";
+    markdown += "## ${this._title}";
+    if(this.ahNumber != ""){
+    markdown += "\n\` AH " + this.ahNumber + " \`";
+    }
+    markdown += "\n\n";
     this._sections.forEach((section) {
       markdown += "$section\n";
     });
@@ -81,8 +87,8 @@ class Hymn {
     try {
       await rootBundle.load(path);
       return true;
-    } catch(_) {
+    } catch (_) {
       return false;
     }
-  } 
+  }
 }

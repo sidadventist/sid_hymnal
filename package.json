@@ -11,7 +11,8 @@
     "dev-device": "flutter run --enable-software-rendering",
     "test": "./node_modules/.bin/jasmine",
     "build-android": "flutter build appbundle --release",
-    "build-ios": "flutter build ios --release && open ./ios/Runner.xcworkspace"
+    "build-ios": "flutter build ios --release && open ./ios/Runner.xcworkspace",
+    "emulator4": "flutter emulators --launch 4.65"
   },
   "author": "SID Tech Team",
   "license": "Apache-2.0",

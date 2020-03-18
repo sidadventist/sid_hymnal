@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
 import 'package:sid_hymnal/common/shared_methods.dart';
+import 'package:sid_hymnal/common/shared_theme_data.dart';
 import 'package:sid_hymnal/models/hymn.dart';
 import 'package:sid_hymnal/models/theme_changer.dart';
 import '../../main.dart';
@@ -179,11 +180,7 @@ class _ViewHymnState extends State<ViewHymn> {
   Markdown generatePage(Hymn hymn, Color textColor) {
     return Markdown(
       data: hymn.outputMarkdown(),
-      styleSheet: MarkdownStyleSheet(
-        h2: TextStyle(color: textColor, fontSize: (globalUserSettings.getFontSize() + 7).toDouble()),
-        p: TextStyle(color: textColor, fontSize: (globalUserSettings.getFontSize()).toDouble()),
-        blockSpacing: globalUserSettings.getFontSize().toDouble(),
-      ),
+      styleSheet: sharedMarkdownStyleSheet(textColor),
     );
   }
 
