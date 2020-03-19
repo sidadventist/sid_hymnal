@@ -201,6 +201,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   return CupertinoTabView(
                     navigatorKey: secondTabNavKey,
                     builder: (BuildContext context) => CupertinoPageScaffold(
+                        backgroundColor: globalUserSettings.getNightMode() == "on" ? Colors.black : Theme.of(context).scaffoldBackgroundColor,
                         navigationBar: CupertinoNavigationBar(
                           middle: Text("Favorites"),
                           trailing: index == 0
@@ -225,6 +226,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   break;
                 case 2:
                   return CupertinoPageScaffold(
+                      backgroundColor: globalUserSettings.getNightMode() == "on" ? Colors.black : Theme.of(context).scaffoldBackgroundColor,
                       navigationBar: CupertinoNavigationBar(
                         middle: Text("Settings"),
                         trailing: index == 0
