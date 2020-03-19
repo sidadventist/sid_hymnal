@@ -40,88 +40,81 @@ class _HymnSearchState extends State<HymnSearch> {
 
   @override
   Widget build(BuildContext context) {
-
     final theme = Provider.of<ThemeChanger>(context);
-    
+
     return Theme(
-      data: theme.getTheme(),
-      child: Container(
-        padding: EdgeInsets.only(left: 8, right: 8),
-        child: isLoading
-            ? Container(
-                height: MediaQuery.of(context).size.height / 2,
-                child: Center(child: appLayoutMode == "ios" ? CupertinoActivityIndicator() : CircularProgressIndicator()),
-              )
-            : Column(
-                children: <Widget>[
-                  appLayoutMode == "ios" ? SizedBox(height: 16) : Container(),
-                  appLayoutMode == "ios"
-                      ? CupertinoTextField(
-                          controller: searchTextController,
-                          autofocus: false,
-                          placeholder: "Search Hymn...",
-                          clearButtonMode: OverlayVisibilityMode.editing,
-                        )
-                      : Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            TextField(
+        data: theme.getTheme(),
+        child: Container(
+            padding: EdgeInsets.only(left: 8, right: 8),
+            child: isLoading
+                ? Container(
+                    height: MediaQuery.of(context).size.height / 2,
+                    child: Center(child: appLayoutMode == "ios" ? CupertinoActivityIndicator() : CircularProgressIndicator()),
+                  )
+                : Column(
+                    children: <Widget>[
+                      appLayoutMode == "ios" ? SizedBox(height: 16) : Container(),
+                      appLayoutMode == "ios"
+                          ? CupertinoTextField(
                               controller: searchTextController,
-                              autofocus: true,
-                              textAlign: TextAlign.left,
-                              decoration: InputDecoration(
-                                hintText: 'Search Hymn...',
-                              ),
+                              autofocus: false,
+                              placeholder: "Search Hymn...",
+                              clearButtonMode: OverlayVisibilityMode.editing,
+                            )
+                          : Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                TextField(
+                                  controller: searchTextController,
+                                  autofocus: true,
+                                  textAlign: TextAlign.left,
+                                  decoration: InputDecoration(
+                                    hintText: 'Search Hymn...',
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                  new Expanded(
-                    child: new ListView.builder(
-                      itemCount: hymnList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return filter == null || filter == ""
-                            ? ListTile(
-                                title: cIStoAH["${(index + 1)}"] != null
-                                    ? Text(
-                                        "${hymnList[index]} (AH " + cIStoAH["${(index + 1)}"] + ")",
-                                      )
-                                    : Text(
-                                        hymnList[index],
-                                      ),
-                                onTap: () async {
-                                  if (appLayoutMode == "ios") {
-                                    launchIOSHymnView(index + 1);
-                                    return;
-                                  } else {
-                                    Navigator.pop(context, index + 1);
-                                  }
-                                },
-                              )
-                            : (cIStoAH["${(index + 1)}"] != null ? ("${hymnList[index]} (AH " + cIStoAH["${(index + 1)}"] + ")") : (hymnList[index]))
-                                    .toLowerCase()
-                                    .contains(filter.toLowerCase())
+                      new Expanded(
+                        child: new ListView.builder(
+                          itemCount: hymnList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return filter == null || filter == ""
                                 ? ListTile(
-                                    title: cIStoAH["${(index + 1)}"] != null
-                                        ? Text(
-                                            "${hymnList[index]} (AH " + cIStoAH["${(index + 1)}"] + ")",
-                                          )
-                                        : Text(
-                                            hymnList[index],
-                                          ),
-                                    onTap: () {
+                                    title: Text(
+                                      hymnList[index],
+                                    ),
+                                    trailing: cIStoAH["${(index + 1)}"] != null ? Text("AH " + cIStoAH["${(index + 1)}"], style: TextStyle(fontSize: 10, color: Colors.grey)) : null,
+                                    onTap: () async {
                                       if (appLayoutMode == "ios") {
                                         launchIOSHymnView(index + 1);
                                         return;
                                       } else {
                                         Navigator.pop(context, index + 1);
                                       }
-                                    })
-                                : new Container();
-                      },
-                    ),
-                  )
-                ],
-              )));
+                                    },
+                                  )
+                                : (cIStoAH["${(index + 1)}"] != null ? ("${hymnList[index]} (AH " + cIStoAH["${(index + 1)}"] + ")") : (hymnList[index]))
+                                        .toLowerCase()
+                                        .contains(filter.toLowerCase())
+                                    ? ListTile(
+                                        title: Text(
+                                          hymnList[index],
+                                        ),
+                                        trailing: cIStoAH["${(index + 1)}"] != null ? Text("AH " + cIStoAH["${(index + 1)}"], style: TextStyle(fontSize: 10, color: Colors.grey)) : null,
+                                        onTap: () {
+                                          if (appLayoutMode == "ios") {
+                                            launchIOSHymnView(index + 1);
+                                            return;
+                                          } else {
+                                            Navigator.pop(context, index + 1);
+                                          }
+                                        })
+                                    : new Container();
+                          },
+                        ),
+                      )
+                    ],
+                  )));
   }
 
   launchIOSHymnView(int hymnNumber) async {
