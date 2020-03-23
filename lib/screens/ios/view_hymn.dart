@@ -70,6 +70,7 @@ class _ViewHymnState extends State<ViewHymn> {
     final theme = Provider.of<ThemeChanger>(context);
 
     return CupertinoPageScaffold(
+      backgroundColor: globalUserSettings.getNightMode() == "on" ? Colors.black : Theme.of(context).scaffoldBackgroundColor,
       navigationBar: CupertinoNavigationBar(
           actionsForegroundColor: theme.getCupertinoTheme().primaryColor,
           middle: Text("SID Hymnal"),
