@@ -1,6 +1,6 @@
 # SID Hymnal
 
-SID Seventh-day Adventist Hymnal
+SID Seventh-day Adventist Hymnal App with *Christ in Song* and *Advent Hymnal*.
 
 #### Developer Versions:
 - [Join Android Testers](https://play.google.com/apps/testing/com.sidadventist.sid_hymnal)
