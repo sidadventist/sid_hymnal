@@ -47,7 +47,7 @@ DEPENDENCIES:
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - OneSignal
 
 EXTERNAL SOURCES:
@@ -97,6 +97,6 @@ SPEC CHECKSUMS:
   url_launcher_web: e5527357f037c87560776e36436bf2b0288b965c
   wakelock: bd3dcc6a8bcf53a1c0309780ff192dcee67c6ccb
 
-PODFILE CHECKSUM: a41c2b8841a6c5974a840db2c27aa659024d4d22
+PODFILE CHECKSUM: dbdbd33703c777e48a1e94841361fd55bb792944
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.9.3
